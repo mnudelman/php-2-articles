@@ -1,0 +1,47 @@
+.imgGal {
+    max-width: 250px;
+}
+.commentGal{
+    float:left;
+   width: 95%;
+    height:40px;
+   padding:5px;
+   text-align: center;
+   margin:5px ;
+}
+.checkGal {
+    margin-left:40% ;
+
+}
+td.comment{
+    width:300px ;
+    padding:3px ;
+}
+/** стили для вывода галереи **/
+.btGal{
+    margin-left: 25px;
+}
+
+.imgBlock{
+    display: inline-block;
+    width:400px;
+    heght:400px;
+    border:2px solid #0f0;
+}
+.imgBlock img{
+    position:relative;
+    top:5px;
+    left:5px;
+    width:98% ;
+
+}
+.imgBlock div{
+    position: relative;
+    bottom: 2px;
+  /*  background-color: #8FBC8F;*/
+    height: 40px;
+    text-align: center;
+    width: 95%;
+    left: 5px;
+
+}
