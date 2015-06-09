@@ -5,11 +5,12 @@
  *
  */
 ?>
-<div>
-    ВХОД. Войдите под своим login,password или
-    <a href="<?php echo $urlToProfile ?>"> пройдите регистрацию</a><br>
-</div>
+
 <form action="<?php echo  $urlToUser ?>" method="post">
+    <div>
+    ВХОД. Войдите под своим login,password или
+    <button name="registration">пройдите регистрацию</button>
+    </div>
 
     <label><span class="label"><strong>Имя:</strong></span>
         <input class="field" type="text" name="login"

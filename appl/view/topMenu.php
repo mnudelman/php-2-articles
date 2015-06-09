@@ -12,7 +12,7 @@
     <strong>ШП. PHP-2.Занятие-1.Систематизация статей.</strong> <br>
 
     <a href="<?php echo $htmlDirTop.'/index.php?cnt=cnt_topic' ?>" class="menu">
-        <img src="<?php echo $htmlDirTop ?>/images/gtk-dnd-multiple.png" title="Тема статей" alt="Тема">
+        <img src="<?=$htmlDirTop;?>/images/gtk-dnd-multiple.png" title="Тема статей" alt="Тема">
         <?php
         $topicName = TaskStore::getParam('topicName') ;
         echo 'тема:'. ( ( empty($topicName)) ? 'тема не выбрана' : $topicName );

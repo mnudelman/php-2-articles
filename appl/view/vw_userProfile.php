@@ -5,9 +5,7 @@
  */
 ?>
 <?php
-//$successfulRegistration = (!empty($_SESSION['successfulRegistration'])) ;
-//$profile = $_SESSION['profile'] ;
-//$profileEditFlag = isset($_SESSION['tmp_profileEditFlag']) ;
+
 if ($successfulSave && !$profileEditFlag) {
     ?>
     <a href="<?php echo $urlToDefault ; ?>"><strong>Регистрация завершена успешно</strong></a>
@@ -18,7 +16,7 @@ if ($successfulSave && !$profileEditFlag) {
     if (!empty($profileEditFlag)) {
         echo '<h3>Ваш профиль</h3>' ;
     } else {
-        echo '<h3>Заполните карту регистрации</h3>' . LINE_END;
+        echo '<h3>Заполните карту регистрации</h3>' ."\n";
     }
     ?>
     <form action="<?php echo $urlToProfile ;?>" method="post" class="formColor">

@@ -8,5 +8,10 @@
 -- --------------------------------------
 --INSERT INTO TABLE users (login,password) VALUES  ('mnudelman','12345') ;
 -- articles -Список статей
+--CREATE TRIGGER  insert_user AFTER INSERT ON users
+--FOR EACH ROW
+--  INSERT INTO userprofile (userid) VALUES (new.userId);
 
-DELETE FROM userprofile WHERE userid NOT IN  (SELECT  userid FROM users) ;
+
+insert into userprofile (userid) VALUES (2) ;
+insert into userprofile (userid) VALUES (3) ;

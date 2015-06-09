@@ -67,6 +67,11 @@ class TaskStore {
     const  ARTICLE_STAT_SHOW = 1;    // только просмотр
     const  ARTICLE_STAT_EDIT = 2;    // редактирование
 
+    const PROFILE_STAT_REGISTRATION = 1 ;    // переход в профиль - первичная регистрация
+    const PROFILE_STAT_EDIT = 2 ;            // редактирования существующего профиля
+
+
+
     public static function init($dirTop, $htmlDirTop) {
         self::$dirTop = $dirTop;
         self::$htmlDirTop = $htmlDirTop;

@@ -15,6 +15,7 @@
         $title =  $article['title'];
         $file = $article['file'];
         $topics = $article['topics'];
+
  ?>
         <div style="border-bottom: 1px solid;">
  <?php
@@ -26,6 +27,7 @@
 <?php
             }
         }
+
         if (!empty($file) && file_exists($dirArticle .'/'. $file)) {
             echo '</div>';
             echo '<strong>';
