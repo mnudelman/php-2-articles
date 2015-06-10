@@ -10,32 +10,14 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL ^ E_NOTICE);
 ?>
 <html>
-<?php
-include_once TaskStore::$dirView . '/headPart.php';
-?>
+<?=$partHeadPart;?>
 <body>
-<?php
-include_once TaskStore::$dirView . '/topMenu.php';
-?>
+<?=$partTopMenu;?>
 <div id="content">
-
-    <?php
-    include_once TaskStore::$dirView . '/messageForm.php';
-    ?>
-    <?php
-    if (!empty($content)) {
-        include_once $content;
-    }
-    ?>
-
+<?=$partContent;?>
 </div>
 <div id="footer">
-    <?php
-    if (!empty($footer)) {
-        include_once $footer;
-    }
-    ?>
-
+  <?=$partFooter;?>
 </div>
 </body>
 </html>

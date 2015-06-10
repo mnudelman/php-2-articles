@@ -1,5 +1,4 @@
 <?php
-//session_start();
 /**
  *   страница  с подвалом для вывода форм
  */
@@ -11,22 +10,11 @@ error_reporting(E_ALL ^ E_NOTICE);
 ?>
 
 <html>
-<?php
-include_once TaskStore::$dirView . '/headPart.php';
-?>
-<body><body>
-<?php
-include_once TaskStore::$dirView . '/topMenu.php';
-?>
+<?=$partHeadPart;?>
+<body>
+<?=$partTopMenu;?>
 <div id="contentShow">
-    <?php
-    include_once TaskStore::$dirView .'/messageForm.php' ;
-    ?>
-    <?php
-    if (!empty($content)) {
-        include_once $content;
-    }
-    ?>
+   <?=$partContent;?>
 </div>
 </body>
 </html>

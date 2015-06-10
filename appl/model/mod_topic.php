@@ -17,6 +17,7 @@ class mod_topic extends mod_base {
        $this->db = new db_article() ;
        $this->topicEditStat = TaskStore::TOPIC_STAT_SHOW ;   // по умолчанию - просмотр
        $this->currentTopicId = TaskStore::getParam('topicId') ;
+       parent::__construct() ;
    }
     /**
      * это передача атрибутов пофиля из контроллера

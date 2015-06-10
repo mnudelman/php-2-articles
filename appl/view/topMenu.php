@@ -5,13 +5,13 @@
  */
 ?>
 <?php
- $htmlDirTop = TaskStore::$htmlDirTop ;
- $dirTop = TaskStore::$dirTop ;
+// $htmlDirTop = TaskStore::$htmlDirTop ;
+// $dirTop = TaskStore::$dirTop ;
 ?>
 <div id="topMenu">
     <strong>ШП. PHP-2.Занятие-1.Систематизация статей.</strong> <br>
 
-    <a href="<?php echo $htmlDirTop.'/index.php?cnt=cnt_topic' ?>" class="menu">
+    <a href="<?=$htmlDirTop.'/index.php?cnt=cnt_topic';?>" class="menu">
         <img src="<?=$htmlDirTop;?>/images/gtk-dnd-multiple.png" title="Тема статей" alt="Тема">
         <?php
         $topicName = TaskStore::getParam('topicName') ;
@@ -20,7 +20,7 @@
     </a>&nbsp;&nbsp;
 
     <a href="<?php echo $htmlDirTop.'/index.php?cnt=cnt_user' ?>" class="menu">
-        <img src="<?php echo $htmlDirTop ?>/images/people.png"
+        <img src="<?=$htmlDirTop ?>/images/people.png"
              title="пользователь" alt="пользователь">
         <?php
 

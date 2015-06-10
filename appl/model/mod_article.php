@@ -19,6 +19,7 @@ class mod_article extends mod_base {
     //---------------------------------------------------------------//
     public function __construct() {
         $this->db = new db_article() ;
+        parent::__construct() ;
     }
     /**
      * это передача атрибутов пофиля из контроллера
@@ -93,8 +94,8 @@ class mod_article extends mod_base {
     public function saveArticle() {
         $owner = $this->userLogin ;
         $articlesForSave = $this->getCheckedList();
-        $this->mod->putArticles($owner, $articlesForSave);
-        $this->articles = $this->mod->getArticles($this->userLogin) ;  // статьи, загруженные userLogin
+        $this->db->putArticles($owner, $articlesForSave);
+        $this->articles = $this->db->getArticles($this->userLogin) ;  // статьи, загруженные userLogin
     }
 
 

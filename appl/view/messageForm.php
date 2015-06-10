@@ -9,7 +9,7 @@ function messageShow($messages,$title)
         <form>
             <h3><?php echo $title?></h3>
             <textarea name="sqlText" readonly="readonly"
-                      style="width:620px;height:200px;font-size:15px ;background-color: #d6e356; color:blue">
+                      style="width:620px;height:200px;font-size:15px ;background-color: background-color: #F5E8B8; color:blue">
         <?php
         echo chr(10);
 

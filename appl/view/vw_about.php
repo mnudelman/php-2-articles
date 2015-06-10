@@ -142,7 +142,8 @@ FOR EACH ROW
             непосредственно, особенно если загружаются сразу несколько файлов, мягко говоря
             не удобно. Следующий тест трансформирует $_FILES  к нормальному виду
             <p>
-                <pre class="programText">
+<pre class="brush: php; highlight: [5, 15]; html-script: true">
+<?php
           /**
  * преобразует  $_FILES в нормальную форму
  * @param $topName - этот атрибут name = "..." из input type="file" name="topname[]".....
@@ -171,7 +172,7 @@ function filesTransform($topName)
     }
     return $filesNorm;
 }
-
+?>
             </pre>
             </p>
         </li>

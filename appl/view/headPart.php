@@ -5,7 +5,6 @@
  * Date: 02.06.15
  * Time: 20:43
  */
-$htmlDirTop = TaskStore::$htmlDirTop ;
 ?>
 <head>
     <meta charset="utf-8">
@@ -13,8 +12,8 @@ $htmlDirTop = TaskStore::$htmlDirTop ;
     <meta name="description" content="ШП-php-2-lesson_2">
     <meta name="author" content="mnudelman@yandex.ru">
 
-    <link rel="stylesheet" type="text/css" href="<?php echo $htmlDirTop?>/styles/task.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo $htmlDirTop?>/styles/formStyle-1.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo $htmlDirTop ?>/styles/galleryStyle-1.css">
+    <link rel="stylesheet" type="text/css" href="<?=$htmlDirTop;?>/styles/task.css">
+    <link rel="stylesheet" type="text/css" href="<?=$htmlDirTop;?>/styles/formStyle-1.css">
+    <link rel="stylesheet" type="text/css" href="<?=$htmlDirTop;?>/styles/galleryStyle-1.css">
 
 </head>
