@@ -25,6 +25,7 @@ class mod_navigator extends  mod_base
     private $currentNavStore = [];       // список сохраняемых параметров по альбомам
     private $currentTopicId;           // Id текущей темы
     private $newTopicFlag = false ;    // признак установки новой темы
+    private $currentArticleId = false ;   //  прямая ссылка на статью
     //-----------------------------------------//
     public function __construct() {
         $this->db = new db_article();
@@ -42,7 +43,10 @@ class mod_navigator extends  mod_base
     private function init() {
         $this->currentTopicId = TaskStore::getParam('topicId');
         $this->topicList = $this->db->getTopic();
+        if (isset($this->parameters['articleid'])) {
+            $this->currentArticleId = $this->parameters['articleid'] ;
 
+        }
 
     }
 
@@ -143,10 +147,29 @@ class mod_navigator extends  mod_base
     }
 
     /**
+     * индексы списков  articles и pageList совпадают
+     * т.к. на странице одна статья
+     */
+    private function newPageFromId() {
+        $newPage = 0 ;
+        foreach($this->articles as $index=>$article) {
+            $aid = $article['articleid'] ;
+            if ($aid == $this->currentArticleId) {
+              $newPage = $index+1 ;
+                break ;
+            }
+        }
+        return $newPage ;
+    }
+    /**
      * Вычислить новую страницу
      */
     private function newPageClc() {
-        $this->newPage = $this->currentPage;
+        if (!empty($this->currentArticleId)){
+            $this->newPage= $this->newPageFromId() ;
+        }else {
+            $this->newPage = $this->currentPage;
+        }
         $nPages = count($this->pagesList);
         if (isset($this->parameters['page'])) {  // указатель для перехода через параметр
             //   page={first,prev,<i>,next,last}

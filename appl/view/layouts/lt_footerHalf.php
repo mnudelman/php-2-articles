@@ -13,11 +13,16 @@ error_reporting(E_ALL ^ E_NOTICE);
 <body>
 <?=$partTopMenu;?>
 
-<div id="contentShowHalph">
+<div id="contentShowHalf">
     <?=$partContent;?>
+
+    <div id="footerHalf">
+        <?=$partFooter;?>
+    </div>
 </div>
-<div id="footerHalph">
-    <?=$partFooter;?>
+<div id="rightPanel">
+   <?=$partRightPanel;?>
 </div>
+
 </body>
 </html>

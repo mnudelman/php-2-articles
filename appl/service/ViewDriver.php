@@ -89,7 +89,8 @@ class ViewDriver
             'footer' => false];
         $this->viewComponent['vw_articleNav'] = [  // формы в 2 частях страницы
             'content' => 'vw_articleShow',
-            'footer' => 'vw_navigator'];
+            'footer' => 'vw_navigator',
+            'rightPanel' => 'vw_articleList'];
         $this->viewComponent['vw_default'] = [  // форма отсутствует
             'content' => false,
             'footer' => false];
@@ -108,14 +109,16 @@ class ViewDriver
         //                dataContent - содержимое }
         $partContent = $this->contentPart();
         $partFooter = $this->footerPart();
+        $partRightPanel = $this->rightPanelPart() ;
 
         //-- основной шаблон ------//
         $layOutFile = $this->DIR_LAYOUT . '/' . $this->curLayOut . '.php';
         $layoutPar = [
-            'partHeadPart' => $partHeadPart,
-            'partTopMenu' => $partTopMenu,
-            'partContent' => $partContent,
-            'partFooter' => $partFooter
+            'partHeadPart'   => $partHeadPart,
+            'partTopMenu'    => $partTopMenu,
+            'partContent'    => $partContent,
+            'partFooter'     => $partFooter,
+            'partRightPanel' => $partRightPanel
         ];
         echo $this->template($layOutFile, $layoutPar);
     }
@@ -213,6 +216,25 @@ class ViewDriver
             return '';
         }
         $partFile = $this->DIR_VIEW .'/'. $footer . '.php';
+        $params = $this->paramList;   // параметры от контроллера
+        if (!isset($params['dirTop'])) {
+            $params['dirTop'] = $this->DIR_TOP;
+        }
+        if (!isset($params['htmlDirTop'])) {
+            $params['htmlDirTop'] = $this->HTML_DIR_TOP;
+        }
+        return $this->template($partFile, $params);
+    }
+    private function rightPanelPart() {
+
+        if (!isset($this->curComponent['rightPanel'])) {
+            return '';
+        }
+        $rightPanel = $this->curComponent['rightPanel'];
+        if (empty($rightPanel)) {
+            return '' ;
+        }
+        $partFile = $this->DIR_VIEW .'/'. $rightPanel . '.php';
         $params = $this->paramList;   // параметры от контроллера
         if (!isset($params['dirTop'])) {
             $params['dirTop'] = $this->DIR_TOP;

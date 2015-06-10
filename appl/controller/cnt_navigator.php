@@ -36,8 +36,9 @@ class cnt_navigator extends cnt_base
         }
         if (isset($this->parListGet['page'])) {
             $this->parListPost['page'] = $this->parListGet['page'];// в параметры
-            $page = $this->parListPost['$page'] ;
-
+        }
+        if (isset($this->parListGet['articleid'])) {   // прямая ссылка на статью
+            $this->parListPost['articleid'] = $this->parListGet['articleid'];// в параметры
         }
         $this->mod->setParameters($this->parListPost) ; // параметры в модель
         if (isset($this->parListPost['topicSelect'])) {    // смена темы
