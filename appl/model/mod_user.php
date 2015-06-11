@@ -5,17 +5,31 @@
  */
 
 class mod_user extends mod_base {
-    private $dbUser ;     // объект класса db_user - связь с БД
+    protected $msg ;            // объект для вывода сообщений
+    protected $db = false ;             // объект класса для связи с БД
+    protected $dbClass = 'db_user' ;        //  имя класса для работы с БД
+    protected $parameters = []; // параметры, принимаемые от контроллера
+    //----------------------------//
     private $login ;
     private $password ;
     private $userStatus ;
     //----------------------------------------------------//
     public function __construct() {
         parent::__construct() ;
-        $this->dbUser = new db_user() ;
+    }
+    /**
+     * это передача атрибутов из контроллера
+     */
+    public function setParameters($parameters) {
+        parent::setParameters($parameters) ;
+    }
+
+    /**
+     * метод определения собственных свойств из параметров
+     */
+    protected function init() {
         $this->login = TaskStore::getParam('userLogin') ;
         $this->userStatus = TaskStore::getParam('userStatus') ;
-
     }
 
     /**
@@ -50,7 +64,7 @@ class mod_user extends mod_base {
         if (empty($login) || empty($password)) {
             $this->msg->addMessage('ERROR:Поля "Имя:" и "Пароль:" должны быть заполнены !');
         } else {
-            $userPassw = $this->dbUser->getUser($login);
+            $userPassw = $this->db->getUser($login);
             if (false === $userPassw) { // $login отсутствует в БД
                 $this->msg->addMessage('ERROR: Недопустимое имя пользователя.Повторите ввод!');
             } else {  // проверяем пароль

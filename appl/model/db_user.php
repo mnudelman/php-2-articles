@@ -4,7 +4,7 @@
  * Date: 24.05.15
  */
 
-class db_user extends mod_base {
+class db_user extends db_base {
     public function __construct() {
         parent::__construct() ;
     }

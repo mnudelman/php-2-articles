@@ -6,27 +6,31 @@
  */
 
 class mod_topic extends mod_base {
-    private $db ;                      // объект для связи с БД
-    private $parameters ;              //
+    protected $msg ;                    // объект для вывода сообщений
+    protected $db = false ;             // объект класса для связи с БД
+    protected $dbClass = 'db_article' ; //  имя класса для работы с БД
+    protected $parameters = [];         // параметры, принимаемые от контроллера
+    //------------------------------//
     private $topicList ;               // список доступных альбомов
     private $currentTopicId ;          // Id текущей галереи
     private $topicEditStat ;           // редактирование/просмотр
     private $topicStatName ;           // тоже, только имя
     //----------------------------------------//
    public function __construct() {
-       $this->db = new db_article() ;
-       $this->topicEditStat = TaskStore::TOPIC_STAT_SHOW ;   // по умолчанию - просмотр
-       $this->currentTopicId = TaskStore::getParam('topicId') ;
        parent::__construct() ;
    }
     /**
      * это передача атрибутов пофиля из контроллера
      */
     public function setParameters($parameters) {
-        $this->parameters = $parameters ;
-        $this->init() ;
+        parent::setParameters($parameters) ;
     }
-    private function init() {
+    /**
+     *  определение собственных свойств из параметров
+     */
+    protected function init() {
+        $this->topicEditStat = TaskStore::TOPIC_STAT_SHOW ;   // по умолчанию - просмотр
+        $this->currentTopicId = TaskStore::getParam('topicId') ;
         $this->topicEditStat = (isset($this->parameters['topicEditStat'])) ?
             $this->parameters['topicEditStat'] : TaskStore::TOPIC_STAT_SHOW ;
         $this->topicList = $this->db->getTopic();

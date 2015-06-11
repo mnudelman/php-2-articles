@@ -23,8 +23,7 @@ class ViewDriver
     private $DIR_LAYOUT;
     private $paramList;          // параметры, полученные от контроллера
 
-    public function __construct($cntName)
-    {
+    public function __construct($cntName) {
         $this->msg = TaskStore::getMessage();
         $this->DIR_TOP = TaskStore::$dirTop;
         $this->HTML_DIR_TOP = TaskStore::$htmlDirTop;
@@ -37,19 +36,12 @@ class ViewDriver
         $this->curView = $this->contView[$this->curCnt];
         $this->curLayOut = $this->viewLayout[$this->curView];
         $this->curComponent = $this->viewComponent[$this->curView];
-
-
-//        $this->msg->addMessage('DEBUG:'.__METHOD__.':curCnt:'.$this->curCnt) ;
-//        $this->msg->addMessage('DEBUG:'.__METHOD__.':curView:'.$this->curView) ;
-//        $this->msg->addMessage('DEBUG:'.__METHOD__.':curLayOut:'.$this->curLayOut) ;
         //  подстановка curView
         foreach ($this->curComponent as $key => $value) {
             if (true === $value) {
                 $this->curComponent[$key] = $this->curView;
             }
         }
-
-
     }
 
     /**
@@ -104,33 +96,21 @@ class ViewDriver
     public function viewExec($paramList)
     {
         $this->paramList =  $paramList ;  // параметры из контроллера
-
-        $partHeadPart = $this->headPart();   // <head>
-        $partTopMenu = $this->topMenuPart(); // меню
-        //----------------------------------------------------
-        //---  partContent = {messageForm - вывод сообщений
-        //                dataContent - содержимое }
-        $partContent = $this->contentPart();
-        $partFooter = $this->footerPart();
-        $partRightPanel = $this->rightPanelPart() ;
-
-        //-- основной шаблон ------//
+     //-- основной шаблон ------//
         $layOutFile = $this->DIR_LAYOUT . '/' . $this->curLayOut . '.php';
         $layoutPar = [
-            'partHeadPart'   => $partHeadPart,
-            'partTopMenu'    => $partTopMenu,
-            'partContent'    => $partContent,
-            'partFooter'     => $partFooter,
-            'partRightPanel' => $partRightPanel
+            'partHeadPart'   => $this->headPart(),   // <head>
+            'partTopMenu'    => $this->topMenuPart(), // меню
+            'partContent'    => $this->contentPart() ,
+            'partFooter'     => $this->footerPart(),
+            'partRightPanel' => $this->rightPanelPart()
         ];
         echo $this->template($layOutFile, $layoutPar);
     }
-
     /**
      * Формирование компоненты вывода
      */
-    private function template($includeFile, $parList = false)
-    {
+    private function template($includeFile, $parList = false) {
         if (is_array($parList)) {    // параметры подстановки
             foreach ($parList as $parName => $parMean) {
                 $$parName = $parMean;
@@ -140,38 +120,32 @@ class ViewDriver
         include $includeFile;
         return ob_get_clean();
     }
-
     /**
      * <head> ... </head>
      */
-    private function headPart()
-    {
+    private function headPart() {
         $partFile = $this->DIR_VIEW . '/headPart.php';
         $params = [
             'htmlDirTop' => $this->HTML_DIR_TOP,
             'dirTop' => $this->DIR_TOP];
         return $this->template($partFile, $params);
     }
-
     /**
      * раздел меню-заголовок
      */
-    private function topMenuPart()
-    {
+    private function topMenuPart() {
         $partFile = $this->DIR_VIEW . '/topMenu.php';
         $params = [
             'htmlDirTop' => $this->HTML_DIR_TOP,
             'dirTop' => $this->DIR_TOP];
         return $this->template($partFile, $params);
     }
-
     /**
      * раздел Content
      *---  content = {messageForm - вывод сообщений
      *                dataContent - содержимое }
      */
-    private function contentPart()
-    {
+    private function contentPart() {
 
         $partMessageForm = $this->messagePart();
         $partDataContent = $this->contentDataPart();
@@ -181,21 +155,17 @@ class ViewDriver
             'partDataContent' => $partDataContent];
         return $this->template($partFile, $params);
     }
-
     /**
      * Вывод сообщений
      */
-    private function messagePart()
-    {
+    private function messagePart() {
         $partFile = $this->DIR_VIEW . '/messageForm.php';
         return $this->template($partFile);
     }
-
     /**
      * Данные центральной части
      */
-    private function contentDataPart()
-    {
+    private function contentDataPart() {
         $content = $this->curComponent['content'];
         if (empty($content)) {
             return '';
@@ -211,12 +181,10 @@ class ViewDriver
 
         return $this->template($partFile, $params);
     }
-
     /**
      * footer -  часть
      */
-    private function footerPart()
-    {
+    private function footerPart() {
         $footer = $this->curComponent['footer'];
         if (empty($footer)) {
             return '';
@@ -231,12 +199,10 @@ class ViewDriver
         }
         return $this->template($partFile, $params);
     }
-
     /**
      * Правая панель
      */
     private function rightPanelPart() {
-
         if (!isset($this->curComponent['rightPanel'])) {
             return '';
         }
@@ -254,5 +220,4 @@ class ViewDriver
         }
         return $this->template($partFile, $params);
     }
-
 }

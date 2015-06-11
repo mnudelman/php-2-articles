@@ -6,8 +6,11 @@
  */
 
 class mod_article extends mod_base {
-    private $db ;                               // объект для обращения к БД
-    private $parameters ;                       // параметры модели
+    protected $msg ;                           // объект для вывода сообщений
+    protected $db = false ;                    // объект класса для связи с БД
+    protected $dbClass = 'db_article' ;        //  имя класса для работы с БД
+    protected $parameters = [];                // параметры, принимаемые от контроллера
+    //----------------------------//
     private $articleStatEdit;                   // режим (редакт - просмотр)
     private $topicList = [] ;                   // список всех тем
     private $articles = [] ;                    // список  статей
@@ -18,17 +21,15 @@ class mod_article extends mod_base {
     private $NEW_TITLE = 'new article!' ;        //  заголовок новой статьи
     //---------------------------------------------------------------//
     public function __construct() {
-        $this->db = new db_article() ;
         parent::__construct() ;
     }
     /**
      * это передача атрибутов пофиля из контроллера
      */
     public function setParameters($parameters) {
-        $this->parameters = $parameters ;
-        $this->init() ;
+        parent::setParameters($parameters) ;
     }
-    private function init() {
+    protected function init() {
         $this->articleStatEdit = (isset($this->parameters['edit'])) ?
             TaskStore::ARTICLE_STAT_EDIT : TaskStore::ARTICLE_STAT_SHOW ;
         $this->currentTopicId = TaskStore::getParam('topicId') ;

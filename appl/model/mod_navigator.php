@@ -7,28 +7,30 @@
 
 class mod_navigator extends  mod_base
 {
-    private $db;                               // объект для обращения к БД
-    private $parameters;                       // параметры модели
+    protected $msg ;                     // объект для вывода сообщений
+    protected $db = false ;              // объект класса для связи с БД
+    protected $dbClass = 'db_article' ;  //  имя класса для работы с БД
+    protected $parameters = [];          // параметры, принимаемые от контроллера
+    //--------------------------//
     private $topicList = [];   // список альбомов
-    private $articles = [];       // список статей
-    private $artPerPage = 1;    // статей на странице
-    private $NAV_PAGE_NUMBER = 10; // число ссылок на страницы навигатора
+    private $articles = [];            // список статей
+    private $artPerPage = 1;           // статей на странице
+    private $NAV_PAGE_NUMBER = 10;     // число ссылок на страницы навигатора
     private $realPageNumber;
-    private $currentPage;         // тек страница
-    private $newPage;             // новая страница
-    private $maxPage;            // мах № страницы
-    private $navPageMin;             // начальная стр навигатора
-    private $navPageMax;              // мах страница навигатора
-    private $artMin;          // нач картинки на тек странице
-    private $artMax;          // конечный № картинки на тек странице
-    private $pagesList = [];      // список всех страниц с интервалами №№ картинок
-    private $currentNavStore = [];       // список сохраняемых параметров по альбомам
+    private $currentPage;              // тек страница
+    private $newPage;                  // новая страница
+    private $maxPage;                  // мах № страницы
+    private $navPageMin;               // начальная стр навигатора
+    private $navPageMax;               // мах страница навигатора
+    private $artMin;                   // нач статья на тек странице
+    private $artMax;                   // конечный № статьи на тек странице
+    private $pagesList = [];           // список всех страниц с интервалами №№ картинок
+    private $currentNavStore = [];     // список сохраняемых параметров по альбомам
     private $currentTopicId;           // Id текущей темы
     private $newTopicFlag = false ;    // признак установки новой темы
-    private $currentArticleId = false ;   //  прямая ссылка на статью
+    private $currentArticleId = false ;//  прямая ссылка на статью
     //-----------------------------------------//
     public function __construct() {
-        $this->db = new db_article();
         parent::__construct() ;
     }
 
@@ -36,18 +38,17 @@ class mod_navigator extends  mod_base
      * это передача атрибутов пофиля из контроллера
      */
     public function setParameters($parameters) {
-        $this->parameters = $parameters;
-        $this->init();
+        parent::setParameters($parameters) ;
     }
-
-    private function init() {
+    /**
+     *  определение собственных свойств из параметров
+     */
+    protected function init() {
         $this->currentTopicId = TaskStore::getParam('topicId');
         $this->topicList = $this->db->getTopic();
         if (isset($this->parameters['articleid'])) {
             $this->currentArticleId = $this->parameters['articleid'] ;
-
         }
-
     }
 
     /**

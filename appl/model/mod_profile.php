@@ -7,34 +7,41 @@
  */
 
 class mod_profile extends mod_base {
-    private $dbUser ;     // объект класса db_user - связь с БД
+    protected $msg ;                         // объект для вывода сообщений
+    protected $db = false ;                  // объект класса для связи с БД
+    protected $dbClass = 'db_user' ;             //  имя класса для работы с БД
+    protected $parameters = [];              // параметры, принимаемые от контроллера
+    //-----------------------------//
     private $profile = [] ;
     private $login ;
     private $password ;
     private $profileEditFlag = false ;      // true -> редактировать существующий профиль
     private $successfulSave = false ;       // удачное сохранение профиля
-    private $profileParms= [] ;             // массив параметров-полей профиля
     private $profileError = false ;         // ошибка формирования профиля
     private $FIELDS_LIST =                   // список полей профиля
             'firstname,middlename,lastname,fileFoto,tel,email,sex,birthday' ;
     //------------------------------//
     public function __construct() {
         parent::__construct() ;
-        $this->dbUser = new db_user() ;
     }
 
     /**
      * это передача атрибутов пофиля из контроллера
      */
-    public function setParameters($profileParms) {
-        $this->profileParms = $profileParms ;
+    public function setParameters($parameters) {
+        parent::setParameters($parameters) ;
+    }
+    /**
+     *  определение собственных свойств из параметров
+     */
+    protected function init() {
         $this->setUser() ;
-        if (isset($this->profileParms['edit']) ) {
-            $this->profileEditFlag = $this->profileParms['edit'] ; // редакт существующий
+        if (isset($this->parameters['edit']) ) {
+            $this->profileEditFlag = $this->parameters['edit'] ; // редакт существующий
         }
         if (! $this->profileEditFlag) {
-            $this->login = $this->profileParms['login'] ;
-            $this->password = $this->profileParms['password'] ;
+            $this->login = $this->parameters['login'] ;
+            $this->password = $this->parameters['password'] ;
         }
     }
 
@@ -42,9 +49,9 @@ class mod_profile extends mod_base {
      * пользователь определяется из параметров профиля или атрибутовЗадачи
      */
     private function setUser() {
-        if (isset($this->profileParms['login'])) {
-            $this->login = $this->profileParms['login'] ;
-            $this->password = $this->profileParms['password'] ;
+        if (isset($this->parameters['login'])) {
+            $this->login = $this->parameters['login'] ;
+            $this->password = $this->parameters['password'] ;
         }else {
             $this->login = TaskStore::getParam('userLogin') ;
             $this->password = TaskStore::getParam('password') ;
@@ -62,7 +69,7 @@ class mod_profile extends mod_base {
                 return false;
             }
         }
-        $user_passw = $this->dbUser->getUser($this->login);  // возвращает пару  [login,password]
+        $user_passw = $this->db->getUser($this->login);  // возвращает пару  [login,password]
         if (false === $user_passw && !$this->profileEditFlag) {    // новый пользователь - это хорошо
               $this->storeUser() ;  // пользователя занести в БД
         }
@@ -92,7 +99,7 @@ class mod_profile extends mod_base {
         $userStatAdmin = TaskStore::USER_STAT_ADMIN ;
         $login = $this->login ;
         $password = $this->password ;
-        $this->dbUser->putUser($login, md5($password));    // пользователя занести в БД
+        $this->db->putUser($login, md5($password));    // пользователя занести в БД
         TaskStore::setParam('userLogin',$login);
         TaskStore::setParam('userName',$login) ;
         TaskStore::setParam('userPassword',$password) ;
@@ -103,22 +110,22 @@ class mod_profile extends mod_base {
         }
     }
     private function profileToDataBase() {
-        $this->profile['firstname'] = $this->profileParms['firstname'];
-        $this->profile['middlename'] = $this->profileParms['middlename'];
-        $this->profile['lastname']   = $this->profileParms['lastname'];
-        $this->profile['email']      = $this->profileParms['email'];
-        $this->profile['sex']        = $this->profileParms['sex'];
-        $year = $this->profileParms['birthday_year'];
-        $month = $this->profileParms['birthday_month'];
-        $day = $this->profileParms['birthday_day'];
+        $this->profile['firstname'] = $this->parameters['firstname'];
+        $this->profile['middlename'] = $this->parameters['middlename'];
+        $this->profile['lastname']   = $this->parameters['lastname'];
+        $this->profile['email']      = $this->parameters['email'];
+        $this->profile['sex']        = $this->parameters['sex'];
+        $year = $this->parameters['birthday_year'];
+        $month = $this->parameters['birthday_month'];
+        $day = $this->parameters['birthday_day'];
         $tm = mktime(0, 0, 0, $month, $day, $year);
         $this->profile['birthday']   = date('c', $tm);       // это хранится в БД
 
-        $this->successfulSave = $this->dbUser->putProfile($this->login, $this->profile);   // profile БД
+        $this->successfulSave = $this->db->putProfile($this->login, $this->profile);   // profile БД
         // эти поля не заносятся
-        $this->profile['birthday_year']  = $this->profileParms['birthday_year'];
-        $this->profile['birthday_month'] = $this->profileParms['birthday_month'];
-        $this->profile['birthday_day']    = $this->profileParms['birthday_day'];
+        $this->profile['birthday_year']  = $this->parameters['birthday_year'];
+        $this->profile['birthday_month'] = $this->parameters['birthday_month'];
+        $this->profile['birthday_day']    = $this->parameters['birthday_day'];
 
     }
 
@@ -130,7 +137,7 @@ class mod_profile extends mod_base {
         if ( empty(TaskStore::getParam('enterSuccessful')) ) {
             return false ;
         } else {      // читаем существующий профиль
-            return  $this->dbUser->getProfile($this->login);
+            return  $this->db->getProfile($this->login);
         }
     }
 

@@ -6,7 +6,7 @@
  * Time: 16:23
  */
 
-class db_article extends mod_base {
+class db_article extends db_base {
     public function __construct() {
         parent::__construct() ;
     }

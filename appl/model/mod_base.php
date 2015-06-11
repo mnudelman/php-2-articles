@@ -1,15 +1,37 @@
 <?php
 /**
- * Базовый класс модели
- * Time: 16:16
+ * Базовый класс для моделей
+ * Time: 18:47
  */
 
 abstract class mod_base {
-    protected $pdo;   // объект - подключение к БД
-    protected $msg ;  // объект - вывод сообщений
+    protected $msg ;                    // объект для вывода сообщений
+    protected $db = false ;             // объект класса для связи с БД
+    protected $dbClass = false ;        //  имя класса для работы с БД
+    protected $parameters = []; // параметры, принимаемые от контроллера
+    //--------------------------//
     public function __construct() {
-        $this->pdo = TaskStore::getDbConnect() ;
-        $this->msg = TaskStore::getParam('message') ;
+        $this->msg = TaskStore::getMessage() ;
+        if (false !== $this->dbClass) {
+            $dbClass = $this->dbClass ;
+            $this->db = new $dbClass() ;
+        }
     }
+    /**
+     * это передача атрибутов из контроллера
+     */
+    public function setParameters($parameters) {
+        $this->parameters = $parameters;
+        $this->init();
+    }
+
+    /**
+     *  определение собственных свойств из параметров
+     */
+    protected function init() {
+
+    }
+
+
 
 }
