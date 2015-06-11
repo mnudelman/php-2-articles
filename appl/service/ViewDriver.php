@@ -14,9 +14,9 @@ class ViewDriver
     private $msg;
     //--- тек атрибуты ---//
     private $curCnt = '';       // контроллерИмя
-    private $curView = '';      // формаОтображения
+    private $curView = '';      // элементОтображения
     private $curLayOut = '';    // шаблонСтраницы
-    private $curComponent = []; // компонент страницы для вывода формы
+    private $curComponent = []; // компоненты страницы для вывода формы
     private $DIR_TOP;
     private $HTML_DIR_TOP;
     private $DIR_VIEW;
@@ -25,16 +25,19 @@ class ViewDriver
 
     public function __construct($cntName)
     {
-        $this->init();
-        $this->curCnt = $cntName;
-        $this->curView = $this->contView[$this->curCnt];
-        $this->curLayOut = $this->viewLayout[$this->curView];
-        $this->curComponent = $this->viewComponent[$this->curView];
         $this->msg = TaskStore::getMessage();
         $this->DIR_TOP = TaskStore::$dirTop;
         $this->HTML_DIR_TOP = TaskStore::$htmlDirTop;
         $this->DIR_VIEW = TaskStore::$dirView;
         $this->DIR_LAYOUT = TaskStore::$dirLayout;
+
+        $this->init();
+
+        $this->curCnt = $cntName;
+        $this->curView = $this->contView[$this->curCnt];
+        $this->curLayOut = $this->viewLayout[$this->curView];
+        $this->curComponent = $this->viewComponent[$this->curView];
+
 
 //        $this->msg->addMessage('DEBUG:'.__METHOD__.':curCnt:'.$this->curCnt) ;
 //        $this->msg->addMessage('DEBUG:'.__METHOD__.':curView:'.$this->curView) ;
@@ -52,60 +55,60 @@ class ViewDriver
     /**
      * Вводит таблицы соответствий
      */
-    private function init()
-    {
+    private function init() {
+        // соотвествие имяКотроллера -> элементОтображения
         $this->contView = [
-            'cnt_user' => 'vw_userLogin',
-            'cnt_profile' => 'vw_userProfile',
-            'cnt_topic' => 'vw_topic',
-            'cnt_article' => 'vw_articleEdit',
-            'cnt_pictureShow' => 'vw_pictureNav',
+            'cnt_user'      => 'vw_userLogin',
+            'cnt_profile'   => 'vw_userProfile',
+            'cnt_topic'     => 'vw_topic',
+            'cnt_article'   => 'vw_articleEdit',
             'cnt_navigator' => 'vw_articleNav',
-            'cnt_default' => 'vw_default',
-            'cnt_about' => 'vw_about'];
+            'cnt_default'   => 'vw_default',
+            'cnt_about'     => 'vw_about'];
 
+       // элементОтображения -> шаблон страницы
         $this->viewLayout = [
-            'vw_userLogin' => 'lt_footer',
+            'vw_userLogin'   => 'lt_footer',
             'vw_userProfile' => 'lt_footerNo',
-            'vw_topic' => 'lt_footer',
+            'vw_topic'       => 'lt_footer',
             'vw_articleEdit' => 'lt_footerNo',
-            'vw_pictureShow' => 'lt_footerNo',
-            'vw_articleNav' => 'lt_footerHalf',
-            'vw_default' => 'lt_footerNo',
-            'vw_about' => 'lt_footerNo'];
+            'vw_articleNav'  => 'lt_footerHalf',
+            'vw_default'     => 'lt_footerNo',
+            'vw_about'       => 'lt_footerNo'];
 
-
+        // элементОтображения -> компоненты вывода
         $this->viewComponent['vw_userLogin'] = [
-            'content' => false,
-            'footer' => true];
+            'content'  => false,
+            'footer'   => true];
         $this->viewComponent['vw_userProfile'] = [
-            'content' => true,
-            'footer' => false];
+            'content'  => true,
+            'footer'   => false];
         $this->viewComponent['vw_topic'] = [
-            'content' => false,
-            'footer' => true];
+            'content'  => false,
+            'footer'   => true];
         $this->viewComponent['vw_articleEdit'] = [
-            'content' => true,
-            'footer' => false];
-        $this->viewComponent['vw_articleNav'] = [  // формы в 2 частях страницы
-            'content' => 'vw_articleShow',
-            'footer' => 'vw_navigator',
+            'content'  => true,
+            'footer'   => false];
+        $this->viewComponent['vw_articleNav'] = [  // формы в 3 частях страницы
+            'content'  => 'vw_articleShow',
+            'footer'   => 'vw_navigator',
             'rightPanel' => 'vw_articleList'];
         $this->viewComponent['vw_default'] = [  // форма отсутствует
             'content' => false,
-            'footer' => false];
-        $this->viewComponent['vw_about'] = [  // форма отсутствует
+            'footer'  => false];
+        $this->viewComponent['vw_about'] = [
             'content' => true,
-            'footer' => false];
+            'footer'  => false];
     }
 
     public function viewExec($paramList)
     {
-        $this->paramList =  $paramList ;  // подстановка из контроллера
-        $partHeadPart = $this->headPart();
-        $partTopMenu = $this->topMenuPart();
+        $this->paramList =  $paramList ;  // параметры из контроллера
+
+        $partHeadPart = $this->headPart();   // <head>
+        $partTopMenu = $this->topMenuPart(); // меню
         //----------------------------------------------------
-        //---  content = {messageForm - вывод сообщений
+        //---  partContent = {messageForm - вывод сообщений
         //                dataContent - содержимое }
         $partContent = $this->contentPart();
         $partFooter = $this->footerPart();
@@ -123,9 +126,12 @@ class ViewDriver
         echo $this->template($layOutFile, $layoutPar);
     }
 
+    /**
+     * Формирование компоненты вывода
+     */
     private function template($includeFile, $parList = false)
     {
-        if (is_array($parList)) {
+        if (is_array($parList)) {    // параметры подстановки
             foreach ($parList as $parName => $parMean) {
                 $$parName = $parMean;
             }
@@ -225,6 +231,10 @@ class ViewDriver
         }
         return $this->template($partFile, $params);
     }
+
+    /**
+     * Правая панель
+     */
     private function rightPanelPart() {
 
         if (!isset($this->curComponent['rightPanel'])) {

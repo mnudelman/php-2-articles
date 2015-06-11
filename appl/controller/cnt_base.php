@@ -18,7 +18,6 @@ abstract class cnt_base {
     protected $ownStore = [] ;     // собственные сохраняемые параметры
     protected $forwardCntName = false ; // контроллер, которому передается управление
     public function __construct($getArray,$postArray) {
-        //$this->msg = new Message($this->msgTitle) ;
         $this->msg = TaskStore::getParam('message') ;
         $class = $this->modelName ;
         if (!empty($class)) {

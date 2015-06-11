@@ -53,12 +53,12 @@ class cnt_navigator extends cnt_base
     protected function buildOwnStore()
     {
         $this->currentNavStore = [                  // сохраняемые параметры
-            'artPerPage' => $this->mod->getArtPerPage(), // картинок на странице
+            'artPerPage' => $this->mod->getArtPerPage(), // статей на странице
             'currentPage' => $this->mod->getCurrentPage(),// № тек страницы
             'navPageMin' => $this->mod->getNavPageMin(), // min N страницы в указателе навигатора
             'navPageMax' => $this->mod->getNavPageMax(), // max N ---------""-------------------
         ];
-        // настройки разных альбомов могут быть разными
+        // настройки разных тем могут быть разными
         $this->ownStore[$this->currentTopicId] = $this->currentNavStore;
     }
 
