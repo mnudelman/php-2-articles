@@ -12,9 +12,9 @@ class ViewDriver
     private $parameters;               // параметры, полученные от контроллера
     private $allowedViews = [] ;       // представления с разрешенными компонентами
     private $notAllowedViews = [] ;    // все представления в начальный момент
-    private $executeViews = [] ;      // исполненные представления
+    private $endedViews = [] ;         // исполненные представления
     private $allowSuccessful = false ; // успешное разрешение всех компонент
-    private $MAX_ALLOW_STEPS = 2 ;   // max число проходов по разрешению ссылок
+    private $MAX_ALLOW_STEPS = 5 ;   // max число проходов по разрешению ссылок
     public function __construct() {
         $this->msg = TaskStore::getMessage() ;
     }
@@ -57,8 +57,7 @@ class ViewDriver
                     unset($this->notAllowedViews[$key]) ;
             }
         }
-        $allowSuccessful = (0 == count($this->notAllowedViews)) ;
-        $this->allowSuccessful = $allowSuccessful ;
+        $this->allowSuccessful = (0 == count($this->notAllowedViews) ) ;
     }
 
     /**
@@ -101,14 +100,14 @@ class ViewDriver
 
   public function viewExec()
     {
-        $this->executeViews = [] ;   // исполненные представления
+        $this->endedViews = [] ;   // исполненные представления
        foreach ($this->allowedViews as $viewName => $view ) {
            $components = $view['components'];
            $compParameters = false;
            if (is_array($components)) {
                $compParameters = [];
                foreach ($components as $cmpName) {
-                   $compParameters[$cmpName] = $this->executeViews[$cmpName];
+                   $compParameters[$cmpName] = $this->endedViews[$cmpName];
                }
 
            }
@@ -118,10 +117,10 @@ class ViewDriver
            }
            $includeFile = $view['dir'] .'/'. $view['file'].'.php' ;
            $pars = $view['parameters'];
-           $this->executeViews[$viewName] =
+           $this->endedViews[$viewName] =
                $this->template($includeFile, $pars, $compParameters);
        }
-       echo $this->executeViews['main'] ;
+       echo $this->endedViews['main'] ;
     }
     /**
      * Формирование компоненты вывода
