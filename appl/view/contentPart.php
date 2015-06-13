@@ -5,5 +5,5 @@
  * Time: 11:08
  */
 ?>
-<?=$partMessageForm?>
+<?=$partMessage?>
 <?=$partDataContent?>

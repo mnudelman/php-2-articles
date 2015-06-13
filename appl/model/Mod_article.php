@@ -5,10 +5,10 @@
  * Time: 17:41
  */
 
-class mod_article extends mod_base {
+class Mod_article extends Mod_base {
     protected $msg ;                           // объект для вывода сообщений
     protected $db = false ;                    // объект класса для связи с БД
-    protected $dbClass = 'db_article' ;        //  имя класса для работы с БД
+    protected $dbClass = 'Db_article' ;        //  имя класса для работы с БД
     protected $parameters = [];                // параметры, принимаемые от контроллера
     //----------------------------//
     private $articleStatEdit;                   // режим (редакт - просмотр)

@@ -4,7 +4,7 @@
  * Time: 18:47
  */
 
-abstract class mod_base {
+abstract class Mod_base {
     protected $msg ;                    // объект для вывода сообщений
     protected $db = false ;             // объект класса для связи с БД
     protected $dbClass = false ;        //  имя класса для работы с БД

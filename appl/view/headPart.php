@@ -8,7 +8,7 @@
 ?>
 <head>
     <meta charset="utf-8">
-    <title>php-2-lesson-1</title>
+    <title>php-2-articles</title>
     <meta name="description" content="ШП-php-2-lesson_2">
     <meta name="author" content="mnudelman@yandex.ru">
 

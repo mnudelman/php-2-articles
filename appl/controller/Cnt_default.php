@@ -4,15 +4,16 @@
  * Date: 23.05.15
  */
 
-class cnt_default extends cnt_base {
-    protected $msg ;    // сообщения класса - объект Message
-    protected $parListPost = [] ;  // параметры класса
-    protected $parListGet = [] ;  // параметры класса
-    protected $msgTitle = '' ;
-    protected $modelName = '' ;
-    protected $mod ;             // объект - модель
-    protected $parForView = [] ; //  параметры для передачи view
-    protected $nameForView = 'cnt_default' ; // имя для передачи в ViewDriver
+class Cnt_default extends Cnt_base {
+    protected $msg ;              // сообщения  - объект Message
+    protected $parListGet = [] ;  // параметры класса - аналог $_GET
+    protected $parListPost = [] ; // параметры класса - аналог $_POST
+    protected $modelName = '' ;   // имя класса-модели
+    protected $mod ;              // объект класса-модели
+    protected $parForView = [] ;   // параметры для передачи view
+    protected $classForView = 'Cnt_vw_default' ;  //  класс для формирования шаблона
+    protected $nameForStore = '' ; // имя строки параметров в TaskStore
+    protected $ownStore = [] ;     // собственные сохраняемые параметры
     protected $forwardCntName = false ; // контроллер, которому передается управление
     //--------------------------------//
     public function __construct($getArray,$postArray) {

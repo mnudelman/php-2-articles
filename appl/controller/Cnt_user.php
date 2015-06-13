@@ -4,32 +4,35 @@
  * Date: 23.05.15
  */
 
-class cnt_user extends cnt_base {
+class Cnt_user extends Cnt_base {
     protected $msg ;    // сообщения класса - объект Message
     protected $parListPost = [] ;  // параметры класса
     protected $parListGet = [] ;  // параметры класса
     protected $subController = false ; // контроллер уровня +1
     protected $msgTitle = '' ;
-    protected $modelName = 'mod_user' ;
+    protected $modelName = 'Mod_user' ;
     protected $mod ;             // объект - модель
     protected $parForView = [] ; //  параметры для передачи view
-    protected $nameForView = 'cnt_user' ; // имя для передачи в ViewDriver
+    protected $classForView = 'Cnt_vw_user' ; // класс параметров для представлений
     protected $forwardCntName = false ; // контроллер, которому передается управление
+    protected  $URL_OWN ;                  // адрес для перехода в контроллер
+
     //--------------------------------//
-    private $CNT_HOME = 'cnt_default' ;
-    private $CNT_PROFILE = 'cnt_profile' ;
-    private $URL_TO_PROFILE ;         // адрес для перехода по cnt_profile
-    private $URL_TO_USER ;            // адрес для перехода по cnt_user
+    private $CNT_HOME = 'Cnt_default' ;
+    private $CNT_PROFILE = 'Cnt_profile' ;
+    private $URL_PROFILE ;         // адрес для перехода по cnt_profile
     private $profileStat ;            // статус перехода в профиль
 
     //------------------------------------//
     public function __construct($getArray,$postArray) {
         parent::__construct($getArray,$postArray) ;
-        $this->URL_TO_PROFILE = TaskStore::$htmlDirTop.'/index.php?cnt=cnt_profile' ;
-        $this->URL_TO_USER = TaskStore::$htmlDirTop.'/index.php?cnt=cnt_user' ;
+        $this->URL_PROFILE = TaskStore::$htmlDirTop.'/index.php?cnt=Cnt_profile' ;
+        $this->URL_OWN = TaskStore::$htmlDirTop.'/index.php?cnt=Cnt_user' ;
 
     }
     protected function prepare() {
+        $this->mod->setUrlProfile($this->URL_PROFILE) ;
+
         if (isset($this->parListPost['exit'])) {              // выход - возврат на главную
             $this->forwardCntName = $this->CNT_HOME ;
         }elseif (isset($this->parListPost['profile']) ) {    //  переход в профиль
@@ -76,16 +79,7 @@ class cnt_user extends cnt_base {
      * переход на собственную форму
      */
     public function viewGo() {
-        $login = $this->mod->getLogin();
-        $password = $this->mod->getPassword() ;
-        $profileIsPossible = ($login === TaskStore::getParam('userLogin')) ?
-            TaskStore::getParam('enterSuccessful') : false ;
-        $this->parForView = [
-            'login'    => $login,
-            'password' => $password ,
-            'profileIsPossible' => $profileIsPossible,
-            'urlToProfile' => $this->URL_TO_PROFILE,
-            'urlToUser' => $this->URL_TO_USER ] ;
+
        parent::viewGo() ;
     }
 }

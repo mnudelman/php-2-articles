@@ -6,10 +6,10 @@
  * Time: 20:24
  */
 
-class mod_profile extends mod_base {
+class Mod_profile extends Mod_base {
     protected $msg ;                         // объект для вывода сообщений
     protected $db = false ;                  // объект класса для связи с БД
-    protected $dbClass = 'db_user' ;             //  имя класса для работы с БД
+    protected $dbClass = 'Db_user' ;             //  имя класса для работы с БД
     protected $parameters = [];              // параметры, принимаемые от контроллера
     //-----------------------------//
     private $profile = [] ;
@@ -20,6 +20,7 @@ class mod_profile extends mod_base {
     private $profileError = false ;         // ошибка формирования профиля
     private $FIELDS_LIST =                   // список полей профиля
             'firstname,middlename,lastname,fileFoto,tel,email,sex,birthday' ;
+    private $URL_DEFAULT ;                   // адрес начальной страницы
     //------------------------------//
     public function __construct() {
         parent::__construct() ;
@@ -43,6 +44,7 @@ class mod_profile extends mod_base {
             $this->login = $this->parameters['login'] ;
             $this->password = $this->parameters['password'] ;
         }
+        $this->URL_DEFAULT = $this->parameters['urlDefault'] ;
     }
 
     /**
@@ -158,5 +160,8 @@ class mod_profile extends mod_base {
 
     public  function getError() {
         return $this->profileError ;
+    }
+    public function getUrlDefault() {
+        return $this->URL_DEFAULT ;
     }
 }

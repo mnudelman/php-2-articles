@@ -4,7 +4,7 @@
  * Date: 23.05.15
  */
 
-class cnt_about extends cnt_base {
+class Cnt_about extends Cnt_base {
     protected $msg ;    // сообщения класса - объект Message
     protected $parListPost = [] ;  // параметры класса
     protected $parListGet = [] ;  // параметры класса
@@ -12,7 +12,7 @@ class cnt_about extends cnt_base {
     protected $modelName = '' ;
     protected $mod ;             // объект - модель
     protected $parForView = [] ; //  параметры для передачи view
-    protected $nameForView = 'cnt_about' ; // имя для передачи в ViewDriver
+    protected $classForView = 'Cnt_vw_about' ;  //  класс для формирования шаблона
     protected $forwardCntName = false ; // контроллер, которому передается управление
     //--------------------------------//
     public function __construct($getArray,$postArray) {

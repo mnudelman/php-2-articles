@@ -4,19 +4,19 @@
  * Date: 23.05.15
  */
 
-abstract class cnt_base {
-    protected $msg ;    // сообщения класса - объект Message
-    protected $parListGet = [] ;  // параметры класса
-    protected $parListPost = [] ;  // параметры класса
-    protected $msgTitle = '' ;
-    protected $msgName = '' ;
-    protected $modelName = '' ;
-    protected $mod ;
+abstract class Cnt_base {
+    protected $msg ;              // сообщения  - объект Message
+    protected $parListGet = [] ;  // параметры класса - аналог $_GET
+    protected $parListPost = [] ; // параметры класса - аналог $_POST
+    protected $modelName = '' ;   // имя класса-модели
+    protected $mod ;              // объект класса-модели
     protected $parForView = [] ;   // параметры для передачи view
-    protected $nameForView = false ;  // имя для передачи в ViewDriver
+    protected $classForView = false ;  //  класс для формирования шаблона
     protected $nameForStore = '' ; // имя строки параметров в TaskStore
     protected $ownStore = [] ;     // собственные сохраняемые параметры
     protected $forwardCntName = false ; // контроллер, которому передается управление
+    protected $URL_OWN = false ;     // адрес возврата в контроллер
+    //--------------------------------------------------//
     public function __construct($getArray,$postArray) {
         $this->msg = TaskStore::getParam('message') ;
         $class = $this->modelName ;
@@ -58,7 +58,23 @@ abstract class cnt_base {
         return $this->forwardCntName ;
     }
     public function viewGo() {
-        $vd = new ViewDriver($this->nameForView) ;
-        $vd->viewExec($this->parForView) ;
+        $vd = new ViewDriver() ;
+        $class = $this->classForView ;
+        $forView = new $class() ;
+
+        $forView->setModel($this->mod) ;
+        $forView->setViewDriver($vd) ;
+        $forView->setUrlOwn($this->URL_OWN) ;
+        $forView->buildViewTree() ;
+        $vd->allowViews() ; // разрешить ссылки на компоненты
+        if (!$vd->getAllowSuccessful()) {  // не всекомпоненты шаблона определены
+            $notAllowView = $vd->getNotAllowedViews() ;
+            foreach($notAllowView as $view) {
+                $name = $view['name'] ;
+                $this->msg->addMessage(
+                'ERROR:'.__METHOD__.':неопределенные компоненты представления:'.$view['name']) ;
+            }
+        }
+        $vd->viewExec() ;
     }
-}
+ }

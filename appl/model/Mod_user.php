@@ -4,15 +4,16 @@
  * Date: 08.06.15
  */
 
-class mod_user extends mod_base {
+class mod_user extends Mod_base {
     protected $msg ;            // объект для вывода сообщений
     protected $db = false ;             // объект класса для связи с БД
-    protected $dbClass = 'db_user' ;        //  имя класса для работы с БД
+    protected $dbClass = 'Db_user' ;        //  имя класса для работы с БД
     protected $parameters = []; // параметры, принимаемые от контроллера
     //----------------------------//
     private $login ;
     private $password ;
     private $userStatus ;
+    private $URL_PROFILE ;
     //----------------------------------------------------//
     public function __construct() {
         parent::__construct() ;
@@ -50,6 +51,16 @@ class mod_user extends mod_base {
     }
     public function setPassword($password) {
         $this->password = $password ;
+    }
+
+    /**
+     * @param $url - адрес перехода на профильПользователя
+     */
+    public function setUrlProfile($url) {
+        $this->URL_PROFILE = $url ;
+    }
+    public function getUrlProfile() {
+        return $this->URL_PROFILE ;
     }
     /**
      * допустимость новых login, password

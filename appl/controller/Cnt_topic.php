@@ -1,38 +1,31 @@
 <?php
 /**
- * класс - контроллер альбомов
- * Date: 25.05.15
- * Time: 23:21
+ * класс - темы статей
  */
 
-class cnt_topic extends cnt_base {
+class Cnt_topic extends Cnt_base {
     protected $msg ;    // сообщения класса - объект Message
     protected $parListGet = [] ;  // параметры класса
     protected $parListPost = [] ;  // параметры класса
     protected $msgTitle = '' ;
     protected $msgName = '' ;
-    protected $modelName = 'mod_topic' ;
+    protected $modelName = 'Mod_topic' ;
     protected $mod ;
     protected $parForView = [] ;   // параметры для передачи view
-    protected $nameForView = 'cnt_topic' ;  // имя для передачи в ViewDriver
+    protected $classForView = 'Cnt_vw_topic' ;  // имя для передачи в ViewDriver
     protected $nameForStore = 'cnt_topicStore' ; // имя строки параметров в TaskStore
     protected $ownStore = [] ;     // собственные сохраняемые параметры
     protected $forwardCntName = false ; // контроллер, которому передается управление
+    protected $URL_OWN = false ;     // адрес возврата в контроллер
     //-----------------------------------------------//
-    //-------параметры передачи в Представление---//
-    private $topicList ;               // список доступных альбомов
-    private $currentTopicId ;          // Id текущей галереи
-    private $topicEditStat ;           // редактирование/просмотр
-    private $topicStatName ;           // тоже, только имя
     //-------- url ------------------------------//
-    private $CNT_HOME = 'cnt_default' ;      // контроллер пустой
-    private $CNT_ARTICLE = 'cnt_article' ;   // контроллер статей
-    private $URL_TO_TOPIC ;         // адрес для перехода из формы в контроллер
+    private $CNT_HOME = 'Cnt_default' ;      // контроллер пустой
+    private $CNT_ARTICLE = 'Cnt_article' ;   // контроллер статей
     //--------------------------------------------//
     private $articleStatEdit ;
 
     public function __construct($getArray,$postArray) {
-        $this->URL_TO_TOPIC = TaskStore::$htmlDirTop.'/index.php?cnt=cnt_topic' ;
+        $this->URL_OWN = TaskStore::$htmlDirTop.'/index.php?cnt=Cnt_topic' ;
 
         parent::__construct($getArray,$postArray) ;
     }
@@ -91,16 +84,6 @@ class cnt_topic extends cnt_base {
 //        parent::getForwardCntName($plistGet,$pListPost) ;
     }
     public function viewGo() {
-        $this->parForView = [
-            'topicList'       => $this->mod->getTopicList() ,
-            'currentTopicId'  => $this->mod->getTopicId() ,
-            'urlToTopic'      => $this->URL_TO_TOPIC ,
-            'topicEditStat'   => $this->mod->getEditStat(),
-            'topicStatName'   => $this->mod->getStatName(),
-            'editFlag'        => $this->mod->getEditFlag(),
-            'addTopicFlag'    => $this->mod->getAddTopicFlag() ] ;
-
-
         parent::viewGo() ;
     }
 }

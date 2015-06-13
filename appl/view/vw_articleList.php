@@ -14,7 +14,7 @@ foreach($articles as  $article ){
     $topics = $article['topics'];
     ?>
     <li>
-        <a class="rightMenu" href="<?=$htmlDirTop;?>/index.php?cnt=cnt_navigator&articleid=<?=$aid;?>" >
+        <a class="rightMenu" href="<?=$htmlDirTop;?>/index.php?cnt=Cnt_navigator&articleid=<?=$aid;?>" >
        <strong> <?=$title;?> </strong>
         </a>
     </li>

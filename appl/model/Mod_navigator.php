@@ -5,11 +5,11 @@
  * Time: 18:58
  */
 
-class mod_navigator extends  mod_base
+class Mod_navigator extends  Mod_base
 {
     protected $msg ;                     // объект для вывода сообщений
     protected $db = false ;              // объект класса для связи с БД
-    protected $dbClass = 'db_article' ;  //  имя класса для работы с БД
+    protected $dbClass = 'Db_article' ;  //  имя класса для работы с БД
     protected $parameters = [];          // параметры, принимаемые от контроллера
     //--------------------------//
     private $topicList = [];   // список альбомов
@@ -240,5 +240,7 @@ class mod_navigator extends  mod_base
     public function getArticles() {
         return $this->articles;
     }
-
+    public function getCurrentArticle() {
+        return $this->articles[$this->artMin] ;
+    }
 }

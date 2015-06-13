@@ -8,11 +8,11 @@
 <div align="center" class="navigator">
 <form method="POST"  action="<?php echo $urlNavigator ?>">
     <a href="<?php echo $urlNavigator.'&page=first' ?>" readonly="readonly">
-            <img src="<?php echo $htmlDirTop ?>/images/go-first.png"
+            <img src="<?=$dirImages;?>/go-first.png"
                      title="первая страница" alt="|<" >
     </a>
     <a href="<?php echo $urlNavigator.'&page=prev' ?>">
-        <img src="<?php echo $htmlDirTop ?>/images/go-previous.png"
+        <img src="<?=$dirImages;?>/go-previous.png"
                      title="предыдущая страница" alt="<" >
     </a>
     <?php
@@ -28,11 +28,11 @@
 
     ?>
     <a href="<?php echo $urlNavigator.'&page=next' ?>">
-        <img src="<?php echo $htmlDirTop ?>/images/go-next.png"
+        <img src="<?=$dirImages;?>/go-next.png"
                      title="следующая страница" alt=">" >
     </a>
     <a href="<?php echo $urlNavigator.'&page=last' ?>">
-        <img src="<?php echo $htmlDirTop ?>/images/go-last.png"
+        <img src="<?=$dirImages;?>/go-last.png"
                      title="последняя страница" alt=">|" >
     </a>
 

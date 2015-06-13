@@ -1,9 +1,7 @@
 <?php
 /**
- *  Вывод сообщений полученных от контроллера или модели
+ *  Вывод всех сообщений
  */
-function messageShow($messages,$title)
-{
     if (!empty($messages)) {
         ?>
         <form>
@@ -23,12 +21,7 @@ function messageShow($messages,$title)
         </form> <br>
     <?php
     }
-}
 ?>
-<?php
-// вывести сообщения модели
-$msg = TaskStore::getParam('message') ;
-$msgText = $msg->getMessages() ;
-$title = '' ;
-messageShow($msgText,$title) ;
-$msg->clear() ;
+
+
+

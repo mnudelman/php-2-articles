@@ -5,31 +5,38 @@
  * Date: 29.05.15
  * Time: 10:54
  */
-class cnt_navigator extends cnt_base
+class Cnt_navigator extends Cnt_base
 {
-    protected $msg;    // сообщения класса - объект Message
-    protected $parListGet = [];  // параметры класса
-    protected $parListPost = [];  // параметры класса
-    protected $msgTitle = '';
-    protected $msgName = '';
-    protected $modelName = 'mod_navigator';
-    protected $mod;
-    protected $parForView = [];   // параметры для передачи view
-    protected $nameForView = 'cnt_navigator';  // имя для передачи в ViewDriver
+    protected $vwDriver ;                     // объект класса ViewDriver -
+    protected $msg;                           // сообщения  - объект Message
+    protected $parListGet = [];               // параметры класса - аналог $_GET
+    protected $parListPost = [];              // параметры класса - аналог $_POST
+    protected $modelName = 'Mod_navigator';   // имя класса-модели
+    protected $mod;                           // объект-модель
+    protected $parForView = [];               // параметры для передачи view
+    protected $classForView = 'Cnt_vw_navigator';       // имя для передачи в ViewDriver
     protected $nameForStore = 'cnt_navigatorStore'; // имя строки параметров в TaskStore
-    protected $ownStore = [];     // собственные сохраняемые параметры
-    protected $forwardCntName = false; // контроллер, которому передается управление
+    protected $ownStore = [];                       // собственные сохраняемые параметры
+    protected $forwardCntName = false;              // контроллер, которому передается управление
+    protected $URL_OWN;                             //  ссылка для формы
     //--------------------------------//
-    private $URL_TO_NAVIGATOR;          //  ссылка для формы
+    private $DIR_TOP ;
+    private $HTML_DIR_TOP ;
+    private $DIR_VIEW ;
+    private $DIR_LAYOUT ;
 
     public function __construct($getArray, $postArray)
     {
         parent::__construct($getArray, $postArray);
+        $this->DIR_TOP =TaskStore::$dirTop ;
+        $this->HTML_DIR_TOP = TaskStore::$htmlDirTop ;
+        $this->DIR_VIEW = TaskStore::$dirView ;
+        $this->DIR_LAYOUT =TaskStore::$dirLayout ;
     }
 
     protected function prepare() {
 
-        $this->URL_TO_NAVIGATOR = TaskStore::$htmlDirTop . '/index.php?cnt=cnt_navigator';
+        $this->URL_OWN = TaskStore::$htmlDirTop . '/index.php?cnt=Cnt_navigator';
         if (isset($this->ownStore[$this->currentTopicId])) {
             $currentNavStore = $this->ownStore[$this->currentTopicId];
             $this->parListPost['currentNavStore'] = $currentNavStore ;// в параметры
@@ -77,22 +84,7 @@ class cnt_navigator extends cnt_base
         parent::getForwardCntName($plistGet, $pListPost);
     }
 
-    public function viewGo()
-    {
-        $this->parForView = [              // параметры формы
-            'topicList'      => $this->mod->getTopicList() ,
-            'currentTopicId' => $this->mod->getCurrentTopicId() ,
-            'artPerPage'     => $this->mod->getArtPerPage(), // картинок на странице
-            'currentPage'    => $this->mod->getCurrentPage(),// № тек страницы
-            'navPageMin'     => $this->mod->getNavPageMin(), // min N страницы в указателе навигатора
-            'navPageMax'     => $this->mod->getNavPageMax(), // max N ---------""-------------------
-            'artMin'         => $this->mod->getArtMin(),     // №№ картинок для тек страницы
-            'artMax'         => $this->mod->getArtMax(),
-            'articles'       => $this->mod->getArticles(),   // полный списк файлов-картинок
-            'urlNavigator'   => $this->URL_TO_NAVIGATOR,     // адрес для передачи в контроллер
-            'dirArticle'     => TaskStore::$dirArticleHeap,  // директорий статей
-            'dirImg'         => TaskStore::$htmlDirTop.'/images'
-        ];
+    public function viewGo() {
         parent::viewGo();
     }
 }

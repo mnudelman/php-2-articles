@@ -6,7 +6,7 @@
  * Time: 16:23
  */
 
-class db_article extends db_base {
+class Db_article extends Db_base {
     public function __construct() {
         parent::__construct() ;
     }

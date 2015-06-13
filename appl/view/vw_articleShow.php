@@ -5,25 +5,18 @@
  */
 ?>
 <?php
-    if (!isset($artMin)) {
-        $artMin = 0 ;
-        $artMax = count($articles) - 1 ;
-
-    }
-    for ($i=$artMin ; $i <= $artMax; $i++) {
-        $article = $articles[$i] ;
-        $title =  $article['title'];
-        $file = $article['file'];
+        $title  = $article['title'];
+        $file   = $article['file'];
         $topics = $article['topics'];
 
  ?>
         <div style="border-bottom: 1px solid;">
  <?php
-        if (is_array($topics)) {
+        if (is_array($topics)) {             // перечень тем
             foreach ($topics as $topic) {
                 $tName = $topic['topicname'];
                 ?>
-        <img src="<?= $dirImg; ?>/dialog-ok.png" alt="oK!"> <?= $tName; ?>&nbsp;
+                <img src="<?= $dirImages;?>/dialog-ok.png" alt="oK!"> <?= $tName; ?>&nbsp;
 <?php
             }
         }
@@ -40,6 +33,6 @@
         }else {
             echo '<h2>Статья отсутствует</h2>' ;
         }
-    }
+
 
 
