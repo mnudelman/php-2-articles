@@ -4,6 +4,7 @@
  */
 
 class Cnt_vw_default extends Cnt_vw_base {
+    protected $vwDriver ;                // объект класса ViewDriver -
     //---------------------------------//
     public function __construct() {
         parent::__construct() ;

@@ -75,10 +75,10 @@ abstract class Cnt_base
      */
     public function viewGo()
     {
-        $viewDriver = $this->viewDriver ;
+        $viewDriver = $this->viewDiver ;
         $class = $this->classForView;      // вспомогательный класс для формирования представлений
         $forView = new $class();
-
+        $forView->setViewDriver($viewDriver) ;
         $forView->setModel($this->mod);
         $forView->setViewDriver($viewDriver);
         $forView->setUrlOwn($this->URL_OWN);
