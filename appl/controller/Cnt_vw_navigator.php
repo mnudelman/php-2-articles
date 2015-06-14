@@ -1,7 +1,7 @@
 <?php
 /**
- * Класс передачи данных модели в Представление
- * выделенная часть контроллера
+ * Дополнение класса навигатор страниц
+ *
  */
 
 class cnt_vw_navigator extends Cnt_vw_base {
@@ -72,8 +72,8 @@ class cnt_vw_navigator extends Cnt_vw_base {
             'currentPage'    => $this->mod->getCurrentPage(),// № тек страницы
             'navPageMin'     => $this->mod->getNavPageMin(), // min N страницы в указателе навигатора
             'navPageMax'     => $this->mod->getNavPageMax(), // max N ---------""-------------------
-            'urlNavigator'   => $this->URL_OWN,        // адрес для передачи в контроллер
-            'dirImages'         => $this->DIR_IMAGE ] ;
+            'urlNavigator'   => $this->URL_OWN,              // адрес для передачи в контроллер
+            'dirImages'      => $this->DIR_IMAGE ] ;
         $components = false;
         $dir = $this->DIR_VIEW;
         $file = 'vw_navigator';

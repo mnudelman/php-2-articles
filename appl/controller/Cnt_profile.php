@@ -1,6 +1,6 @@
 <?php
 /**
- * класс - редактирование профиля
+ * контроллер - редактирование профиля
  * Date: 25.05.15
  */
 
@@ -82,15 +82,6 @@ class Cnt_profile extends Cnt_base {
         return $this->forwardCntName ;
     }
     public function viewGo() {      // атрибуты для формы
-        $this->parForView = [
-            'urlToProfile'    => $this->URL_OWN,
-            'urlToDefault'    => $this->mod->getUrlDefault(),
-            'login'           => $this->mod->getLogin(),
-            'password'        => $this->mod->getPassword() ,
-            'profileEditFlag' => $this->mod->getEditFlag(),
-            'successfulSave'  => $this->mod->getSuccessful(),
-            'profile'         => $this->mod->getProfile(),
-            'profileError'    => $this->mod->getError() ] ;
         parent::viewGo() ;
     }
 }

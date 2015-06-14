@@ -1,6 +1,6 @@
 <?php
 /**
- *  вывод заставки
+ *  вывод описания
  */
 
 class Cnt_vw_about extends Cnt_vw_base {
@@ -25,11 +25,11 @@ class Cnt_vw_about extends Cnt_vw_base {
      * Корневой шаблон
      */
     protected function partMainDef() {
-        $name = 'main' ;
+        $name = 'main' ;                               // корень дереваПредставлений
         $parameters = false ;
         $components = ['partHeadPart','partTopMenu','partContent','partFooter','partRightPanel'] ;
         $dir = $this->DIR_LAYOUT ;
-        $file = 'lt_footerNo' ;
+        $file = 'lt_footerNo' ;                        // файл - шаблон
         $this->vwDriver->addView($name,$parameters,$components,$dir,$file) ;
     }
 

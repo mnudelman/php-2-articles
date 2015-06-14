@@ -1,32 +1,31 @@
 <?php
 
 /**
- *
  * Управление выводом
- * Date: 23.05.15
+ * Все представления, участвующие в выводе собираются
+ * в произвольном порядке в $notAllowedViews (метод addView).
+ * в методе allowViews выполняется несколько проходов по $notAllowedViews
+ * и элементы, у которых все компоненты разрешены переносятся в $allowedViews
+ *   первые строки в $allowedViews элементы без компонентов, и т.д. - последним
+ *  будет корень дерева представлений с именем "main".
+ * в методе viewExec производится проход по  $allowedViews и вычисление элементов.
+ * Последний вычисленный элемент будет корень 'main'. Он выводится на экран.
  */
 class ViewDriver
 {
-    private $msg;
+    private $msg;                      // объект для вывода сообщений
     //--- тек атрибуты ---//
-    private $parameters;               // параметры, полученные от контроллера
     private $allowedViews = [] ;       // представления с разрешенными компонентами
     private $notAllowedViews = [] ;    // все представления в начальный момент
     private $endedViews = [] ;         // исполненные представления
     private $allowSuccessful = false ; // успешное разрешение всех компонент
-    private $MAX_ALLOW_STEPS = 5 ;   // max число проходов по разрешению ссылок
+    private $MAX_ALLOW_STEPS = 5 ;     // max число проходов по разрешению ссылок
     public function __construct() {
         $this->msg = TaskStore::getMessage() ;
     }
 
     /**
      * Добавить представление
-     * @param $name
-     * @param $parameters - при добавлении параметры могут быть  false
-     *                      доопределить можно в setParameters
-     * @param $components
-     * @param $dir
-     * @param $viewFile
      */
     public function addView( $name,$parameters,$components,$dir,$viewFile) {
         $this->notAllowedViews[] =
@@ -61,9 +60,9 @@ class ViewDriver
     }
 
     /**
-     * проверить разрешение компонент по представлению
-     * @param $components
-     * @return bool
+     * проверить разрешение компонент
+     * компонента определена если находится
+     * в allowedViews
      */
     private function isAllowViewElem($components) {
         $allowFlag = true ;
@@ -87,27 +86,39 @@ class ViewDriver
     }
 
     /**
-     * добавление параметров. В  addView параметры могут быть пустыми
-     * @param $name
-     * @param $parameters
+     * установить параметр. Может понадобиться, например для
+     * корректировки параметра вывода сообщений
+     * @param $name   - имя представления
+     * @param $parameterName - имя параметра
+     * @param $value - значение параметра
      */
-    public function setParameters($name,$parameterName,$parameters) {
+    public function setParameter($name,$parameterName,$value) {
         if (isset($this->allowedViews[$name])) {
-            $this->allowedViews[$name][$parameterName] = $parameters ;
+            $this->allowedViews[$name][$parameterName] = $value ;
 
         }
     }
 
-  public function viewExec()
+    /**
+     * проход по списку представлений и вычисление их значений.
+     * компоненты - это дополнительный параметр для вычисления.
+     * allowedViews построен таким образом, что любой из компонентов
+     * находится "выше" самого представления -> к моменту вычисления
+     * все компоненты уже вычислены и находятся в endedViews поэтому
+     * происходит их подстановка как обычных параметров.
+     * Представление с именем "main" является корнем всего дерева.
+     * Именно он ('main") выводится на экран.
+     */
+    public function viewExec()
     {
         $this->endedViews = [] ;   // исполненные представления
        foreach ($this->allowedViews as $viewName => $view ) {
            $components = $view['components'];
-           $compParameters = false;
+           $parameterComponents = false;
            if (is_array($components)) {
-               $compParameters = [];
+               $parameterComponents = [];
                foreach ($components as $cmpName) {
-                   $compParameters[$cmpName] = $this->endedViews[$cmpName];
+                   $parameterComponents[$cmpName] = $this->endedViews[$cmpName];
                }
 
            }
@@ -118,7 +129,7 @@ class ViewDriver
            $includeFile = $view['dir'] .'/'. $view['file'].'.php' ;
            $pars = $view['parameters'];
            $this->endedViews[$viewName] =
-               $this->template($includeFile, $pars, $compParameters);
+               $this->template($includeFile, $pars, $parameterComponents);
        }
        echo $this->endedViews['main'] ;
     }

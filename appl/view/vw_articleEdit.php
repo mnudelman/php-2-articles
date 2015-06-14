@@ -7,7 +7,7 @@
 <?php
 
 ?>
-<form action="<?php echo $urlArticleEdit; ?>" method="post"
+<form action="<?=$urlArticleEdit;?>" method="post"
       enctype="multipart/form-data">
 
     <table border="4"

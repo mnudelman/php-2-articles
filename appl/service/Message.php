@@ -1,8 +1,6 @@
 <?php
 /**
  * Формирователь сообщений
- * User: mnudelman@yandex.ru
- * Date: 22.05.15
  */
 class Message {
     private $messages = [] ;

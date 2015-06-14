@@ -19,27 +19,27 @@ if ($successfulSave && !$profileEditFlag) {
         echo '<h3>Заполните карту регистрации</h3>' ."\n";
     }
     ?>
-    <form action="<?php echo $urlToProfile ;?>" method="post" class="formColor">
+    <form action="<?=$urlToProfile ;?>" method="post" class="formColor">
 
         <label> <span class="label"><strong>Ваша фамилия:</strong></span>
             <input class="field" type="text" name="lastname"
-            <?php echo 'value="' . $profile['lastname'] . '"> ' ?>
+                   value="<?=$profile['lastname'];?>" >
         </label> <br>
 
         <label> <span class="label"> <strong>имя:</strong> </span>
-            <input class="field" type="text" name="firstname"
-            <?php echo 'value="' . $profile['firstname'] . '"> ' ?>
+            <input class="field" type="text" name="firstname" `
+                   value="<?=$profile['firstname'];?>" >
         </label> <br>
 
         <label> <span class="label"> <strong>Отчество:</strong></span>
             <input class="field" type="text" name="middlename"
-            <?php echo 'value="' . $profile['middlename'] . '"> ' ?>
+                   value="<?=$profile['middlename'];?>" >
         </label> <br>
 
 
         <label> <span class="label"><strong>Эл.почта:</strong>  </span>
             <input class="field1" type="email" name="email"
-            <?php echo 'value="' . $profile['email'] . '"> ' ?>
+                   value="<?=$profile['email'];?>" >
         </label> <br>
         <?php
         if ( false === $profileEditFlag ) { // при проосмотре профиля login,passw убираю
@@ -47,11 +47,11 @@ if ($successfulSave && !$profileEditFlag) {
             ?>
             <label> <span class="label"><strong>login*:</strong></span>
                 <input class="field1" type="text" name="login"
-                <?php echo 'value="' . $profile['login'] . '"> ' ?>
+                       value="<?=$profile['login'];?>" >
             </label> <br>
             </label>    <span class="label"><strong>пароль*:</strong></span>
             <input class="field1" type="password" name="password"
-            <?php echo 'value="' . $profile['password'] . '"> ' ?>
+                   value="<?=$profile['password'];?>" >
             </label> <br>
             <?php
         }
@@ -61,12 +61,12 @@ if ($successfulSave && !$profileEditFlag) {
         <div class="group_item">
             <label>
                 <input type="radio" name="sex" value="m"
-                    <?php echo ("m" == $profile['sex']) ? "checked" : ''; ?>
+                    <?=("m" == $profile['sex']) ? "checked" : '';?>
                     >
                 мужской </label>
             <label>
                 <input type="radio" name="sex" value="w"
-                    <?php echo ("w" == $profile['sex']) ? "checked" : ''; ?>
+                    <?=("w" == $profile['sex']) ? "checked" : '';?>
                     >
                 женский</label></br>
         </div>

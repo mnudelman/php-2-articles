@@ -1,6 +1,14 @@
 <?php
 /**
- * класс - формирователь страницы - посредник между контроллером и предствлением
+ * класс - формирователь представления является дополнением к соответствующему
+ * классу-контроллеру.
+ * Основной метод buildViewTree() обеспечивает передачу данных
+ * во ViewDriver для построения дереваПредставлений.
+ * Данные формируются в однотипных методах по числу компонент представления.
+ * Каждый компонент может иметь собственные копоненты, т.е. дерево
+ * может быть произвольного уровня. Добавление компонентов может происходить
+ * в произвольном порядке. В дочерних классах отдельные компоненты могут
+ * отсутствовать или добавлены произвольно новые.
  *
  */
 
@@ -55,11 +63,11 @@ abstract class Cnt_vw_base {
      * Корневой шаблон
      */
     protected function partMainDef() {
-        $name = 'main' ;
+        $name = 'main' ;                      // корень дереваПредставлений
         $parameters = false ;
         $components = ['partHeadPart','partTopMenu','partContent','partFooter','partRightPanel'] ;
         $dir = $this->DIR_LAYOUT ;
-        $file = 'lt_footerHalf' ;
+        $file = 'lt_footerHalf' ;             // файл-шаблон
         $this->vwDriver->addView($name,$parameters,$components,$dir,$file) ;
     }
 
@@ -71,7 +79,7 @@ abstract class Cnt_vw_base {
         $parameters = [ 'htmlDirTop' => $this->HTML_DIR_TOP ] ;
         $components = false ;
         $dir = $this->DIR_VIEW ;
-        $file = 'headPart' ;
+        $file = 'headPart' ;                                 // файл-шаблон
         $this->vwDriver->addView($name,$parameters,$components,$dir,$file) ;
     }
 
@@ -136,7 +144,7 @@ abstract class Cnt_vw_base {
         $parameters = false ;
         $components = false;
         $dir = $this->DIR_VIEW;
-        $file = '';
+        $file = '';                                     // пустой файл <-> отсутствие компоненты
         $this->vwDriver->addView($name, $parameters, $components, $dir, $file);
     }
 

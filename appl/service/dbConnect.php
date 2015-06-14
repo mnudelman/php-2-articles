@@ -1,6 +1,5 @@
 <?php
 /**
- * User: mnudelman@yandex.ru
  */
 $host = 'localhost' ;
 $dbname = 'articles' ;

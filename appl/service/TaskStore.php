@@ -1,19 +1,17 @@
 <?php
 /**
  * Хранение  параметров задачи
- *
- * User: mnudelman@yandex.ru
  * Date: 22.05.15
  */
 class TaskStore {
-    public static $dirTop = false ;
-    public static $dirController = false ;
-    public static $dirModel = false ;
-    public static $dirView = false ;
-    public static $dirLayout = false ;
-    public static $htmlDirTop = false ;
-    public static $dirService = false ;
-    public static $dirArticleHeap = false ;
+    public static $dirTop = false ;             // корневой директорий
+    public static $dirController = false ;      // контроллеры
+    public static $dirModel = false ;           // модели
+    public static $dirView = false ;            // представления
+    public static $dirLayout = false ;          // шаблоны
+    public static $htmlDirTop = false ;         // относительный адрес для html
+    public static $dirService = false ;         // сервисные функции
+    public static $dirArticleHeap = false ;     // расположение текстов статей
     //-----------------------------------//
 
     //-- параметры состояния --//
@@ -21,11 +19,11 @@ class TaskStore {
     private static $userPassword = false ;
     private static $userName = false ;
     private  static $enterSuccessful = false ;  // успешный вход
-    private static $userStatus = false ;
-    private static $topicId = false ;
+    private static $userStatus = false ;        // определяет возможности пользователя
+    private static $topicId = false ;           // текущая тема
     private static $topicName = false ;
-    private static $dbConnect= false ;
-    private static $message = false ;
+    private static $dbConnect= false ;          // объект - подключение к БД
+    private static $message = false ;           // объект - вывод сообщений
     //-----память контроллеров ---//
     private static $cnt_userStore = [];
     private static $cnt_profileStore = [];
@@ -38,12 +36,12 @@ class TaskStore {
         'userLogin',          // login
         'userPassword',       // пароль
         'userStatus',         // статус пользователя (определяет доступные операции)
-        'topicId',          // id галереи
-        'topicName',        //  имя галереи
+        'topicId',            // id текущей темы
+        'topicName',          //  имя темы
         'enterSuccessful',    // успешный вход
         'cnt_userStore',      // память контроллера user
         'cnt_profileStore',   // память контроллера profile
-        'cnt_topicStore',   // память контроллера topic
+        'cnt_topicStore',     // память контроллера topic
         'cnt_articleStore',   // память контроллера article
         'cnt_navigatorStore'  // память контроллера navigator
         ];
@@ -156,7 +154,7 @@ class TaskStore {
     }
 
     /**
-     * dbConnect нельзя сохранять в $_SESSION
+     * dbConnect-объект нельзя сохранять в $_SESSION
      * @param $dbConnect
      */
     public static function setDbConnect($dbConnect) {
@@ -165,6 +163,11 @@ class TaskStore {
     public static function getDbConnect() {
         return self::$dbConnect  ;
     }
+
+    /**
+     * message-объект нельзя сохранять в $_SESSION
+     * @param $msg
+     */
     public static function setMessage($msg) {
         self::$message = $msg ;
     }

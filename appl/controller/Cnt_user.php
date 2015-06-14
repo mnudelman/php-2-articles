@@ -73,7 +73,6 @@ class Cnt_user extends Cnt_base {
             }
         }
         return $this->forwardCntName ;
-      //  parent::getForwardCntName($plistGet,$plistPost) ;
     }
     /**
      * переход на собственную форму

@@ -1,6 +1,6 @@
 <?php
 /**
- * класс - темы статей
+ * контроллер - темы статей
  */
 
 class Cnt_topic extends Cnt_base {
@@ -81,8 +81,10 @@ class Cnt_topic extends Cnt_base {
             }
         }
         return $this->forwardCntName ;
-//        parent::getForwardCntName($plistGet,$pListPost) ;
     }
+    /**
+     * подготовка и вывод представления
+     */
     public function viewGo() {
         parent::viewGo() ;
     }

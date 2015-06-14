@@ -6,29 +6,24 @@
  */
 ?>
 
-<form action="<?php echo  $urlToUser ?>" method="post">
+<form action="<?php echo $urlToUser ?>" method="post">
     <div>
-    ВХОД. Войдите под своим login,password или
-    <button name="registration">пройдите регистрацию</button>
+        ВХОД. Войдите под своим login,password или
+        <button name="registration">пройдите регистрацию</button>
     </div>
 
     <label><span class="label"><strong>Имя:</strong></span>
         <input class="field" type="text" name="login"
-               value ="<?php echo $login ?>"> </label> </br>
+               value="<?= $login; ?>"> </label> </br>
 
     <label><span class="label"> <strong>Пароль:</strong></span>
         <span> <input class="field" type="password" name="password"
-               value ="<?php echo $password ?>" ></label> </br><br>
-
-
-    <!--<label>
-        <input type="checkbox" name="savePassword" class="bt">Запомнить пароль </label><br>
-    -->
+                      value="<?= $password ?>"></label> </br><br>
     <button name="enter" class="bt">ВОЙТИ</button>
     <?php
-    if ($profileIsPossible){
-    ?>
-    <button name="profile">ПРОФИЛЬ</button>
+    if ($profileIsPossible) {
+        ?>
+        <button name="profile">ПРОФИЛЬ</button>
     <?php
     }
     ?>

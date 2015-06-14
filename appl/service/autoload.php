@@ -2,11 +2,9 @@
 /**
  * Загрузчик классов
  * имя файла совпадает с именем класса
- * Date: 22.05.15
  */
 function my_autoloader($class) {
-
-    $classDirs = TaskStore::getClassDirs() ;  // список директорий для поиска класса
+   $classDirs = TaskStore::getClassDirs() ;  // список директорий для поиска класса
     $classFile = false ;
     foreach($classDirs as $dir) {
         $file = findFile($dir, $class);   // ищем во внутренних директориях
@@ -19,7 +17,6 @@ function my_autoloader($class) {
         include $classFile ;
     }
 }
-
 function findFile($dir,$class) {
     $file = $dir.'/'.$class.'.php' ;
     if (file_exists($file)) {
@@ -36,6 +33,5 @@ function findFile($dir,$class) {
         }
     }
     return false ;
-
 }
 spl_autoload_register('my_autoloader');

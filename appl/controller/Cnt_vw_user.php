@@ -1,6 +1,6 @@
 <?php
 /**
- * вывод редактирование тем
+ * вывод авиоризации
  */
 
 class Cnt_vw_user extends Cnt_vw_base {

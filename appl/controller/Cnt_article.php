@@ -1,6 +1,6 @@
 <?php
 /**
- * Контроллер - редактирование статей автора
+ * Контроллер - редактирование статей
  * Редактируются заголовки и темы(рубрики) статей
  * Date: 25.05.15
  * Time: 23:21
@@ -8,6 +8,7 @@
 
 class Cnt_article extends Cnt_base {
     protected $msg ;    // сообщения класса - объект Message
+    protected $viewDriver ;       // объект класса viewDriver
     protected $parListGet = [] ;  // параметры класса
     protected $parListPost = [] ;  // параметры класса
     protected $msgTitle = '' ;
@@ -70,10 +71,10 @@ class Cnt_article extends Cnt_base {
         $plistGet = [] ;
        $plistPost = [] ;
         return $this->forwardCntName ;
-
-
-//        parent::getForwardCntName($plistGet,$plistPost) ;
     }
+     /**
+      * подготовка и вывод представления
+     */
     public function viewGo() {
         parent::viewGo() ;
     }

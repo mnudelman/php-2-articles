@@ -4,14 +4,14 @@
  * Date: 25.05.15
  */
 ?>
-<form action="<?php echo $urlToTopic?>" method="post">
+<form action="<?=$urlToTopic;?>" method="post">
     <label>
         <span class="label">текущий режим:</span>
         <input type="text" readonly="readonly" name="galleryStatName" class="field"
-               value="<?php echo $topicStatName ?>">
+               value="<?=$topicStatName;?>">
     </label>&nbsp;&nbsp;
     <input type="hidden"  name="galleryEditStat" class="field"
-           value="<?php echo $topicEditStat ?>">
+           value="<?=$topicEditStat;?>">
 
 
     <button name="changeStat" class="btGal">изменить режим</button>

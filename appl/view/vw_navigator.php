@@ -6,7 +6,7 @@
  */
 ?>
 <div align="center" class="navigator">
-<form method="POST"  action="<?php echo $urlNavigator ?>">
+<form method="POST"  action="<?=$urlNavigator;?>">
     <a href="<?php echo $urlNavigator.'&page=first' ?>" readonly="readonly">
             <img src="<?=$dirImages;?>/go-first.png"
                      title="первая страница" alt="|<" >
@@ -27,11 +27,11 @@
     }
 
     ?>
-    <a href="<?php echo $urlNavigator.'&page=next' ?>">
+    <a href="<?=$urlNavigator.'&page=next';?>">
         <img src="<?=$dirImages;?>/go-next.png"
                      title="следующая страница" alt=">" >
     </a>
-    <a href="<?php echo $urlNavigator.'&page=last' ?>">
+    <a href="<?=$urlNavigator.'&page=last';?>">
         <img src="<?=$dirImages;?>/go-last.png"
                      title="последняя страница" alt=">|" >
     </a>

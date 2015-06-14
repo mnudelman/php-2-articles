@@ -10,21 +10,16 @@
 
     <a href="<?=$htmlDirTop.'/index.php?cnt=Cnt_topic';?>" class="menu">
         <img src="<?=$htmlDirTop;?>/images/gtk-dnd-multiple.png" title="Тема статей" alt="Тема">
-        <?php
-        echo 'тема:'. ( ( empty($topicName)) ? 'тема не выбрана' : $topicName );
-        ?>
+        <?='тема:'. $topicName ;?>
     </a>&nbsp;&nbsp;
 
     <a href="<?php echo $htmlDirTop.'/index.php?cnt=Cnt_user' ?>" class="menu">
         <img src="<?=$htmlDirTop ?>/images/people.png"
              title="пользователь" alt="пользователь">
-        <?php
-
-           echo $userName ;
-        ?>
+        <?=$userName;?>
     </a> &nbsp;&nbsp;
-    <a href="<?php echo  $htmlDirTop.'/index.php?cnt=Cnt_about' ?>" class="menu">
-     <img src="<?php echo  $htmlDirTop ?>/images/help-about.png" title="about" alt="about"></a>
+    <a href="<?=$htmlDirTop;?>/index.php?cnt=Cnt_about" class="menu">
+     <img src="<?=$htmlDirTop;?>/images/help-about.png" title="about" alt="about"></a>
 
 </div>
 &nbsp;&nbsp;

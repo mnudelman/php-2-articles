@@ -1,13 +1,13 @@
 <?php
 
 /**
- * класс навигатор управляет страницами просмотра картинок
+ * класс навигатор управляет страницами просмотра
  * Date: 29.05.15
  * Time: 10:54
  */
 class Cnt_navigator extends Cnt_base
 {
-    protected $vwDriver ;                     // объект класса ViewDriver -
+    protected $viewDriver ;                   // объект класса ViewDriver -
     protected $msg;                           // сообщения  - объект Message
     protected $parListGet = [];               // параметры класса - аналог $_GET
     protected $parListPost = [];              // параметры класса - аналог $_POST
@@ -83,7 +83,9 @@ class Cnt_navigator extends Cnt_base
     {
         parent::getForwardCntName($plistGet, $pListPost);
     }
-
+   /**
+   * подготовка и вывод представления
+   */
     public function viewGo() {
         parent::viewGo();
     }
