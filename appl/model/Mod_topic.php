@@ -34,7 +34,11 @@ class Mod_topic extends Mod_base {
         $this->topicEditStat = (isset($this->parameters['topicEditStat'])) ?
             $this->parameters['topicEditStat'] : TaskStore::TOPIC_STAT_SHOW ;
         $this->topicList = $this->db->getTopic();
-        $this->currentTopicId = $this->parameters['currentTopicId'] ;
+        if ($this->currentTopicId !== $this->parameters['currentTopicId'] ) {
+            $this->currentTopicId = $this->parameters['currentTopicId'] ;
+            $this->currentTopicStore() ;
+        }
+
     }
 
 

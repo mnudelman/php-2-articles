@@ -10,7 +10,7 @@ body{
     padding: 10px ;
     width:100% ;
 }
-#content,#contentShow,#contentShowHalf{
+#content,#contentShow,#contentShowHalf,#contentShowHalfEdit{
     position: absolute;
     top: 58px;
     width: 100%;
@@ -22,10 +22,14 @@ body{
     margin-bottom: 200px;
     background-color: #F5F5DC;
 }
-#contentShowHalf {
+#contentShowHalf,#contentShowHalfEdit {
     margin-bottom:120px ;
+    padding: 8px;
 
  }
+#contentShowHalfEdit{
+    top:0 ;
+}
 #contentShow {
     margin-bottom:20px ;
 }
@@ -38,7 +42,7 @@ body{
     min-width: 150px;
     background-color: #F5F5DC;;
 }
-#footer,#footerHalf {
+#footer,#footerHalf,#footerHalfEdit {
     position: fixed; /* Фиксированное положение */
     height:150px ;
     left: 0; bottom: 0; /* Левый нижний угол */
@@ -50,12 +54,15 @@ body{
     display: block;
     /* border:4px solid darkolivegreen ;*/
 }
-#footerHalf {
+#footerHalf,#footerHalfEdit {
     height:70px ;
 }
 #contentShowHalf,#footerHalf {
     width: 70% ;
     min-width:500px ;
+}
+#footerHalfEdit{
+    width:100% ;
 }
 a.menu,.rightMenu{
     font-size:20px;
@@ -69,7 +76,7 @@ a.menu,.rightMenu{
 a.menu:hover,.rightMenu:hover {
     font-style:italic;
 }
-#footer,#footerHalf,#topMenu{
+#footer,#footerHalf,#footerHalfEdit,#topMenu{
     background-color: #bdbdbd; /*#cccc99;*/
 }
 .programText{

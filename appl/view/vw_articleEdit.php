@@ -7,9 +7,10 @@
 <?php
 
 ?>
+
 <form action="<?=$urlArticleEdit;?>" method="post"
       enctype="multipart/form-data">
-
+    <div id="contentShowHalfEdit">
     <table border="4"
            cellspacing="1"
            cellpadding=“1” class="galFformEdit">
@@ -79,7 +80,8 @@
         ?>
 
     </table>
-    <br>
+    </div>
+    <div id="footerHalfEdit">
     <label>
         Выбор новых статей
         <input type="file" name="articleFile[]" multiple>
@@ -92,4 +94,5 @@
     <button class="btGalEdit" name="save">Сохранить изменения</button>
     <button class="btGalEdit" name="del">Удалить отмеченные</button>
     <button class="btGalEdit" name="show">В просмотр</button>
+    </div>
 </form>
