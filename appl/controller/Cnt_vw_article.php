@@ -23,6 +23,9 @@ class Cnt_vw_article extends Cnt_vw_base {
      */
     public function buildViewTree() {    //  дерево Представлений
         parent::buildViewTree() ;
+        // дополнительные компоненты - разбиение формы на 2 части
+        $this->partArticleEditTableDef() ;     // 1.Таблица
+        $this->partArticleEditCommandsDef() ;  // 2. Команды
     }
 
     /**
@@ -72,12 +75,38 @@ class Cnt_vw_article extends Cnt_vw_base {
             'urlArticleEdit' => $this->URL_OWN ,
             'dirArticle' => $this->dirArticle ,
             'htmlDirTop' => $this->htmlDirTop ] ;
-        $components = false;
+        $components = ['partArticleEditTable','partArticleEditCommands'] ;
         $dir = $this->DIR_VIEW;
         $file = 'vw_articleEdit';
         $this->vwDriver->addView($name, $parameters, $components, $dir, $file);
     }
-
+    /**
+     * таблица формы редактирования
+     */
+    protected function partArticleEditTableDef() {
+        $name = 'partArticleEditTable';
+        $parameters = [
+            'articles'       => $this->mod->getArticles() ] ;
+        $components = false;
+        $dir = $this->DIR_VIEW;
+        $file = 'vw_articleEditTable';
+        $this->vwDriver->addView($name, $parameters, $components, $dir, $file);
+    }
+    /**
+     * таблица формы редактирования
+     */
+    protected function partArticleEditCommandsDef() {
+        $name = 'partArticleEditCommands';
+        $parameters = [
+            'topicList'      => $this->mod->getTopicList(),
+            'urlArticleEdit' => $this->URL_OWN ,
+            'dirArticle' => $this->dirArticle ,
+            'htmlDirTop' => $this->htmlDirTop ] ;
+        $components = false;
+        $dir = $this->DIR_VIEW;
+        $file = 'vw_articleEditCommands';
+        $this->vwDriver->addView($name, $parameters, $components, $dir, $file);
+    }
     /**
      * подвал
      */
