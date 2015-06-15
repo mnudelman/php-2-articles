@@ -64,9 +64,6 @@ class mod_user extends Mod_base {
     }
     /**
      * допустимость новых login, password
-     * @param $login
-     * @param $password
-     * @return bool
      */
     public function isUserLoginSuccessful() {
         $isSuccessful = false;
@@ -74,22 +71,25 @@ class mod_user extends Mod_base {
         $password = $this->password   ;
         if (empty($login) || empty($password)) {
             $this->msg->addMessage('ERROR:Поля "Имя:" и "Пароль:" должны быть заполнены !');
-        } else {
-            $userPassw = $this->db->getUser($login);
-            if (false === $userPassw) { // $login отсутствует в БД
-                $this->msg->addMessage('ERROR: Недопустимое имя пользователя.Повторите ввод!');
-            } else {  // проверяем пароль
-                $fromDbPassw = $userPassw['password'];
-                if ($fromDbPassw !== md5($password)) {
-                    $this->msg->addMessage('ERROR: Неверный пароль.Повторите ввод !');
-                } else {
-                    $isSuccessful = true;
-                    $this->storeUser();
-                }
-            }
+            return $isSuccessful ;
         }
+        $user_Passw = $this->db->getUser($login);    // ['login' => .. , 'Password' => ..]
+        if (false === $user_Passw) { // $login отсутствует в БД
+            $this->msg->addMessage('ERROR: Недопустимое имя пользователя.Повторите ввод!');
+            return $isSuccessful ;
+        }
+        if ($user_Passw['password'] !== md5($password)) {     //
+            $this->msg->addMessage('ERROR: Неверный пароль.Повторите ввод !');
+            return $isSuccessful ;
+        }
+        $isSuccessful = true;
+        $this->storeUser();       // сохранить авторизацию
         return $isSuccessful;
     }
+
+    /**
+     * сохранить авторизацию
+     */
     private function storeUser() {
         TaskStore::setParam('userLogin', $this->login);
         TaskStore::setParam('userName', $this->login);
