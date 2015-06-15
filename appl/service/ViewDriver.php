@@ -21,7 +21,7 @@ class ViewDriver
     private $allowSuccessful = false ; // успешное разрешение всех компонент
     private $MAX_ALLOW_STEPS = 5 ;     // max число проходов по разрешению ссылок
     public function __construct() {
-        $this->msg = TaskStore::getMessage() ;
+        $this->msg = Message::getInstace() ;
     }
 
     /**

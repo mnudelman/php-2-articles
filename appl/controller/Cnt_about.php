@@ -5,14 +5,7 @@
  */
 
 class Cnt_about extends Cnt_base {
-    protected $msg ;    // сообщения класса - объект Message
-    protected $parameters = [] ;  // параметры класса
-    protected $msgTitle = '' ;
-    protected $modelName = '' ;
-    protected $mod ;             // объект - модель
-    protected $parForView = [] ; //  параметры для передачи view
-    protected $classForView = 'Cnt_vw_about' ;  //  класс для формирования шаблона
-    protected $forwardCntName = false ; // контроллер, которому передается управление
+    protected $classForView = 'Cnt_vw_about' ; // класс для формирования шаблона
     //--------------------------------//
     public function __construct() {
         parent::__construct() ;

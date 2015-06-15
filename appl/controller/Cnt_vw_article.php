@@ -12,12 +12,6 @@ class Cnt_vw_article extends Cnt_vw_base {
         $this->htmlDirTop = TaskStore::$htmlDirTop ;
         $this->dirArticle = TaskStore::$dirArticleHeap ;
     }
-    public function setModel($model) {
-        parent::setModel($model) ;
-    }
-    public function setViewDriver($vieDriver) {
-        parent::setViewDriver($vieDriver) ;
-    }
     /**
      * Формирует все компоненты шаблона
      */
@@ -41,40 +35,11 @@ class Cnt_vw_article extends Cnt_vw_base {
 
     }
     /**
-     * формирует тег <head>... </head>
-     */
-    protected function partHeadPartDef() {
-        parent::partHeadPartDef() ;
-    }
-    /**
-     * меню - начало страницы
-     */
-    protected function partTopMenuDef() {
-        parent::partTopMenuDef() ;
-    }
-    /**
-     * центральная часть страницы
-     */
-    protected function partContentDef() {
-        parent::partContentDef() ;
-    }
-    /**
-     * Вывод сообщений
-     */
-    protected function partMessageDef() {
-        parent::partMessageDef() ;
-    }
-    /**
      * свой раздел центральной части
      */
     protected function partDataContentDef() {
         $name = 'partDataContent';                           // центральный вывод
-        $parameters = [
-            'topicList'      => $this->mod->getTopicList(),
-            'articles'       => $this->mod->getArticles(),
-            'urlArticleEdit' => $this->URL_OWN ,
-            'dirArticle' => $this->dirArticle ,
-            'htmlDirTop' => $this->htmlDirTop ] ;
+        $parameters = false  ;
         $components = ['partArticleEditTable','partArticleEditCommands'] ;
         $dir = $this->DIR_VIEW;
         $file = 'vw_articleEdit';
@@ -112,27 +77,5 @@ class Cnt_vw_article extends Cnt_vw_base {
         $file = 'vw_articleEditCommands';
         $this->vwDriver->addView($name, $parameters, $components, $dir, $file);
     }
-    /**
-     * подвал
-     */
-    protected function partFooterDef() {
-        $name = 'partFooter';                           // подвал страницы
-        $parameters = false ;
-        $components = false;
-        $dir = $this->DIR_VIEW;
-        $file = '';
-        $this->vwDriver->addView($name, $parameters, $components, $dir, $file);
-    }
 
-    /**
-     * правая панель
-     */
-    protected function partRightPanelDef() {
-        $name = 'partRightPanel';                           // правая панель
-        $parameters = false ;
-        $components = false;
-        $dir = $this->DIR_VIEW;
-        $file = '';
-        $this->vwDriver->addView($name, $parameters, $components, $dir, $file);
-    }
 }

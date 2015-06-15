@@ -5,28 +5,6 @@
  */
 
 class cnt_vw_navigator extends Cnt_vw_base {
-    protected $vwDriver ;                // объект класса ViewDriver -
-    protected $msg;                      // сообщения  - объект Message
-    protected $mod ;                     // объект-модель
-    protected $URL_OWN;                  // ссылка для формы котроллера
-    protected $DIR_TOP ;
-    protected $HTML_DIR_TOP ;
-    protected $DIR_VIEW ;
-    protected $DIR_LAYOUT ;
-    protected $DIR_ARTICLE ;
-    protected $DIR_IMAGE ;
-    public function __construct() {
-        parent::__construct() ;
-    }
-    public function setModel($model) {
-      parent::setModel($model) ;
-    }
-    public function setViewDriver($vieDriver) {
-        parent::setViewDriver($vieDriver) ;
-    }
-    public function buildViewTree() {    //  дерево Представлений
-        parent::buildViewTree() ;
-    }
     protected function partMainDef() {
         $name = 'main' ;
         $parameters = false ;
@@ -35,12 +13,6 @@ class cnt_vw_navigator extends Cnt_vw_base {
         $file = 'lt_footerHalf' ;
         $this->vwDriver->addView($name,$parameters,$components,$dir,$file) ;
     }
-    protected function partHeadPartDef() {
-      parent::partHeadPartDef() ;
-    }
-    protected function partTopMenuDef() {
-      parent::partTopMenuDef() ;
-    }
     protected function partContentDef() {
         $name = 'partContent' ;                              // центральный content
         $parameters = false ;
@@ -48,9 +20,6 @@ class cnt_vw_navigator extends Cnt_vw_base {
         $dir = $this->DIR_VIEW ;
         $file = 'contentPart' ;
         $this->vwDriver->addView($name,$parameters,$components,$dir,$file) ;
-    }
-    protected function partMessageDef() {
-        parent::partMessageDef() ;
     }
     protected function partDataContentDef() {
         $name = 'partDataContent';                           // центральный вывод

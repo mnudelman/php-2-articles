@@ -27,16 +27,15 @@ class Cnt_article extends Cnt_base {
     //---------------------------------------------------------------//
 
     public function __construct() {
-        $this->URL_OWN = TaskStore::$htmlDirTop.'/index.php?cnt=Cnt_article' ;
-        $this->htmlDirTop = TaskStore::$htmlDirTop ;
-        $this->dirArticle = TaskStore::$dirArticleHeap ;
         parent::__construct() ;
 
     }
     protected function prepare() {
         //------- работа   ------------//
-        //$this->parameters['dirArticle'] = $this->dirArticle ; // в параметры
-        //$this->mod->setParameters($this->parameters) ; // параметры в модель
+        $this->URL_OWN = TaskStore::$htmlDirTop.'/index.php?cnt=Cnt_article' ;
+        $this->htmlDirTop = TaskStore::$htmlDirTop ;
+        $this->dirArticle = TaskStore::$dirArticleHeap ;
+        // добавляем параметр
         $this->taskParms->setParameter('dirArticle',$this->dirArticle) ;
 
         if (isset($this->parameters['show']) || isset($this->parListGet['show'])) {   // просмотр
@@ -51,6 +50,7 @@ class Cnt_article extends Cnt_base {
         if (isset($this->parameters['del'])) {   // удалить отмеченные
             $this->mod->delCheckedArticle() ;
         }
+
         parent::prepare() ;
     }
 ////////////////////////////////////////////////////////////////////////////////////////

@@ -31,30 +31,14 @@ class Cnt_profile extends Cnt_base {
 
         if (isset($this->ownStore['profileEditFlag'])) {
             $this->profileEditFlag = $this->ownStore['profileEditFlag'] ;
-
-
-
-//            if ($this->profileEditFlag) {
-//                $this->parameters['edit'] = true ;    // добавим в общий список параметров
-//            }else {
-//                $this->parameters['edit'] = false ;    // добавим в общий список параметров
-//            }
             $this->taskParms->setParameter('edit',$this->profileEditFlag) ;
-
         }
 
-//        if (isset($this->parListGet['edit'])) {    // вход для редактирования
-//            $pG = $this->parListGet['edit'] ;
-//            $this->parameters['edit'] = $pG ;    // добавим в общий список параметров
-//            $this->profileEditFlag = $pG ;
-//        }
         if (isset($this->parameters['edit'])) {    // вход для редактирования
             $this->profileEditFlag = $this->parameters['edit'] ;
         }
 
-//        $this->parameters['urlDefault'] = $this->URL_DEFAULT ;
         $this->taskParms->setParameter('urlDefault',$this->URL_DEFAULT) ;
-//        $this->mod->setParameters($this->parameters) ; // параметры-реквизиты в модель
 
        if (isset($this->parameters['exit'])) {    // выйти
             $this->forwardCntName = $this->CNT_HOME ;

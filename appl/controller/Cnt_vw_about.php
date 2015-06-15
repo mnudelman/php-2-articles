@@ -4,23 +4,6 @@
  */
 
 class Cnt_vw_about extends Cnt_vw_base {
-    //---------------------------------//
-    public function __construct() {
-        parent::__construct() ;
-    }
-    public function setModel($model) {
-        parent::setModel($model) ;
-    }
-    public function setViewDriver($vieDriver) {
-        parent::setViewDriver($vieDriver) ;
-    }
-    /**
-     * Формирует все компоненты шаблона
-     */
-    public function buildViewTree() {    //  дерево Представлений
-        parent::buildViewTree() ;
-    }
-
     /**
      * Корневой шаблон
      */
@@ -39,27 +22,6 @@ class Cnt_vw_about extends Cnt_vw_base {
     protected function partHeadPartDef() {
         parent::partHeadPartDef() ;
     }
-
-    /**
-     * меню - начало страницы
-     */
-    protected function partTopMenuDef() {
-        parent::partTopMenuDef() ;
-    }
-
-    /**
-     * центральная часть страницы
-     */
-    protected function partContentDef() {
-        parent::partContentDef() ;
-    }
-
-    /**
-     * Вывод сообщений
-     */
-    protected function partMessageDef() {
-        parent::partMessageDef() ;
-    }
     /**
      * свой раздел центральной части
      */
@@ -72,18 +34,7 @@ class Cnt_vw_about extends Cnt_vw_base {
         $this->vwDriver->addView($name, $parameters, $components, $dir, $file);
 
     }
-    /**
-     * подвал
-     */
-    protected function partFooterDef() {
-        $this->vwDriver->addView('partFooter',false,false,false,false) ;
-    }
-    /**
-     * правая панель
-     */
-    protected function partRightPanelDef() {
-        $this->vwDriver->addView('partRightPanel',false,false,false,false) ;
-    }
+
 
 
 }

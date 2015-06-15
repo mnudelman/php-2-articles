@@ -25,12 +25,11 @@ class Cnt_topic extends Cnt_base {
     private $articleStatEdit ;
 
     public function __construct() {
-        $this->URL_OWN = TaskStore::$htmlDirTop.'/index.php?cnt=Cnt_topic' ;
-
         parent::__construct() ;
     }
     protected function prepare() {
-   //     $this->mod->setParameters($this->parameters) ;  // все параметры в модель
+
+        $this->URL_OWN = TaskStore::$htmlDirTop.'/index.php?cnt=Cnt_topic' ;
 
         if (isset($this->parameters['exit'])) {      // выход (в "главный" index )
             $this->forwardCntName = $this->CNT_HOME ;
@@ -57,22 +56,12 @@ class Cnt_topic extends Cnt_base {
     }
     ////////////////////////////////////////////////////////////////////////////////
     /**
-     *  построить массив $ownStore - собственные параметры
-     */
-    protected function buildOwnStore() {
-        parent::buildOwnStore() ;
-    }
-    protected function saveOwnStore() {
-        parent::saveOwnStore() ;
-    }
-    /**
      * выдает имя контроллера для передачи управления
      * альтернатива viewGo
      * Через  $pListGet , $pListPost можно передать новые параметры
      */
     public function getForwardCntName() {
         $plistGet = [] ;
-        $plistPost = [] ;
         if ($this->forwardCntName == $this->CNT_ARTICLE) {
             if ($this->articleStatEdit == TaskStore::ARTICLE_STAT_SHOW) {
                 $plistGet = ['show' => true] ;

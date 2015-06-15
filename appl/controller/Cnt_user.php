@@ -26,11 +26,12 @@ class Cnt_user extends Cnt_base {
     //------------------------------------//
     public function __construct() {
         parent::__construct() ;
+    }
+    protected function prepare() {
         $this->URL_PROFILE = TaskStore::$htmlDirTop.'/index.php?cnt=Cnt_profile' ;
         $this->URL_OWN = TaskStore::$htmlDirTop.'/index.php?cnt=Cnt_user' ;
 
-    }
-    protected function prepare() {
+
         $this->mod->setUrlProfile($this->URL_PROFILE) ;
 
         if (isset($this->parameters['exit'])) {              // выход - возврат на главную
@@ -65,8 +66,6 @@ class Cnt_user extends Cnt_base {
      */
     public function getForwardCntName() {
         $plistGet = [] ;
-        $plistPost = [] ;
-
         if ($this->forwardCntName == $this->CNT_PROFILE) { // редактирование существующего профиля
             if ($this->profileStat == TaskStore::PROFILE_STAT_EDIT) {
                 $plistGet = ['edit' => true];

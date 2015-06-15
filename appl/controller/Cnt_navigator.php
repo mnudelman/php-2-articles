@@ -28,29 +28,21 @@ class Cnt_navigator extends Cnt_base
     public function __construct()
     {
         parent::__construct();
-        $this->DIR_TOP =TaskStore::$dirTop ;
-        $this->HTML_DIR_TOP = TaskStore::$htmlDirTop ;
-        $this->DIR_VIEW = TaskStore::$dirView ;
-        $this->DIR_LAYOUT =TaskStore::$dirLayout ;
     }
 
     protected function prepare() {
 
+        $this->DIR_TOP =TaskStore::$dirTop ;
+        $this->HTML_DIR_TOP = TaskStore::$htmlDirTop ;
+        $this->DIR_VIEW = TaskStore::$dirView ;
+        $this->DIR_LAYOUT =TaskStore::$dirLayout ;
         $this->URL_OWN = TaskStore::$htmlDirTop . '/index.php?cnt=Cnt_navigator';
+
 
         if (isset($this->ownStore[$this->currentTopicId])) {
             $currentNavStore = $this->ownStore[$this->currentTopicId];
             $this->parameters['currentNavStore'] = $currentNavStore ;// в параметры
         }
-
-//        if (isset($this->parameters['page'])) {
-//            $this->parameters['page'] = $this->parListGet['page'];// в параметры
-//        }
-//        if (isset($this->parListGet['articleid'])) {   // прямая ссылка на статью
-//            $this->parameters['articleid'] = $this->parListGet['articleid'];// в параметры
-//        }
-//        $this->mod->setParameters($this->parameters) ; // параметры в модель
-
 
         if (isset($this->parameters['topicSelect'])) {    // смена темы
             $this->mod->currentTopicSave() ;
@@ -77,17 +69,7 @@ class Cnt_navigator extends Cnt_base
     {
         parent::saveOwnStore();
     }
-
-    /**
-     * выдает имя контроллера для передачи управления
-     * альтернатива viewGo
-     * Через  $pListGet , $pListPost можно передать новые параметры
-     */
-    public function getForwardCntName()
-    {
-        parent::getForwardCntName();
-    }
-   /**
+  /**
    * подготовка и вывод представления
    */
     public function viewGo() {

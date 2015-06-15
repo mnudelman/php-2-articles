@@ -22,8 +22,6 @@ class TaskStore {
     private static $userStatus = false ;        // определяет возможности пользователя
     private static $topicId = false ;           // текущая тема
     private static $topicName = false ;
-    private static $dbConnect= false ;          // объект - подключение к БД
-    private static $message = false ;           // объект - вывод сообщений
     //-----память контроллеров ---//
     private static $cnt_userStore = [];
     private static $cnt_profileStore = [];
@@ -153,25 +151,4 @@ class TaskStore {
         }
     }
 
-    /**
-     * dbConnect-объект нельзя сохранять в $_SESSION
-     * @param $dbConnect
-     */
-    public static function setDbConnect($dbConnect) {
-        self::$dbConnect = $dbConnect ;
-    }
-    public static function getDbConnect() {
-        return self::$dbConnect  ;
-    }
-
-    /**
-     * message-объект нельзя сохранять в $_SESSION
-     * @param $msg
-     */
-    public static function setMessage($msg) {
-        self::$message = $msg ;
-    }
-    public static function getMessage() {
-        return self::$message ;
-    }
 }
