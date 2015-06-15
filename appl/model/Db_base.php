@@ -8,8 +8,8 @@ abstract class Db_base {
     protected $pdo;   // объект - подключение к БД
     protected $msg ;  // объект - вывод сообщений
     public function __construct() {
-        $this->pdo = TaskStore::getDbConnect() ;
-        $this->msg = TaskStore::getParam('message') ;
+        $this->pdo = DbConnector::getConnect() ;
+        $this->msg = Message::getInstace() ;
     }
 
 }

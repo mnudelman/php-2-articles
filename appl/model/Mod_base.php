@@ -11,7 +11,7 @@ abstract class Mod_base {
     protected $parameters = []; // параметры, принимаемые от контроллера
     //--------------------------//
     public function __construct() {
-        $this->msg = TaskStore::getMessage() ;
+        $this->msg = Message::getInstace() ;
         if (false !== $this->dbClass) {
             $dbClass = $this->dbClass ;
             $this->db = new $dbClass() ;

@@ -24,7 +24,7 @@ abstract class Cnt_vw_base {
     protected $DIR_ARTICLE ;
     protected $DIR_IMAGE ;
     public function __construct() {
-        $this->msg = TaskStore::getMessage() ;
+        $this->msg = Message::getInstace() ;
         $this->DIR_TOP =TaskStore::$dirTop ;
         $this->HTML_DIR_TOP = TaskStore::$htmlDirTop ;
         $this->DIR_VIEW = TaskStore::$dirView ;

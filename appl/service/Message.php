@@ -7,10 +7,15 @@ class Message {
     private $title ='' ;
     private $name = '' ;
     private $keys ;
-    public function __construct($title='',$name='') {
-        $this->title = $title ;
-        $this->name = $name ;
-        $this->messages = [] ;
+    private static $instance = null ;
+    //--------------------------------//
+    private function __construct() {
+    }
+    public static function getInstace() {
+        if (is_null(self::$instance) ) {
+            self::$instance = new self()  ;
+        }
+        return self::$instance ;
     }
     public function addMessage($text) {
         if(is_array($text)){
@@ -34,12 +39,6 @@ class Message {
 
     public function getMessages() {
         return $this->messages ;
-    }
-    public function getTitle(){
-        return $this->title;
-    }
-    public function getName(){
-        return $this->name;
     }
     public function clear() {
         $this->messages = [] ;

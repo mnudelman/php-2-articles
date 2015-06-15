@@ -18,17 +18,18 @@ if ('/' !== $firstSymb) {
 // подключаем класс TaskStore - общие параметры
 $dirService = $topDir .'/appl/service' ;
 include_once $dirService . '/TaskStore.php' ;
+include_once $dirService . '/TaskParameters.php' ;
+include_once $dirService . '/DbConnector.php' ;
+include_once $dirService . '/setUp.php' ;
+include_once $dirService . '/Message.php' ;
+
 //------ подключение БД -------------//
-$dbSuccessful = include($dirService . '/dbConnect.php');
-if (!$dbSuccessful) {
+$pdo = DbConnector::getConnect() ;
+if (!DbConnector::$isSuccessful) {
     die('EXIT');
 }
 TaskStore::init($topDir,$topHtmlDir) ;
-TaskStore::setDbConnect($pdo) ;    // сохранить подключение
-
 //  подключаем autoLoad  - авт подключение классов
 include_once $dirService . '/autoload.php' ;
 //-------------------------------------------//
-$msg = new Message() ;   // сообщения
-TaskStore::setMessage($msg) ;
 

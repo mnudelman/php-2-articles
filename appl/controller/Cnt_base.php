@@ -21,7 +21,7 @@ abstract class Cnt_base
     //--------------------------------------------------//
     public function __construct($getArray, $postArray)
     {
-        $this->msg = TaskStore::getParam('message');
+        $this->msg = Message::getInstace() ;
         $this->viewDiver = new ViewDriver() ;
         $class = $this->modelName;
         if (!empty($class)) {
