@@ -24,8 +24,8 @@ class Cnt_user extends Cnt_base {
     private $profileStat ;            // статус перехода в профиль
 
     //------------------------------------//
-    public function __construct($getArray,$postArray) {
-        parent::__construct($getArray,$postArray) ;
+    public function __construct() {
+        parent::__construct() ;
         $this->URL_PROFILE = TaskStore::$htmlDirTop.'/index.php?cnt=Cnt_profile' ;
         $this->URL_OWN = TaskStore::$htmlDirTop.'/index.php?cnt=Cnt_user' ;
 
@@ -63,7 +63,7 @@ class Cnt_user extends Cnt_base {
      * альтернатива viewGo
      * Через  $pListGet , $pListPost можно передать новые параметры
      */
-    public function getForwardCntName(&$plistGet,&$plistPost) {
+    public function getForwardCntName() {
         $plistGet = [] ;
         $plistPost = [] ;
 

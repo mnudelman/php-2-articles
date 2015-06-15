@@ -86,7 +86,11 @@ class Cnt_vw_article extends Cnt_vw_base {
     protected function partArticleEditTableDef() {
         $name = 'partArticleEditTable';
         $parameters = [
-            'articles'       => $this->mod->getArticles() ] ;
+            'topicList'      => $this->mod->getTopicList(),
+            'articles'       => $this->mod->getArticles(),
+            'urlArticleEdit' => $this->URL_OWN ,
+            'dirArticle' => $this->dirArticle ,
+            'htmlDirTop' => $this->htmlDirTop ] ;
         $components = false;
         $dir = $this->DIR_VIEW;
         $file = 'vw_articleEditTable';
@@ -99,6 +103,7 @@ class Cnt_vw_article extends Cnt_vw_base {
         $name = 'partArticleEditCommands';
         $parameters = [
             'topicList'      => $this->mod->getTopicList(),
+            'articles'       => $this->mod->getArticles(),
             'urlArticleEdit' => $this->URL_OWN ,
             'dirArticle' => $this->dirArticle ,
             'htmlDirTop' => $this->htmlDirTop ] ;

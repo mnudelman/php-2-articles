@@ -14,19 +14,11 @@ class Cnt_about extends Cnt_base {
     protected $classForView = 'Cnt_vw_about' ;  //  класс для формирования шаблона
     protected $forwardCntName = false ; // контроллер, которому передается управление
     //--------------------------------//
-    public function __construct($getArray,$postArray) {
-        parent::__construct($getArray,$postArray) ;
+    public function __construct() {
+        parent::__construct() ;
     }
     protected function prepare() {
         parent::prepare() ;
-    }
-    /**
-     * выдает имя контроллера для передачи управления
-     * альтернатива viewGo
-     * Через  $pListGet , $pListPost можно передать новые параметры
-     */
-    public function getForwardCntName() {
-        parent::getForwardCntName() ;
     }
     /**
      * переход на собственную форму

@@ -16,21 +16,13 @@ class Cnt_default extends Cnt_base {
     protected $ownStore = [] ;     // собственные сохраняемые параметры
     protected $forwardCntName = false ; // контроллер, которому передается управление
     //--------------------------------//
-    public function __construct($getArray,$postArray) {
-        parent::__construct($getArray,$postArray) ;
+    public function __construct() {
+        parent::__construct() ;
     }
     protected function prepare() {
         $this->msg->addMessage('Для начала работы из меню выберите тему статей');
         $this->msg->addMessage('Для загрузки на сайт собственных статей надо пройти регисрацию');
         $this->msg->addMessage('Подробности о работе сайта пункт меню about');
-    }
-    /**
-     * выдает имя контроллера для передачи управления
-     * альтернатива viewGo
-     * Через  $pListGet , $pListPost можно передать новые параметры
-     */
-    public function getForwardCntName(&$plistGet,&$pListPost) {
-        parent::getForwardCntName($plistGet,$pListPost) ;
     }
     /**
      * переход на собственную форму

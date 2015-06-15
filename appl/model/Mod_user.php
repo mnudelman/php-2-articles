@@ -18,14 +18,7 @@ class mod_user extends Mod_base {
     public function __construct() {
         parent::__construct() ;
     }
-    /**
-     * это передача атрибутов из контроллера
-     */
-    public function setParameters($parameters) {
-        parent::setParameters($parameters) ;
-    }
-
-    /**
+   /**
      * метод определения собственных свойств из параметров
      */
     protected function init() {

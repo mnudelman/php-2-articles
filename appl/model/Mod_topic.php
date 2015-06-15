@@ -20,12 +20,6 @@ class Mod_topic extends Mod_base {
        parent::__construct() ;
    }
     /**
-     * это передача атрибутов пофиля из контроллера
-     */
-    public function setParameters($parameters) {
-        parent::setParameters($parameters) ;
-    }
-    /**
      *  определение собственных свойств из параметров
      */
     protected function init() {

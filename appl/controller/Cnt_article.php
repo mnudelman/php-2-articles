@@ -26,11 +26,11 @@ class Cnt_article extends Cnt_base {
     private $dirArticle ;
     //---------------------------------------------------------------//
 
-    public function __construct($getArray,$postArray) {
+    public function __construct() {
         $this->URL_OWN = TaskStore::$htmlDirTop.'/index.php?cnt=Cnt_article' ;
         $this->htmlDirTop = TaskStore::$htmlDirTop ;
         $this->dirArticle = TaskStore::$dirArticleHeap ;
-        parent::__construct($getArray,$postArray) ;
+        parent::__construct() ;
 
     }
     protected function prepare() {

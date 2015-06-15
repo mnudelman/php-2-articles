@@ -14,6 +14,6 @@
     <?=$partArticleEditTable;?>
     </div>
     <div id="footerHalfEdit">
-     <?=$artArticleEditCommands;?>
+     <?=$partArticleEditCommands;?>
     </div>
 </form>

@@ -22,8 +22,8 @@ class Cnt_profile extends Cnt_base {
     private $URL_DEFAULT ;               // адрес перехода на  cnt_default
     private $profileEditFlag = false ;      // признак редактирования профиля - сохраняемый
     //-----------------------------------//
-    public function __construct($getArray,$postArray) {
-     parent::__construct($getArray,$postArray) ;
+    public function __construct() {
+     parent::__construct() ;
     }
     protected function prepare() {
         $this->URL_OWN = TaskStore::$htmlDirTop.'/index.php?cnt=Cnt_profile' ;
@@ -84,7 +84,7 @@ class Cnt_profile extends Cnt_base {
      * альтернатива viewGo
      * Через  $pListGet , $pListPost можно передать новые параметры
      */
-    public function getForwardCntName(&$plistGet,&$pListPost) {
+    public function getForwardCntName() {
         $plistGet = [] ;
         $plistPost = [] ;
         $this->taskParms->setParameters($plistGet,$plistPost) ;

@@ -83,9 +83,9 @@ class Cnt_navigator extends Cnt_base
      * альтернатива viewGo
      * Через  $pListGet , $pListPost можно передать новые параметры
      */
-    public function getForwardCntName(&$plistGet, &$pListPost)
+    public function getForwardCntName()
     {
-        parent::getForwardCntName($plistGet, $pListPost);
+        parent::getForwardCntName();
     }
    /**
    * подготовка и вывод представления

@@ -24,10 +24,10 @@ class Cnt_topic extends Cnt_base {
     //--------------------------------------------//
     private $articleStatEdit ;
 
-    public function __construct($getArray,$postArray) {
+    public function __construct() {
         $this->URL_OWN = TaskStore::$htmlDirTop.'/index.php?cnt=Cnt_topic' ;
 
-        parent::__construct($getArray,$postArray) ;
+        parent::__construct() ;
     }
     protected function prepare() {
    //     $this->mod->setParameters($this->parameters) ;  // все параметры в модель
@@ -70,7 +70,7 @@ class Cnt_topic extends Cnt_base {
      * альтернатива viewGo
      * Через  $pListGet , $pListPost можно передать новые параметры
      */
-    public function getForwardCntName(&$plistGet,&$pListPost) {
+    public function getForwardCntName() {
         $plistGet = [] ;
         $plistPost = [] ;
         if ($this->forwardCntName == $this->CNT_ARTICLE) {

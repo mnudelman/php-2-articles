@@ -25,14 +25,7 @@ class Mod_profile extends Mod_base {
     public function __construct() {
         parent::__construct() ;
     }
-
-    /**
-     * это передача атрибутов пофиля из контроллера
-     */
-    public function setParameters($parameters) {
-        parent::setParameters($parameters) ;
-    }
-    /**
+  /**
      *  определение собственных свойств из параметров
      */
     protected function init() {

@@ -19,6 +19,7 @@ abstract class Mod_base {
         }
         $this->taskParms = TaskParameters::getInstance() ;
         $this->parameters = $this->taskParms->getParameters() ;
+        $this->init() ;
     }
     /**
      * это передача атрибутов из контроллера
