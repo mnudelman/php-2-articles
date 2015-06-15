@@ -9,8 +9,7 @@
 class Cnt_article extends Cnt_base {
     protected $msg ;    // сообщения класса - объект Message
     protected $viewDriver ;       // объект класса viewDriver
-    protected $parListGet = [] ;  // параметры класса
-    protected $parListPost = [] ;  // параметры класса
+    protected $parameters = [] ;  // параметры класса
     protected $msgTitle = '' ;
     protected $msgName = '' ;
     protected $modelName = 'Mod_article' ;
@@ -36,18 +35,20 @@ class Cnt_article extends Cnt_base {
     }
     protected function prepare() {
         //------- работа   ------------//
-        $this->parListPost['dirArticle'] = $this->dirArticle ; // в параметры
-        $this->mod->setParameters($this->parListPost) ; // параметры в модель
-        if (isset($this->parListPost['show']) || isset($this->parListGet['show'])) {   // просмотр
+        //$this->parameters['dirArticle'] = $this->dirArticle ; // в параметры
+        //$this->mod->setParameters($this->parameters) ; // параметры в модель
+        $this->taskParms->setParameter('dirArticle',$this->dirArticle) ;
+
+        if (isset($this->parameters['show']) || isset($this->parListGet['show'])) {   // просмотр
             $this->forwardCntName = $this->FORWARD_CNT_NAVIGATOR ;  // передача управления для
         }
-       if (isset($this->parListPost['save'])) {   // сохранить и выйти
+       if (isset($this->parameters['save'])) {   // сохранить и выйти
             $this->mod->saveArticle() ;
         }
-        if (isset($this->parListPost['add'])) {   // добавить статьи
+        if (isset($this->parameters['add'])) {   // добавить статьи
             $this->mod->addArticle() ;
         }
-        if (isset($this->parListPost['del'])) {   // удалить отмеченные
+        if (isset($this->parameters['del'])) {   // удалить отмеченные
             $this->mod->delCheckedArticle() ;
         }
         parent::prepare() ;
@@ -67,9 +68,10 @@ class Cnt_article extends Cnt_base {
      * альтернатива viewGo
      * Через  $pListGet , $pListPost можно передать новые параметры
      */
-    public function getForwardCntName(&$plistGet,&$plistPost) {
+    public function getForwardCntName() {
         $plistGet = [] ;
-       $plistPost = [] ;
+        $plistPost = [] ;
+        $this->taskParms->setParameters($plistGet,$plistPost) ;
         return $this->forwardCntName ;
     }
      /**

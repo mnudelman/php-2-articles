@@ -23,13 +23,7 @@ class Mod_article extends Mod_base {
     public function __construct() {
         parent::__construct() ;
     }
-    /**
-     * это передача атрибутов пофиля из контроллера
-     */
-    public function setParameters($parameters) {
-        parent::setParameters($parameters) ;
-    }
-    protected function init() {
+     protected function init() {
         $this->articleStatEdit = (isset($this->parameters['edit'])) ?
             TaskStore::ARTICLE_STAT_EDIT : TaskStore::ARTICLE_STAT_SHOW ;
         $this->currentTopicId = TaskStore::getParam('topicId') ;

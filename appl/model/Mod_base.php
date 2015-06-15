@@ -9,6 +9,7 @@ abstract class Mod_base {
     protected $db = false ;             // объект класса для связи с БД
     protected $dbClass = false ;        //  имя класса для работы с БД
     protected $parameters = []; // параметры, принимаемые от контроллера
+    protected $taskParms ;      // объект класса   TaskParameters - параметры задачи
     //--------------------------//
     public function __construct() {
         $this->msg = Message::getInstace() ;
@@ -16,14 +17,13 @@ abstract class Mod_base {
             $dbClass = $this->dbClass ;
             $this->db = new $dbClass() ;
         }
+        $this->taskParms = TaskParameters::getInstance() ;
+        $this->parameters = $this->taskParms->getParameters() ;
     }
     /**
      * это передача атрибутов из контроллера
      */
-    public function setParameters($parameters) {
-        $this->parameters = $parameters;
-        $this->init();
-    }
+
 
     /**
      *  определение собственных свойств из параметров

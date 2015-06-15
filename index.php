@@ -12,8 +12,9 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL ^ E_NOTICE);
 header('Content-type: text/html; charset=utf-8');
 include_once __DIR__ . '/local.php';
-?>
-<?php
+// загружаем параметры---//
+$taskPar = TaskParameters::getInstance() ;
+$taskPar->setParameters($_POST,$_GET) ;
 // Загружаем router
 $router = new Router();
 // запускаем контроллер

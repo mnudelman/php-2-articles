@@ -6,8 +6,7 @@
 
 class Cnt_about extends Cnt_base {
     protected $msg ;    // сообщения класса - объект Message
-    protected $parListPost = [] ;  // параметры класса
-    protected $parListGet = [] ;  // параметры класса
+    protected $parameters = [] ;  // параметры класса
     protected $msgTitle = '' ;
     protected $modelName = '' ;
     protected $mod ;             // объект - модель
@@ -26,8 +25,8 @@ class Cnt_about extends Cnt_base {
      * альтернатива viewGo
      * Через  $pListGet , $pListPost можно передать новые параметры
      */
-    public function getForwardCntName(&$plistGet,&$pListPost) {
-        parent::getForwardCntName($plistGet,$pListPost) ;
+    public function getForwardCntName() {
+        parent::getForwardCntName() ;
     }
     /**
      * переход на собственную форму

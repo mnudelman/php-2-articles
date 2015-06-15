@@ -6,7 +6,7 @@
 
 class Cnt_user extends Cnt_base {
     protected $msg ;    // сообщения класса - объект Message
-    protected $parListPost = [] ;  // параметры класса
+    protected $parameters = [] ;  // параметры класса
     protected $parListGet = [] ;  // параметры класса
     protected $subController = false ; // контроллер уровня +1
     protected $msgTitle = '' ;
@@ -33,24 +33,26 @@ class Cnt_user extends Cnt_base {
     protected function prepare() {
         $this->mod->setUrlProfile($this->URL_PROFILE) ;
 
-        if (isset($this->parListPost['exit'])) {              // выход - возврат на главную
+        if (isset($this->parameters['exit'])) {              // выход - возврат на главную
             $this->forwardCntName = $this->CNT_HOME ;
-        }elseif (isset($this->parListPost['profile']) ) {    //  переход в профиль
+        }
+
+        if (isset($this->parameters['profile']) ) {    //  переход в профиль
             if ($this->mod->isGoProfile()) {
                 $this->forwardCntName = $this->CNT_PROFILE ;
                 $this->profileStat = TaskStore::PROFILE_STAT_EDIT ;
 
             }
-        }elseif (isset($this->parListPost['registration']))  {  // первичная регистрация
+        }
+
+        if (isset($this->parameters['registration']))  {  // первичная регистрация
             $this->forwardCntName = $this->CNT_PROFILE ;
             $this->profileStat = TaskStore::PROFILE_STAT_REGISTRATION ;
         }
 
-        elseif (isset($this->parListPost['enter'])  ) {     // ввод login,passworf
-            $login = $this->parListPost['login'];
-            $password = $this->parListPost['password'];
-            $this->mod->setLogin($login) ;
-            $this->mod->setPassword($password) ;
+        if (isset($this->parameters['enter'])  ) {     // ввод login,passworf
+            $this->mod->setLogin($this->parameters['login']) ;
+            $this->mod->setPassword($this->parameters['password']) ;
             if ($this->mod->isUserLoginSuccessful()) {           // вход выполнен
                 $this->forwardCntName = $this->CNT_HOME;
             }
@@ -72,6 +74,7 @@ class Cnt_user extends Cnt_base {
                 $plistGet = ['edit' => false];
             }
         }
+        $this->taskParms->setParameters($plistGet) ;
         return $this->forwardCntName ;
     }
     /**

@@ -19,11 +19,15 @@ class TaskParameters {
         }
         return self::$instance ;
     }
-    public function setParameters($parameters) {
+    public function setParameters($parameters,$parameters2 = false) {
         if (is_array($parameters)) {
             $this->taskParameters = $parameters;
         }else {
             $this->taskParameters = [] ;
+        }
+        if (is_array($parameters2)) {
+            $this->addParameters($parameters2) ;
+
         }
     }
     /**

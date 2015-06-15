@@ -9,7 +9,8 @@ abstract class Cnt_base
     protected $msg;              // сообщения  - объект Message
     protected $viewDiver ;       // объект класса ViewDriver
     protected $parListGet = [];  // параметры класса - аналог $_GET
-    protected $parListPost = []; // параметры класса - аналог $_POST
+    protected $parameters = []; // параметры класса - аналог $_POST,$_GET
+    protected $taskParms ;      //  объект TaskParameters - параметры задачи
     protected $modelName = '';   // имя класса-модели
     protected $mod;              // объект -модель
     protected $classForView = false;  //  класс для формирования шаблона
@@ -19,7 +20,7 @@ abstract class Cnt_base
     protected $URL_OWN = false;     // адрес возврата в текущий контроллер
 
     //--------------------------------------------------//
-    public function __construct($getArray, $postArray)
+    public function __construct()
     {
         $this->msg = Message::getInstace() ;
         $this->viewDiver = new ViewDriver() ;
@@ -30,8 +31,8 @@ abstract class Cnt_base
         if (!empty($this->nameForStore)) {
             $this->ownStore = TaskStore::getParam($this->nameForStore); //  взять параметры из TaskStore
         }
-        $this->parListGet = $getArray;
-        $this->parListPost = $postArray;
+        $this->taskParms = TaskParameters::getInstance() ;
+        $this->parameters = $this->taskParms->getParameters() ;
         $this->prepare();
     }
 
@@ -62,10 +63,11 @@ abstract class Cnt_base
      * альтернатива viewGo
      * Через  $pListGet , $pListPost можно передать новые параметры
      */
-    public function getForwardCntName(&$plistGet, &$pListPost)
+    public function getForwardCntName()
     {
         $plistGet = [];
         $plistPost = [];
+        $this->taskParms->setParameters($plistGet,$plistPost) ;
         return $this->forwardCntName;
     }
 

@@ -6,8 +6,7 @@
 
 class Cnt_profile extends Cnt_base {
     protected $msg ;    // сообщения класса - объект Message
-    protected $parListGet = [] ;  // параметры класса
-    protected $parListPost = [] ;  // параметры класса
+    protected $parameters = [] ;  // параметры класса
     protected $msgTitle = '' ;
     protected $msgName = '' ;
     protected $modelName = 'Mod_profile' ;
@@ -35,24 +34,33 @@ class Cnt_profile extends Cnt_base {
 
 
 
-            if ($this->profileEditFlag) {
-                $this->parListPost['edit'] = true ;    // добавим в общий список параметров
-            }else {
-                $this->parListPost['edit'] = false ;    // добавим в общий список параметров
-            }
+//            if ($this->profileEditFlag) {
+//                $this->parameters['edit'] = true ;    // добавим в общий список параметров
+//            }else {
+//                $this->parameters['edit'] = false ;    // добавим в общий список параметров
+//            }
+            $this->taskParms->setParameter('edit',$this->profileEditFlag) ;
+
         }
 
-        if (isset($this->parListGet['edit'])) {    // вход для редактирования
-            $pG = $this->parListGet['edit'] ;
-            $this->parListPost['edit'] = $pG ;    // добавим в общий список параметров
-            $this->profileEditFlag = $pG ;
+//        if (isset($this->parListGet['edit'])) {    // вход для редактирования
+//            $pG = $this->parListGet['edit'] ;
+//            $this->parameters['edit'] = $pG ;    // добавим в общий список параметров
+//            $this->profileEditFlag = $pG ;
+//        }
+        if (isset($this->parameters['edit'])) {    // вход для редактирования
+            $this->profileEditFlag = $this->parameters['edit'] ;
         }
-        $this->parListPost['urlDefault'] = $this->URL_DEFAULT ;
-        $this->mod->setParameters($this->parListPost) ; // параметры-реквизиты в модель
 
-       if (isset($this->parListPost['exit'])) {    // выйти
+//        $this->parameters['urlDefault'] = $this->URL_DEFAULT ;
+        $this->taskParms->setParameter('urlDefault',$this->URL_DEFAULT) ;
+//        $this->mod->setParameters($this->parameters) ; // параметры-реквизиты в модель
+
+       if (isset($this->parameters['exit'])) {    // выйти
             $this->forwardCntName = $this->CNT_HOME ;
-        }elseif (isset($this->parListPost['save'])) {    // создать / обновить профиль пользователя
+        }
+
+        if (isset($this->parameters['save'])) {    // создать / обновить профиль пользователя
             $this->mod->saveProfile() ;
         }
         parent::prepare() ;
@@ -79,6 +87,7 @@ class Cnt_profile extends Cnt_base {
     public function getForwardCntName(&$plistGet,&$pListPost) {
         $plistGet = [] ;
         $plistPost = [] ;
+        $this->taskParms->setParameters($plistGet,$plistPost) ;
         return $this->forwardCntName ;
     }
     public function viewGo() {      // атрибуты для формы

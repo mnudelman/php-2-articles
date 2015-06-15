@@ -6,7 +6,7 @@
 class Cnt_topic extends Cnt_base {
     protected $msg ;    // сообщения класса - объект Message
     protected $parListGet = [] ;  // параметры класса
-    protected $parListPost = [] ;  // параметры класса
+    protected $parameters = [] ;  // параметры класса
     protected $msgTitle = '' ;
     protected $msgName = '' ;
     protected $modelName = 'Mod_topic' ;
@@ -30,26 +30,26 @@ class Cnt_topic extends Cnt_base {
         parent::__construct($getArray,$postArray) ;
     }
     protected function prepare() {
-        $this->mod->setParameters($this->parListPost) ;  // все параметры в модель
+   //     $this->mod->setParameters($this->parameters) ;  // все параметры в модель
 
-        if (isset($this->parListPost['exit'])) {      // выход (в "главный" index )
+        if (isset($this->parameters['exit'])) {      // выход (в "главный" index )
             $this->forwardCntName = $this->CNT_HOME ;
         }
 
-        if (isset($this->parListPost['changeStat'])) {       // сменить режим ( SHOW <-> EDIT )
+        if (isset($this->parameters['changeStat'])) {       // сменить режим ( SHOW <-> EDIT )
             $this->mod->changeStat();
         }
 
-        if (isset($this->parListPost['goShow'])) {   //   в просмотр альбома
+        if (isset($this->parameters['goShow'])) {   //   в просмотр альбома
             $this->forwardCntName = $this->CNT_ARTICLE;
             $this->articleStatEdit = TaskStore::ARTICLE_STAT_SHOW;
         }
-        if (isset($this->parListPost['editArticle'])) {   //   редактировать
+        if (isset($this->parameters['editArticle'])) {   //   редактировать
             $this->forwardCntName = $this->CNT_ARTICLE;
             $this->articleStatEdit = TaskStore::ARTICLE_STAT_EDIT ;
         }
 
-        if (isset($this->parListPost['addTopicExec'])) {   //   добавить в список новыйАльбом
+        if (isset($this->parameters['addTopicExec'])) {   //   добавить в список новыйАльбом
             $this->mod->addTopic();
         }
 
@@ -80,6 +80,7 @@ class Cnt_topic extends Cnt_base {
                 $plistGet = ['edit' => true] ;
             }
         }
+        $this->taskParms->setParameters($plistGet) ;
         return $this->forwardCntName ;
     }
     /**

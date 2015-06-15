@@ -28,3 +28,10 @@ echo 'a:'.$taskPar->getParameter('a').'<br>' ;
 echo 'z:'.$taskPar->getParameter('z').'<br>' ;
 $taskPar->setParameter('z',26) ;
 echo 'z:'.$taskPar->getParameter('z').'<br>' ;
+
+echo 'сразу 2 списка параметров:'.TaskStore::LINE_FEED ;
+$parameters = ['a' =>1, 'b' =>2 ] ;
+$addParameters = ['c' => 3,'d'=>4] ;
+$taskPar->setParameters($parameters,$addParameters) ;
+$newPar = $taskPar->getParameters() ;
+var_dump($newPar) ;

@@ -10,7 +10,7 @@ class Cnt_navigator extends Cnt_base
     protected $viewDriver ;                   // объект класса ViewDriver -
     protected $msg;                           // сообщения  - объект Message
     protected $parListGet = [];               // параметры класса - аналог $_GET
-    protected $parListPost = [];              // параметры класса - аналог $_POST
+    protected $parameters = [];              // параметры класса - аналог $_POST
     protected $modelName = 'Mod_navigator';   // имя класса-модели
     protected $mod;                           // объект-модель
     protected $parForView = [];               // параметры для передачи view
@@ -25,9 +25,9 @@ class Cnt_navigator extends Cnt_base
     private $DIR_VIEW ;
     private $DIR_LAYOUT ;
 
-    public function __construct($getArray, $postArray)
+    public function __construct()
     {
-        parent::__construct($getArray, $postArray);
+        parent::__construct();
         $this->DIR_TOP =TaskStore::$dirTop ;
         $this->HTML_DIR_TOP = TaskStore::$htmlDirTop ;
         $this->DIR_VIEW = TaskStore::$dirView ;
@@ -37,18 +37,22 @@ class Cnt_navigator extends Cnt_base
     protected function prepare() {
 
         $this->URL_OWN = TaskStore::$htmlDirTop . '/index.php?cnt=Cnt_navigator';
+
         if (isset($this->ownStore[$this->currentTopicId])) {
             $currentNavStore = $this->ownStore[$this->currentTopicId];
-            $this->parListPost['currentNavStore'] = $currentNavStore ;// в параметры
+            $this->parameters['currentNavStore'] = $currentNavStore ;// в параметры
         }
-        if (isset($this->parListGet['page'])) {
-            $this->parListPost['page'] = $this->parListGet['page'];// в параметры
-        }
-        if (isset($this->parListGet['articleid'])) {   // прямая ссылка на статью
-            $this->parListPost['articleid'] = $this->parListGet['articleid'];// в параметры
-        }
-        $this->mod->setParameters($this->parListPost) ; // параметры в модель
-        if (isset($this->parListPost['topicSelect'])) {    // смена темы
+
+//        if (isset($this->parameters['page'])) {
+//            $this->parameters['page'] = $this->parListGet['page'];// в параметры
+//        }
+//        if (isset($this->parListGet['articleid'])) {   // прямая ссылка на статью
+//            $this->parameters['articleid'] = $this->parListGet['articleid'];// в параметры
+//        }
+//        $this->mod->setParameters($this->parameters) ; // параметры в модель
+
+
+        if (isset($this->parameters['topicSelect'])) {    // смена темы
             $this->mod->currentTopicSave() ;
         }
         $this->mod->navExecute() ;
