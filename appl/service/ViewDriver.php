@@ -131,8 +131,6 @@ class ViewDriver
            $extension = (empty($pi['extension'])) ? 'php' : $pi['extension'] ;
 
            $includeFile = $pi['dirname'].'/'.$pi['filename'].'.'.$extension ;
-//           $includeFile = $view['dir'] .'/'. $view['file'].
-//                                                 (empty($extension) ? '.php': '') ;
            $pars = $view['parameters'];
            $this->endedViews[$viewName] =
                $this->template($includeFile, $pars, $parameterComponents);
