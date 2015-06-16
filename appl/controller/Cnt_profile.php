@@ -29,6 +29,8 @@ class Cnt_profile extends Cnt_base {
         $this->URL_OWN = TaskStore::$htmlDirTop.'/index.php?cnt=Cnt_profile' ;
         $this->URL_DEFAULT = TaskStore::$htmlDirTop.'/index.php?cnt=Cnt_default' ;
 
+        $this->mod->setUrlDefault($this->URL_DEFAULT) ;
+
         if (isset($this->ownStore['profileEditFlag'])) {
             $this->profileEditFlag = $this->ownStore['profileEditFlag'] ;
             $this->taskParms->setParameter('edit',$this->profileEditFlag) ;

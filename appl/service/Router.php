@@ -3,13 +3,11 @@
  * Выбирает компонент контроллера, которому надо передать управление
  * Контроллер должен погружаться по autoload
  *  rooter только запускает контроллер.
- * Все остальное(обработка $_GET, $_POST) выполняет контроллер.
+ * Всю остальную обработку выполняет контроллер.
  */
 class Router {
     private $controllerName ;    // текущий котроллер
     private $DEFAULT_NAME =  'Cnt_default' ;
-    private $paramListGet = [] ;
-    private $paramListPost = [] ;
     private $msg ;          // объект-сообщение
     private $taskParms ;    // объект класса TaskParameters - параметры задачи
     //-----------------------------------//
@@ -31,6 +29,6 @@ class Router {
             }
             break ;
         }
-        $controller->viewGo() ;   // вывод формы контроллера
+        $controller->viewGo() ;   // формировать представление
     }
 }

@@ -24,6 +24,7 @@ class Cnt_article extends Cnt_base {
     private $FORWARD_CNT_NAVIGATOR = 'Cnt_navigator' ; // имя для передачи управления
     private $htmlDirTop ;
     private $dirArticle ;
+    private $URL_DEFAULT = 'Cnt_default'  ;
     //---------------------------------------------------------------//
 
     public function __construct() {
@@ -32,6 +33,12 @@ class Cnt_article extends Cnt_base {
     }
     protected function prepare() {
         //------- работа   ------------//
+        // Допуск к редактированию
+        $userStatus = TaskStore::getParam('userStatus') ;
+        if ($this->userStatus < TaskStore::USER_STAT_USER) { // доступ к редактированию
+           $this->forwardCntName = $this->URL_DEFAULT ;
+            return ;
+        }
         $this->URL_OWN = TaskStore::$htmlDirTop.'/index.php?cnt=Cnt_article' ;
         $this->htmlDirTop = TaskStore::$htmlDirTop ;
         $this->dirArticle = TaskStore::$dirArticleHeap ;

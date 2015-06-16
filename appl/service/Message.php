@@ -1,6 +1,8 @@
 <?php
 /**
  * Формирователь сообщений
+ * класс реализует singleton
+ * Все сообщения попадают в один список
  */
 class Message {
     private $messages = [] ;
@@ -18,25 +20,8 @@ class Message {
         return self::$instance ;
     }
     public function addMessage($text) {
-        if(is_array($text)){
-            $this->keys = 'ARRAY:' ;
-            $this->addListMessage($text) ;
-        }else {
             $this->messages[] = $text ;
-        }
-
     }
-    private function addListMessage($textList) {
-        foreach($textList as $k=>$m) {
-            $this->keys .= ':key:'.$k ;
-            if (is_array($m)){
-                $this->addListMessage($m) ;
-            }else {
-                $this->messages[] = $this->keys.'-mean:'.$m ;
-            }
-        }
-    }
-
     public function getMessages() {
         return $this->messages ;
     }

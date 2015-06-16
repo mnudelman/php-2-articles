@@ -1,7 +1,7 @@
 <?php
 /**
  *   Подключение к БД
- * Time: 18:28
+ * singleton - подключение единое для всех
  */
 
 class DbConnector {

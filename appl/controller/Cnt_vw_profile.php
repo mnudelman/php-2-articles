@@ -29,7 +29,8 @@ class Cnt_vw_profile extends Cnt_vw_base {
             'profileEditFlag' => $this->mod->getEditFlag(),
             'successfulSave'  => $this->mod->getSuccessful(),
             'profile'         => $this->mod->getProfile(),
-            'profileError'    => $this->mod->getError() ] ;
+            'profileError'    => $this->mod->getError(),
+            'monthList'       => $this->mod->getMonthName() ] ;
         $components = false;
         $dir = $this->DIR_VIEW;
         $file = 'vw_userProfile';

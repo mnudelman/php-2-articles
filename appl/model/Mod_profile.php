@@ -21,6 +21,8 @@ class Mod_profile extends Mod_base {
     private $FIELDS_LIST =                   // список полей профиля
             'firstname,middlename,lastname,fileFoto,tel,email,sex,birthday' ;
     private $URL_DEFAULT ;                   // адрес начальной страницы
+    private $MONTH_NAME = ['январь','февраль','март','апрель','май','июнь','июль','август',
+                            'сентябрь','октябрь','ноябрь','декабрь'] ;
     //------------------------------//
     public function __construct() {
         parent::__construct() ;
@@ -37,7 +39,6 @@ class Mod_profile extends Mod_base {
             $this->login = $this->parameters['login'] ;
             $this->password = $this->parameters['password'] ;
         }
-        $this->URL_DEFAULT = $this->parameters['urlDefault'] ;
     }
 
     /**
@@ -51,6 +52,9 @@ class Mod_profile extends Mod_base {
             $this->login = TaskStore::getParam('userLogin') ;
             $this->password = TaskStore::getParam('password') ;
         }
+    }
+    public function setUrlDefault($url) {
+        $this->URL_DEFAULT = $url ;
     }
     /**
      * сохраняет профиль при первичной регистрации или изменениях
@@ -156,5 +160,9 @@ class Mod_profile extends Mod_base {
     }
     public function getUrlDefault() {
         return $this->URL_DEFAULT ;
+    }
+    public function getMonthName() {
+        return $this->MONTH_NAME ;
+
     }
 }

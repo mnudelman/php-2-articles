@@ -86,8 +86,6 @@ if ($successfulSave && !$profileEditFlag) {
             &nbsp;&nbsp;месяц:
             <select name="birthday_month">
                 <?php
-                $monthList = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь',
-                    'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
                 foreach ($monthList as $i => $month) {
                     $selected = ($i == $profile['birthday_month']) ? "selected" : '';
                     echo '<option value="' . $i . '"  ' . $selected . '>' . $month . '</option>';
