@@ -126,12 +126,20 @@ class ViewDriver
               // $this->executeViews[$viewName] = 'INFO:'.__METHOD__.':'.$viewName.' IS EMPTY !' ;
                continue ;
            }
-           $includeFile = $view['dir'] .'/'. $view['file'].'.php' ;
+           $includeFile = $view['dir'] .'/'. $view['file'] ;
+           $pi = pathinfo($includeFile) ;
+           $extension = (empty($pi['extension'])) ? 'php' : $pi['extension'] ;
+
+           $includeFile = $pi['dirname'].'/'.$pi['filename'].'.'.$extension ;
+//           $includeFile = $view['dir'] .'/'. $view['file'].
+//                                                 (empty($extension) ? '.php': '') ;
            $pars = $view['parameters'];
            $this->endedViews[$viewName] =
                $this->template($includeFile, $pars, $parameterComponents);
        }
+
        echo $this->endedViews['main'] ;
+
     }
     /**
      * Формирование компоненты вывода

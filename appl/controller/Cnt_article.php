@@ -33,12 +33,6 @@ class Cnt_article extends Cnt_base {
     }
     protected function prepare() {
         //------- работа   ------------//
-        // Допуск к редактированию
-        $userStatus = TaskStore::getParam('userStatus') ;
-        if ($this->userStatus < TaskStore::USER_STAT_USER) { // доступ к редактированию
-           $this->forwardCntName = $this->URL_DEFAULT ;
-            return ;
-        }
         $this->URL_OWN = TaskStore::$htmlDirTop.'/index.php?cnt=Cnt_article' ;
         $this->htmlDirTop = TaskStore::$htmlDirTop ;
         $this->dirArticle = TaskStore::$dirArticleHeap ;
@@ -48,7 +42,16 @@ class Cnt_article extends Cnt_base {
         if (isset($this->parameters['show']) || isset($this->parListGet['show'])) {   // просмотр
             $this->forwardCntName = $this->FORWARD_CNT_NAVIGATOR ;  // передача управления для
         }
-       if (isset($this->parameters['save'])) {   // сохранить и выйти
+        else {
+            // Допуск к редактированию
+            if (TaskStore::getParam('userStatus') < TaskStore::USER_STAT_USER) { // доступ к редактированию
+                $this->forwardCntName = $this->URL_DEFAULT;
+                return;
+            }
+        }
+
+
+        if (isset($this->parameters['save'])) {   // сохранить и выйти
             $this->mod->saveArticle() ;
         }
         if (isset($this->parameters['add'])) {   // добавить статьи
