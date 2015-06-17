@@ -115,7 +115,10 @@ abstract class Cnt_base
     protected function viewTreeTraversal($rootName) {
         $obj = $this->forView ;
         $method = $rootName.'Def' ;
-        if (is_callable([$obj,$method],false,$callable_name) ) {
+        //if (is_callable([$obj,$method],false,$callable_name) ) {
+
+        if (method_exists($obj,$method)) {
+
             $viewComp = $obj->$method() ;
             $components = $viewComp['components'] ;
             if(is_array($components)){
