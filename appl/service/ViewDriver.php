@@ -40,8 +40,9 @@ class ViewDriver
 
     /**
      * Разрешить ссылки на компоненты
-     * представления с разрешенными компонентами переносятся
-     * в $this->allowedViews
+     * представления  переносятся
+     * в $this->allowedViews даже если была ошибка
+     * в компонентах
      */
     public function allowViews() {
         $kStep = 0 ;
@@ -49,10 +50,11 @@ class ViewDriver
         while ( !$allowSuccessful &&
                             $kStep++ <= $this->MAX_ALLOW_STEPS) {
             foreach ($this->notAllowedViews as $key => $viewElem) {
+                $this->allowedViews[$viewElem['name']] = $viewElem ;
                 if( !$this->isAllowViewElem( $viewElem['components']) ) {
                     continue ;
                 }
-                    $this->allowedViews[$viewElem['name']] = $viewElem ;
+                //    $this->allowedViews[$viewElem['name']] = $viewElem ;
                     unset($this->notAllowedViews[$key]) ;
             }
         }

@@ -60,6 +60,8 @@ class Mod_profile extends Mod_base {
      * сохраняет профиль при первичной регистрации или изменениях
      */
     public function saveProfile() {
+        $this->parameters = $this->taskParms->getParameters() ; // обновить параметры
+        $this->init() ;
         $this->profile =  $this->profileIni();   // массив - список полей
         if (!$this->profileEditFlag) {
             if ((empty($this->login) || empty($this->password)) ) { // при редактировании не учитывается
@@ -114,18 +116,25 @@ class Mod_profile extends Mod_base {
         $this->profile['lastname']   = $this->parameters['lastname'];
         $this->profile['email']      = $this->parameters['email'];
         $this->profile['sex']        = $this->parameters['sex'];
-        $year = $this->parameters['birthday_year'];
-        $month = $this->parameters['birthday_month'];
-        $day = $this->parameters['birthday_day'];
-        $tm = mktime(0, 0, 0, $month, $day, $year);
-        $this->profile['birthday']   = date('c', $tm);       // это хранится в БД
+        $this->profile['birthday']   = $this->makeBirthday();       // это хранится в БД
 
-        $this->successfulSave = $this->db->putProfile($this->login, $this->profile);   // profile БД
+        $this->successfulSave = $this->db->putProfile($this->login, $this->profile);
         // эти поля не заносятся
         $this->profile['birthday_year']  = $this->parameters['birthday_year'];
         $this->profile['birthday_month'] = $this->parameters['birthday_month'];
         $this->profile['birthday_day']    = $this->parameters['birthday_day'];
 
+    }
+
+    /**
+     * построить датуРождения
+     */
+    private function makeBirthday() {
+        $year = $this->parameters['birthday_year'];
+        $month = $this->parameters['birthday_month'];
+        $day = $this->parameters['birthday_day'];
+        $tm = mktime(0, 0, 0, $month, $day, $year);
+        return  date('c', $tm);       // это хранится в БД
     }
 
     /**

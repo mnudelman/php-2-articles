@@ -65,15 +65,6 @@ class Cnt_article extends Cnt_base {
     }
 ////////////////////////////////////////////////////////////////////////////////////////
     /**
-     *  построить массив $ownStore - собственные параметры
-     */
-    protected function buildOwnStore() {
-
-    }
-    protected function saveOwnStore() {
-        parent::saveOwnStore() ;
-    }
-    /**
      * выдает имя контроллера для передачи управления
      * альтернатива viewGo
      * Через  $pListGet , $pListPost можно передать новые параметры

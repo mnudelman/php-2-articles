@@ -31,9 +31,6 @@ class Db_user extends Db_base {
 
     /**
      * запоминает пользователя в БД
-     * @param $userLogin
-     * @param $password
-     * @return bool
      */
     public function putUser($userLogin,$password) {
         $pdo = $this->pdo ;
@@ -74,8 +71,6 @@ class Db_user extends Db_base {
 
     /**
      * возвращает  profile пользователя
-     * @param $userLogin
-     * @return array
      */
     public function getProfile($userLogin) {
         $pdo = $this->pdo ;
@@ -97,22 +92,30 @@ class Db_user extends Db_base {
             $profile[$fldName] = $fldMean;
         }
 // birthday : YYYY-mm_ddT....
-        $bD = $profile['birthday'];
-        $arr = explode('-', $bD);
-        $profile['birthday_year'] = $arr[0];
-        $profile['birthday_month'] = $arr[1];
-        $dT = explode('T', $arr[2]);
-        $profile['birthday_day'] = $dT[0];
+        $birthdayComponents = $this->getDateComponents($profile['birthday']) ;
+        $profile['birthday_year']  = $birthdayComponents['year'];
+        $profile['birthday_month'] = $birthdayComponents['month'];
+        $profile['birthday_day']   = $birthdayComponents['day'];
 
         return $profile;
     }
 
+    /**
+     * разложение типа date на компоненты
+     * date: YYYY-mm-ddT....
+     */
+    private function getDateComponents($date) {
+        $arr = explode('-', $date);
+        $dateComponents = [] ;
+        $dateComponents['year'] = $arr[0];
+        $dateComponents['month'] = $arr[1];
+        $dT = explode('T', $arr[2]);
+        $dateComponents['day'] = $dT[0] ;
+        return $dateComponents ;
+    }
 
     /**
      * сохраняет profile пользователя
-     * @param $userLogin
-     * @param $profile
-     * @return bool
      */
     public function putProfile($userLogin,$profile) {
         $pdo = $this->pdo ;

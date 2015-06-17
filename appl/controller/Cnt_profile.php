@@ -34,6 +34,7 @@ class Cnt_profile extends Cnt_base {
         if (isset($this->ownStore['profileEditFlag'])) {
             $this->profileEditFlag = $this->ownStore['profileEditFlag'] ;
             $this->taskParms->setParameter('edit',$this->profileEditFlag) ;
+            $this->parameters = $this->taskParms->getParameters() ;
         }
 
         if (isset($this->parameters['edit'])) {    // вход для редактирования
@@ -58,14 +59,7 @@ class Cnt_profile extends Cnt_base {
         $this->ownStore = [                  // сохраняемые параметры
             'profileEditFlag' => $this->profileEditFlag  ];
     }
-
-    /**
-     * сохранить массив параметров
-     */
-    protected function saveOwnStore() {
-        parent::saveOwnStore() ;
-    }
-    /**
+   /**
      * выдает имя контроллера для передачи управления
      * альтернатива viewGo
      * Через  $pListGet , $pListPost можно передать новые параметры

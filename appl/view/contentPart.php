@@ -5,5 +5,5 @@
  * Time: 11:08
  */
 ?>
-<?=$partMessage?>
-<?=$partDataContent?>
+<?=$partMessage?>                  <!-- Вывод сообщений -->
+<?=$partDataContent?>              <!-- Содержимое центальной части -->

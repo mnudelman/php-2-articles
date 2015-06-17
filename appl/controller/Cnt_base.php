@@ -13,7 +13,8 @@ abstract class Cnt_base
     protected $taskParms ;      //  объект TaskParameters - параметры задачи
     protected $modelName = '';   // имя класса-модели
     protected $mod;              // объект -модель
-    protected $classForView = false;  //  класс для формирования шаблона
+    protected $classForView = false;  //  имя класса для формирования шаблона
+    protected $forView = false ;      // объект класса $classForView
     protected $nameForStore = ''; // имя строки параметров в TaskStore
     protected $ownStore = [];     // собственные сохраняемые параметры
     protected $forwardCntName = false; // контроллер, которому передается управление
@@ -77,15 +78,16 @@ abstract class Cnt_base
      */
     public function viewGo()
     {
-        $viewDriver = $this->viewDiver ;
+
         $class = $this->classForView;      // вспомогательный класс для формирования представлений
-        $forView = new $class();
-        $forView->setViewDriver($viewDriver) ;
-        $forView->setModel($this->mod);
-        $forView->setViewDriver($viewDriver);
-        $forView->setUrlOwn($this->URL_OWN);
-        $forView->buildViewTree();       // в этом методе в  $viewDriver передаются компоненты
-                                         // для построения дереваПредставлений
+        $this->forView = new $class();
+        $this->forView->setModel($this->mod);
+        $this->forView->setUrlOwn($this->URL_OWN);
+
+        $this->viewTreeTraversal('partMain') ; // остроение дерева представлений
+
+
+        $viewDriver = $this->viewDiver ;
         $viewDriver->allowViews();       // разрешить ссылки на компоненты
         if (!$viewDriver->getAllowSuccessful()) {  // не все компоненты шаблона определены
             $notAllowView = $viewDriver->getNotAllowedViews();
@@ -94,8 +96,9 @@ abstract class Cnt_base
                     'ERROR:' . __METHOD__ . ':неопределенные компоненты представления:' .
                                                                               $view['name']);
             }
-            $this->messageParameterUpdate(); // обновить параметр для вывода сообщений
+
        }
+        $this->messageParameterUpdate(); // обновить параметр для вывода сообщений
         $viewDriver->viewExec();
     }
 
@@ -108,5 +111,27 @@ abstract class Cnt_base
         $parName = 'messeges';
         $parValue = $this->msg->getMessages();
         $this->viewDiver->setParameter($viewName, $parName, $parValue);
+    }
+    protected function viewTreeTraversal($rootName) {
+        $obj = $this->forView ;
+        $method = $rootName.'Def' ;
+        if (is_callable([$obj,$method],false,$callable_name) ) {
+            $viewComp = $obj->$method() ;
+            $components = $viewComp['components'] ;
+            if(is_array($components)){
+                foreach($components as $compName) {
+                    $this->viewTreeTraversal($compName) ;
+                }
+            }
+            $this->viewDiver->addView(
+                $viewComp['name'],
+                $viewComp['parameters'],
+                $viewComp['components'],
+                $viewComp['dir'],
+                $viewComp['file']) ;
+        }else {   // error:
+            $this->msg->addMessage('ERROR:'.__METHOD__.':не опрелен метод для компонента:'.
+                $this->classForView.'::'.$method ) ;
+        }
     }
 }

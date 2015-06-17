@@ -1,19 +1,14 @@
 <?php
 /**
- * класс - формирователь представления является дополнением к соответствующему
+ * класс - Данные представления является дополнением к соответствующему
  * классу-контроллеру.
- * Основной метод buildViewTree() обеспечивает передачу данных
- * во ViewDriver для построения дереваПредставлений.
  * Данные формируются в однотипных методах по числу компонент представления.
  * Каждый компонент может иметь собственные копоненты, т.е. дерево
- * может быть произвольного уровня. Добавление компонентов может происходить
- * в произвольном порядке. В дочерних классах отдельные компоненты могут
+ * может быть произвольного уровня. В дочерних классах отдельные компоненты могут
  * отсутствовать или добавлены произвольно новые.
- *
  */
 
 abstract class Cnt_vw_base {
-    protected $vwDriver ;                // объект класса ViewDriver -
     protected $msg;                      // сообщения  - объект Message
     protected $mod ;                     // объект-модель
     protected $URL_OWN;                  // ссылка для формы котроллера
@@ -35,10 +30,6 @@ abstract class Cnt_vw_base {
     public function setModel($model) {
         $this->mod = $model ;
     }
-    public function setViewDriver($vieDriver) {
-        $this->vwDriver = $vieDriver ;
-    }
-
     /**
      * @param $url - адрес собственного контроллера
      */
@@ -46,117 +37,113 @@ abstract class Cnt_vw_base {
         $this->URL_OWN = $url ;
     }
     /**
-     * Формирует все компоненты шаблона
-     */
-    public function buildViewTree() {    //  дерево Представлений
-        $this->partMainDef() ;          //
-        $this->partHeadPartDef() ;      // <head> .. </head>
-        $this->partTopMenuDef() ;       // меню-начало страницы
-        $this->partContentDef() ;       // центральная часть
-        $this->partMessageDef() ;       // сообщения
-        $this->partDataContentDef() ;
-        $this->partFooterDef() ;        // подвал
-        $this->partRightPanelDef() ;    // правая панель
-    }
-
-    /**
      * Корневой шаблон
      */
-    protected function partMainDef() {
-        $name = 'main' ;                      // корень дереваПредставлений
-        $parameters = false ;
-        $components = ['partHeadPart','partTopMenu','partContent','partFooter','partRightPanel'] ;
-        $dir = $this->DIR_LAYOUT ;
-        $file = 'lt_footerHalf' ;             // файл-шаблон
-        $this->vwDriver->addView($name,$parameters,$components,$dir,$file) ;
+    public function partMainDef() {
+        return [
+        'name' => 'main' ,                      // корень дереваПредставлений
+        'parameters' => false ,
+        'components' =>
+        ['partHeadPart','partTopMenu','partContent','partFooter','partRightPanel'],
+        'dir' => $this->DIR_LAYOUT,
+        'file' => ''
+        ] ;
     }
 
     /**
      * формирует тег <head>... </head>
      */
-    protected function partHeadPartDef() {
-        $name = 'partHeadPart' ;                              // тег <head></head>
-        $parameters = [ 'htmlDirTop' => $this->HTML_DIR_TOP ] ;
-        $components = false ;
-        $dir = $this->DIR_VIEW ;
-        $file = 'headPart' ;                                 // файл-шаблон
-        $this->vwDriver->addView($name,$parameters,$components,$dir,$file) ;
+    public function partHeadPartDef() {
+        return [
+        'name' => 'partHeadPart' ,                              // тег <head></head>
+        'parameters' => [ 'htmlDirTop' => $this->HTML_DIR_TOP ] ,
+        'components' => false ,
+        'dir' => $this->DIR_VIEW ,
+        'file' => 'headPart'
+        ] ;
     }
 
     /**
      * меню - начало страницы
      */
-    protected function partTopMenuDef() {
-        $name = 'partTopMenu' ;                              // меню страницы
-        $topicStore  = TaskStore::getParam('topicName') ;
+    public  function partTopMenuDef() {
+        $topicStore = TaskStore::getParam('topicName') ;
         $topicName = ( empty($topicStore)) ? 'тема не выбрана' : $topicStore ;
-        $parameters = [
+
+        return [
+        'name' => 'partTopMenu' ,
+        'parameters' => [
             'htmlDirTop' => $this->HTML_DIR_TOP,
             'topicName' =>  $topicName,
-            'userName'  => TaskStore::getParam('userName') ];
-        $components = false ;
-        $dir = $this->DIR_VIEW ;
-        $file = 'topMenu' ;
-        $this->vwDriver->addView($name,$parameters,$components,$dir,$file) ;
+            'userName'  => TaskStore::getParam('userName') ] ,
+        'components' => false ,
+        'dir' => $this->DIR_VIEW,
+        'file' => 'topMenu'
+        ] ;
     }
 
     /**
      * центральная часть страницы
      */
-    protected function partContentDef() {
-        $name = 'partContent' ;                              // центральный content
-        $parameters = false ;
-        $components = ['partMessage','partDataContent'] ;
-        $dir = $this->DIR_VIEW ;
-        $file = 'contentPart' ;
-        $this->vwDriver->addView($name,$parameters,$components,$dir,$file) ;
+    public function partContentDef() {
+        return [
+        'name' => 'partContent' ,
+        'parameters' => false ,
+        'components' => ['partMessage','partDataContent'] ,
+        'dir' => $this->DIR_VIEW ,
+        'file' => 'contentPart'
+        ] ;
     }
 
     /**
      * Вывод сообщений
      */
-    protected function partMessageDef() {
-        $name = 'partMessage' ;                              // Вывод сообщений
-        $parameters  = ['messages' => $this->msg->getMessages() ] ;
-        $components = false ;
-        $dir = $this->DIR_VIEW ;
-        $file = 'messageForm' ;
-        $this->vwDriver->addView($name,$parameters,$components,$dir,$file) ;
+    public function partMessageDef() {
+        return [
+        'name' => 'partMessage' ,
+        'parameters'  => ['messages' => $this->msg->getMessages() ] ,
+        'components' => false ,
+        'dir' => $this->DIR_VIEW ,
+        'file' => 'messageForm'
+        ] ;
     }
 
     /**
      * свой раздел центральной части
      */
-    protected function partDataContentDef() {
-        $name = 'partDataContent';                           // центральный вывод
-        $parameters = false;
-        $components = false;
-        $dir = $this->DIR_VIEW;
-        $file = 'contentPart';
-        $this->vwDriver->addView($name, $parameters, $components, $dir, $file);
+    public function partDataContentDef__() {
+        return [
+        'name' => 'partDataContent',
+        'parameters' => false ,
+        'components' => false ,
+        'dir' => $this->DIR_VIEW ,
+        'file' => ''
+        ] ;
     }
 
     /**
      * подвал
      */
-    protected function partFooterDef() {
-        $name = 'partFooter';                           // подвал страницы
-        $parameters = false ;
-        $components = false;
-        $dir = $this->DIR_VIEW;
-        $file = '';                                     // пустой файл <-> отсутствие компоненты
-        $this->vwDriver->addView($name, $parameters, $components, $dir, $file);
+    public function partFooterDef__() {
+        return [
+        'name' => 'partFooter',                           // подвал страницы
+        'parameters' => false ,
+        'components' =>  false ,
+        'dir' => $this->DIR_VIEW ,
+        'file' => ''                                     // пустой файл <-> отсутствие компоненты
+        ] ;
     }
 
     /**
      * правая панель
      */
-    protected function partRightPanelDef() {
-        $name = 'partRightPanel';                           // правая панель
-        $parameters = false ;
-        $components = false;
-        $dir = $this->DIR_VIEW;
-        $file = '';
-        $this->vwDriver->addView($name, $parameters, $components, $dir, $file);
+    public function partRightPanelDef__() {
+        return [
+        'name' => 'partRightPanel' ,                           // правая панель
+        'parameters' => false ,
+        'components' => false ,
+        'dir' => $this->DIR_VIEW ,
+        'file' => ''
+        ] ;
     }
 }

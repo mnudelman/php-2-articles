@@ -14,8 +14,6 @@ class Db_article extends Db_base {
     /**
      * Выбрать статьи по заданной теме
      * если тема = пусто, то все
-     * @param $topicid
-     * @return array|bool
      */
     public function getArticlesByTopic($topicid) {
         $pdo = $this->pdo ;
@@ -67,13 +65,10 @@ class Db_article extends Db_base {
 
     /**
      * выбирает атрибуты статей автора
-     * @param $author  - это userLogin
-     * @return array|bool
      */
     function getArticles($author) {
         $pdo = $this->pdo ;
-        $articles = [];   // ['articleid' => ,'title' => ,'annotation'=>,
-                             //   'file'=>,'topics'=>[ ['topicid'=>,'topicname'=>],.. ] ]
+        $articles = [];
         $sql = 'SELECT articleid,
                         userid,
                         title,
@@ -123,7 +118,6 @@ class Db_article extends Db_base {
 
     /**
      * Выбрать темы(рубрики) статьи
-     * @param $articleid
      */
     private function getArticleTopics($articleid) {
         $pdo = $this->pdo ;
@@ -156,8 +150,6 @@ class Db_article extends Db_base {
 
     /**
      * добавить новые темы для статьи
-     * @param $articleid
-     * @param $addTopics
      */
     private function addNewTopics($articleid,$addTopics) {
         $pdo = $this->pdo ;
@@ -179,8 +171,6 @@ class Db_article extends Db_base {
 
     /**
      * убрать несуществующие темы для статьи
-     * @param $articleid
-     * @param $delTopics
      */
     private function delOldTopics($articleid,$delTopics) {
         $pdo = $this->pdo ;
@@ -217,8 +207,6 @@ class Db_article extends Db_base {
      * Помещает в БД списокФайлов-статей и
      * в отдельную таблицу topicarticle и authorarticle
      * @param $author - это login добавляющего статью
-     * @param $articles
-     * @return int
      */
     function putArticles($author,$articles) {
         $pdo = $this->pdo ;
@@ -273,8 +261,6 @@ class Db_article extends Db_base {
 
     /**
      * сохранить темы
-     * @param $articleid      - статья
-     * @param $articleTopics  - темы статьи
      */
     private function putArticleTopics($articleid,$articleTopics) {
         $pdo = $this->pdo ;
@@ -321,9 +307,6 @@ class Db_article extends Db_base {
 
     /**
      * Добавляет связь автор - статья
-     * @param $author
-     * @param $articleid
-     * @return bool
      */
     private function putAuthorArticle($author, $articleid) {
         $pdo = $this->pdo ;
@@ -356,8 +339,6 @@ class Db_article extends Db_base {
 
     /**
      * Удалить из БД списокСтатей
-     * @param $articles
-     * @return int
      */
     function delarticles($articles) {
         $pdo = $this->pdo ;
@@ -377,7 +358,6 @@ class Db_article extends Db_base {
     }
     /**
      * возвращает список тем
-     * @return array
      */
     function getTopic() {
         $pdo = $this->pdo ;
@@ -410,8 +390,6 @@ class Db_article extends Db_base {
 
     /**
      * наличие темы с заданным именем
-     * @param $topicname
-     * @return bool
      */
     function findTopic($topicName){
         $pdo = $this->pdo ;
@@ -429,8 +407,6 @@ class Db_article extends Db_base {
 
     /**
      * опрелить userid по  login
-     * @param $login
-     * @return userid
      */
     function getUserid($login) {
         $pdo = $this->pdo ;
@@ -449,8 +425,6 @@ class Db_article extends Db_base {
 
     /**
      * Добавить новую тему
-     * @param $topicName
-     * @return bool
      */
     function putTopic ($topicName) {
         $pdo = $this->pdo ;
@@ -472,8 +446,6 @@ class Db_article extends Db_base {
 
     /**
      * удалить тему
-     * @param $topicName
-     * @return bool
      */
     function delTopic ($topicName) {
         $pdo = $this->pdo ;
@@ -482,8 +454,6 @@ class Db_article extends Db_base {
 
     /**
      * преобразует  $_FILES в нормальную форму
-     * @param $topName
-     * @return array
      */
     function filesTransform($topName)
     {
