@@ -67,7 +67,7 @@ class Cnt_navigator extends Cnt_base
    /**
    * подготовка и вывод представления
    */
-    public function viewGo() {
+    public function viewGo($test=false) {
         parent::viewGo();
     }
 }

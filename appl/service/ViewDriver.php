@@ -20,21 +20,29 @@ class ViewDriver
     private $endedViews = [] ;         // исполненные представления
     private $allowSuccessful = false ; // успешное разрешение всех компонент
     private $MAX_ALLOW_STEPS = 5 ;     // max число проходов по разрешению ссылок
-    public function __construct() {
+    private static $instance = null ;
+    private function __construct() {
         $this->msg = Message::getInstace() ;
     }
-
+    public static function getInstance() {
+        if (is_null(self::$instance) ) {
+            self::$instance = new self() ;
+        }
+        return self::$instance ;
+    }
     /**
      * Добавить представление
      */
-    public function addView( $name,$parameters,$components,$dir,$viewFile) {
+    public function addView( $name,$parameters,$components,$dir,$viewFile,$path=false) {
         $this->notAllowedViews[] =
          [
             'name'       => $name,        // имя компоненты
             'parameters' => $parameters , // параметры подстановки
             'components' => $components,  // вложенные компоненты
              'dir'       => $dir,         // директорий
-            'file'       => $viewFile     // файл представления
+            'file'       => $viewFile,    // файл представления
+            'path'       => $path,         // путь от корня
+            'ok'         => true           // компонента определна
         ] ;
     }
 
@@ -50,11 +58,15 @@ class ViewDriver
         while ( !$allowSuccessful &&
                             $kStep++ <= $this->MAX_ALLOW_STEPS) {
             foreach ($this->notAllowedViews as $key => $viewElem) {
-                $this->allowedViews[$viewElem['name']] = $viewElem ;
+
+
+
                 if( !$this->isAllowViewElem( $viewElem['components']) ) {
+                    $viewElem['ok'] = false ;
+                    $this->allowedViews[$viewElem['name']] = $viewElem ;
                     continue ;
                 }
-                //    $this->allowedViews[$viewElem['name']] = $viewElem ;
+                    $this->allowedViews[$viewElem['name']] = $viewElem ;
                     unset($this->notAllowedViews[$key]) ;
             }
         }
@@ -85,6 +97,9 @@ class ViewDriver
 
     public function getNotAllowedViews() {
         return $this->notAllowedViews ;
+    }
+    public function getAllowedViews() {
+        return $this->allowedViews ;
     }
 
     /**

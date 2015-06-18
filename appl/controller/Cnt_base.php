@@ -24,7 +24,7 @@ abstract class Cnt_base
     public function __construct()
     {
         $this->msg = Message::getInstace() ;
-        $this->viewDiver = new ViewDriver() ;
+        $this->viewDiver = ViewDriver::getInstance() ;
         $class = $this->modelName;
         if (!empty($class)) {
             $this->mod = new $class();
@@ -76,7 +76,7 @@ abstract class Cnt_base
      * подготовка и вывод представления
      * подготовка выполняется через вспомогательный класс classForView
      */
-    public function viewGo()
+    public function viewGo($testComponents = fasle )
     {
 
         $class = $this->classForView;      // вспомогательный класс для формирования представлений
@@ -84,7 +84,7 @@ abstract class Cnt_base
         $this->forView->setModel($this->mod);
         $this->forView->setUrlOwn($this->URL_OWN);
 
-        $this->viewTreeTraversal('partMain') ; // остроение дерева представлений
+        $this->viewTreeTraversal('partMain',[]) ; // остроение дерева представлений
 
 
         $viewDriver = $this->viewDiver ;
@@ -98,8 +98,10 @@ abstract class Cnt_base
             }
 
        }
-        $this->messageParameterUpdate(); // обновить параметр для вывода сообщений
-        $viewDriver->viewExec();
+        if (!$testComponents) {
+            $this->messageParameterUpdate(); // обновить параметр для вывода сообщений
+            $viewDriver->viewExec();
+        }
     }
 
     /**
@@ -112,26 +114,32 @@ abstract class Cnt_base
         $parValue = $this->msg->getMessages();
         $this->viewDiver->setParameter($viewName, $parName, $parValue);
     }
-    protected function viewTreeTraversal($rootName) {
+    protected function viewTreeTraversal($rootName,$path) {
         $obj = $this->forView ;
         $method = $rootName.'Def' ;
+
         //if (is_callable([$obj,$method],false,$callable_name) ) {
 
         if (method_exists($obj,$method)) {
+
+            array_unshift($path,$rootName) ;
 
             $viewComp = $obj->$method() ;
             $components = $viewComp['components'] ;
             if(is_array($components)){
                 foreach($components as $compName) {
-                    $this->viewTreeTraversal($compName) ;
+                    $this->viewTreeTraversal($compName,$path) ;
                 }
             }
+            array_shift($path) ;
+
             $this->viewDiver->addView(
                 $viewComp['name'],
                 $viewComp['parameters'],
                 $viewComp['components'],
                 $viewComp['dir'],
-                $viewComp['file']) ;
+                $viewComp['file'],
+                $path) ;
         }else {   // error:
             $this->msg->addMessage('ERROR:'.__METHOD__.':не опрелен метод для компонента:'.
                 $this->classForView.'::'.$method ) ;
