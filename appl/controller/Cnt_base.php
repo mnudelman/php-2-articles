@@ -76,7 +76,7 @@ abstract class Cnt_base
      * подготовка и вывод представления
      * подготовка выполняется через вспомогательный класс classForView
      */
-    public function viewGo($testComponents = fasle )
+    public function viewGo($testComponents = false )
     {
 
         $class = $this->classForView;      // вспомогательный класс для формирования представлений

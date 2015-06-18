@@ -72,10 +72,4 @@ class Cnt_topic extends Cnt_base {
         $this->taskParms->setParameters($plistGet) ;
         return $this->forwardCntName ;
     }
-    /**
-     * подготовка и вывод представления
-     */
-    public function viewGo() {
-        parent::viewGo() ;
-    }
 }

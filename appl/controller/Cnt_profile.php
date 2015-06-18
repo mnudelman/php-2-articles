@@ -70,7 +70,4 @@ class Cnt_profile extends Cnt_base {
         $this->taskParms->setParameters($plistGet,$plistPost) ;
         return $this->forwardCntName ;
     }
-    public function viewGo() {      // атрибуты для формы
-        parent::viewGo() ;
-    }
 }

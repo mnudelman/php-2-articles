@@ -15,10 +15,4 @@ class Cnt_default extends Cnt_base {
         $this->msg->addMessage('Для загрузки на сайт собственных статей надо пройти регисрацию');
         $this->msg->addMessage('Подробности о работе сайта пункт меню about');
     }
-    /**
-     * переход на собственную форму
-     */
-    public function viewGo() {
-        parent::viewGo() ;
-    }
 }

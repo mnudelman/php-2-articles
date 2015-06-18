@@ -13,10 +13,4 @@ class Cnt_about extends Cnt_base {
     protected function prepare() {
         parent::prepare() ;
     }
-    /**
-     * переход на собственную форму
-     */
-    public function viewGo() {
-        parent::viewGo() ;
-    }
 }

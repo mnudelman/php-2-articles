@@ -75,11 +75,5 @@ class Cnt_article extends Cnt_base {
         $this->taskParms->setParameters($plistGet,$plistPost) ;
         return $this->forwardCntName ;
     }
-     /**
-      * подготовка и вывод представления
-     */
-    public function viewGo() {
-        parent::viewGo() ;
-    }
 
 }

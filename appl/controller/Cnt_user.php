@@ -76,11 +76,4 @@ class Cnt_user extends Cnt_base {
         $this->taskParms->setParameters($plistGet) ;
         return $this->forwardCntName ;
     }
-    /**
-     * переход на собственную форму
-     */
-    public function viewGo() {
-
-       parent::viewGo() ;
-    }
 }

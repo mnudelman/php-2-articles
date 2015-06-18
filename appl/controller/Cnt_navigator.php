@@ -64,10 +64,4 @@ class Cnt_navigator extends Cnt_base
         // настройки разных тем могут быть разными
         $this->ownStore[$this->currentTopicId] = $this->currentNavStore;
     }
-   /**
-   * подготовка и вывод представления
-   */
-    public function viewGo($test=false) {
-        parent::viewGo();
-    }
 }
