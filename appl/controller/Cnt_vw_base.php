@@ -44,7 +44,7 @@ abstract class Cnt_vw_base {
         'name' => 'main' ,                      // корень дереваПредставлений
         'parameters' => false ,
         'components' =>
-        ['partHeadPart','partTopMenu','partContent','partFooter','partRightPanel'],
+        ['partHeadPart','partTopMenu','partContent'],
         'dir' => $this->DIR_LAYOUT,
         'file' => ''
         ] ;
@@ -108,42 +108,4 @@ abstract class Cnt_vw_base {
         ] ;
     }
 
-    /**
-     * свой раздел центральной части
-     */
-    public function partDataContentDef__() {
-        return [
-        'name' => 'partDataContent',
-        'parameters' => false ,
-        'components' => false ,
-        'dir' => $this->DIR_VIEW ,
-        'file' => ''
-        ] ;
-    }
-
-    /**
-     * подвал
-     */
-    public function partFooterDef__() {
-        return [
-        'name' => 'partFooter',                           // подвал страницы
-        'parameters' => false ,
-        'components' =>  false ,
-        'dir' => $this->DIR_VIEW ,
-        'file' => ''                                     // пустой файл <-> отсутствие компоненты
-        ] ;
-    }
-
-    /**
-     * правая панель
-     */
-    public function partRightPanelDef__() {
-        return [
-        'name' => 'partRightPanel' ,                           // правая панель
-        'parameters' => false ,
-        'components' => false ,
-        'dir' => $this->DIR_VIEW ,
-        'file' => ''
-        ] ;
-    }
 }

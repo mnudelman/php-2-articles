@@ -12,7 +12,7 @@ class Cnt_vw_about extends Cnt_vw_base {
         'name' => 'main',                               // корень дереваПредставлений
         'parameters' => false ,
         'components' =>
-            ['partHeadPart','partTopMenu','partContent','partFooter','partRightPanel'],
+            ['partHeadPart','partTopMenu','partContent',],
         'dir' => $this->DIR_LAYOUT,
         'file' => 'lt_footerNo'                         // файл - шаблон
         ] ;

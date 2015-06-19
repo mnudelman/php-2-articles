@@ -33,7 +33,7 @@ class ViewDriver
     /**
      * Добавить представление
      */
-    public function addView( $name,$parameters,$components,$dir,$viewFile,$path=false) {
+    public function addView( $name,$parameters,$components,$dir,$viewFile,$path,$oK=true) {
         $this->notAllowedViews[] =
          [
             'name'       => $name,        // имя компоненты
@@ -42,7 +42,7 @@ class ViewDriver
              'dir'       => $dir,         // директорий
             'file'       => $viewFile,    // файл представления
             'path'       => $path,         // путь от корня
-            'ok'         => true           // компонента определна
+            'ok'         => $oK           // компонента определна
         ] ;
     }
 

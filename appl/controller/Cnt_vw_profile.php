@@ -12,7 +12,7 @@ class Cnt_vw_profile extends Cnt_vw_base {
         'name' => 'main' ,
         'parameters' => false ,
         'components' =>
-        ['partHeadPart','partTopMenu','partContent','partFooter','partRightPanel'] ,
+        ['partHeadPart','partTopMenu','partContent'] ,
         'dir' => $this->DIR_LAYOUT ,
         'file' => 'lt_footerNo'
         ] ;

@@ -120,7 +120,7 @@ abstract class Cnt_base
 
         //if (is_callable([$obj,$method],false,$callable_name) ) {
 
-        if (method_exists($obj,$method)) {
+        if ( method_exists($obj,$method)) {
 
             array_unshift($path,$rootName) ;
 
@@ -140,7 +140,15 @@ abstract class Cnt_base
                 $viewComp['dir'],
                 $viewComp['file'],
                 $path) ;
-        }else {   // error:
+        }else {   // error         //:
+            $this->viewDiver->addView(
+                $rootName,
+                false,
+                false,
+                false,
+                false,
+                $path,
+                false ) ;
             $this->msg->addMessage('ERROR:'.__METHOD__.':не опрелен метод для компонента:'.
                 $this->classForView.'::'.$method ) ;
         }

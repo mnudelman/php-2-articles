@@ -12,7 +12,7 @@ class Cnt_vw_user extends Cnt_vw_base {
         'name' => 'main' ,
         'parameters' => false ,
         'components' =>
-        ['partHeadPart','partTopMenu','partContent','partFooter','partRightPanel'] ,
+        ['partHeadPart','partTopMenu','partContent','partFooter'] ,
         'dir' => $this->DIR_LAYOUT ,
         'file' => 'lt_footer'
         ] ;
@@ -34,5 +34,15 @@ class Cnt_vw_user extends Cnt_vw_base {
         'dir' => $this->DIR_VIEW ,
         'file' => 'vw_userLogin'
         ] ;
+    }
+    public function partDataContentDef() {
+        return [
+            'name' => 'partDataContent' ,                           // центральный вывод
+            'parameters' => [] ,
+            'components' => [] ,     // тест статьи
+            'dir' => $this->DIR_VIEW ,
+            'file' => ''
+        ] ;
+
     }
 }
