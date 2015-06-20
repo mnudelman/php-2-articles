@@ -451,11 +451,10 @@ class Db_article extends Db_base {
         $pdo = $this->pdo ;
         return true ;
     }
-
     /**
      * преобразует  $_FILES в нормальную форму
      */
-    function filesTransform($topName)
+    public function filesTransform($topName)
     {
         /** переведем $_FILES в нормальную форму */
         $filesNorm = [];
@@ -479,8 +478,7 @@ class Db_article extends Db_base {
         return $filesNorm;
     }
 
-    function doubleLoad($dirName,$fName) {     // повторная загрузка
+    public function doubleLoad($dirName,$fName) {     // повторная загрузка
         return (file_exists($dirName.'/'.$fName)) ;
     }
-
 }

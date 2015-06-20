@@ -13,5 +13,4 @@
 --  INSERT INTO userprofile (userid) VALUES (new.userId);
 
 
-insert into userprofile (userid) VALUES (2) ;
-insert into userprofile (userid) VALUES (3) ;
+SELECT * from users ;
