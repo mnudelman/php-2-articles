@@ -61,6 +61,17 @@ authorid INTEGER
          REFERENCES users (userid) ON DELETE CASCADE,
 UNIQUE (articleid, authorid)   -- строка статья - владелец единственная
 ) ;
+-- -----------------------------------------------
+--  commentarticle - комментарии к статье
+CREATE TABLE IF NOT EXISTS commentarticle (
+id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+articleid INTEGER
+          REFERENCES articles (articleid) ON DELETE CASCADE ,
+authorid INTEGER
+         REFERENCES users (userid) ON DELETE CASCADE,
+comment VARCHAR (400),
+date    DATE
+) ;
 --  --------------------------------------
 -- строка в userprofile появляется вместе с users
 CREATE TRIGGER  insert_user AFTER INSERT ON users

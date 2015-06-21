@@ -31,15 +31,15 @@ class Cnt_profile extends Cnt_base {
 
         $this->mod->setUrlDefault($this->URL_DEFAULT) ;
 
-        if (isset($this->ownStore['profileEditFlag'])) {
+        if (isset($this->parameters['edit'])) {    // вход для редактирования
+            $this->profileEditFlag = $this->parameters['edit'] ;
+        }elseif (isset($this->ownStore['profileEditFlag'])) {
             $this->profileEditFlag = $this->ownStore['profileEditFlag'] ;
             $this->taskParms->setParameter('edit',$this->profileEditFlag) ;
             $this->parameters = $this->taskParms->getParameters() ;
         }
 
-        if (isset($this->parameters['edit'])) {    // вход для редактирования
-            $this->profileEditFlag = $this->parameters['edit'] ;
-        }
+
 
         $this->taskParms->setParameter('urlDefault',$this->URL_DEFAULT) ;
 

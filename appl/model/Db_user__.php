@@ -1,22 +1,30 @@
 <?php
 /**
- * Регистрация - работа с БД
+ * Модель обеспечивает взаимодействие с БД для подсистемы регистрацииПользователя
+ * Date: 24.05.15
  */
 
 class Db_user extends Db_base {
+    public function __construct() {
+        parent::__construct() ;
+    }
+
     public function getUser($userLogin) {
         // $userPassw = [] ;  // ['login' => login, 'password' => $password ]
+        $pdo = $this->pdo ;
         $sql = 'SELECT * FROM users WHERE login = :login' ;
-        $subst = ['login'=>$userLogin] ;
-        $rows = $this->sqlExecute($sql,$subst,__METHOD__) ;
-        if (false === $rows) {
-            return false ;
-        }
-        $row = $rows[0] ;
-        if (!empty($row)){
-            return ['login   ' => $row['login'],
-                'password' => $row['password'] ] ;
-        }else {
+        try {
+            $smt = $pdo->prepare($sql) ;
+            $smt->execute(['login'=>$userLogin]) ;
+            $row = $smt->fetch(PDO::FETCH_ASSOC) ;
+            if (!(false === $row)){
+                return ['login   ' => $row['login'],
+                    'password' => $row['password'] ] ;
+            }else {
+                return false ;
+            }
+        }catch (PDOException  $e){
+            $this->msg->addMessage('ERROR:'. __METHOD__ .':' . $e->getMessage() ) ;
             return false ;
         }
     }
@@ -25,26 +33,39 @@ class Db_user extends Db_base {
      * запоминает пользователя в БД
      */
     public function putUser($userLogin,$password) {
+        $pdo = $this->pdo ;
         $logPassw = $this->getUser($userLogin) ;
         if (!(false === $logPassw)) {      // уже есть в БД
             return ($logPassw['password'] == $password) ;
         }
         $sql = 'INSERT INTO  users (login,password) VALUES (:login,:password)' ;
-        $subst = [
-            'login'=>$userLogin,
-            'password'=>$password] ;
-        $this->sqlExecute($sql,$subst,__METHOD__) ;
+        try {
+            $smt = $pdo->prepare($sql) ;
+            $smt->execute(['login'=>$userLogin,
+                'password'=>$password]) ;
+
+        }catch (PDOException  $e){
+            $this->msg->addMessage('ERROR:'. __METHOD__ .':' . $e->getMessage() ) ;
+            return false ;
+        }
         return true ;
     }
     public function updatePassword($userLogin,$newPassword){
+        $pdo = $this->pdo ;
         $logPassw = $this->getUser($userLogin) ;
         if ( false === $logPassw ) {      // нет в БД - это ошибка !!
             return false ;
         }
         $sql = 'UPDATE  users set password = :password where login = :login' ;
-        $subst = ['login'=>$userLogin,
-            'password'=>$newPassword] ;
-        $this->sqlExecute($sql,$subst,__METHOD__) ;
+        try {
+            $smt = $pdo->prepare($sql) ;
+            $smt->execute(['login'=>$userLogin,
+                'password'=>$newPassword]) ;
+
+        }catch (PDOException  $e){
+            $this->msg->addMessage('ERROR:'. __METHOD__ .':' . $e->getMessage() ) ;
+            return false ;
+        }
         return true ;
     }
 
@@ -52,20 +73,22 @@ class Db_user extends Db_base {
      * возвращает  profile пользователя
      */
     public function getProfile($userLogin) {
+        $pdo = $this->pdo ;
         $profile = []; // ['fieldName' => fieldMean, .....]
         $sql = 'SELECT * FROM userprofile where userprofile.userid IN
                         (SELECT userid FROM users WHERE login = :login )';
-        $subst = ['login' => $userLogin] ;
-        $rows = $this->sqlExecute($sql,$subst,__METHOD__) ;
-
-        if (false === $rows) {
+        try {
+            $smt = $pdo->prepare($sql);
+            $smt->execute(['login' => $userLogin]);
+            $row = $smt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException  $e) {
+            $this->msg->addMessage('ERROR:'. __METHOD__ .':' . $e->getMessage() ) ;
             return false;
         }
-        $row = $rows[0] ;
-        if (0 == $this->getRowCount()) {
-            return $this->profileIni() ;
+        if (false === $row) {
+            return false;
         }
-        foreach ($row  as $fldName => $fldMean) {
+        foreach ($row as $fldName => $fldMean) {
             $profile[$fldName] = $fldMean;
         }
 // birthday : YYYY-mm_ddT....
@@ -73,6 +96,7 @@ class Db_user extends Db_base {
         $profile['birthday_year']  = $birthdayComponents['year'];
         $profile['birthday_month'] = $birthdayComponents['month'];
         $profile['birthday_day']   = $birthdayComponents['day'];
+
         return $profile;
     }
 
@@ -94,23 +118,31 @@ class Db_user extends Db_base {
      * сохраняет profile пользователя
      */
     public function putProfile($userLogin,$profile) {
+        $pdo = $this->pdo ;
+// ['fieldName' => fieldMean, .....]
         $sqlQuery = 'UPDATE userprofile SET ' ;
         $setLine = '' ;
         foreach ($profile as $fldName => $fldMean) {
-          // $tp = gettype($fldMean) ;
-          //  if ('string' == $tp) {
+            $tp = gettype($fldMean) ;
+            if ('string' == $tp) {
                 $li = $fldName.'='.'"'.$fldMean.'"' ;
-           // }else {
-           //     $li = $fldName.'='.$fldMean ;
-           // }
+            }else {
+                $li = $fldName.'='.$fldMean ;
+            }
             $setLine .= (empty($setLine)) ? $li : ','.$li ;
         }
-        $where = ' WHERE userprofile.userid IN
+        $where = 'where userprofile.userid IN
                   (SELECT userid FROM users WHERE login = :login )' ;
         $sql = $sqlQuery.$setLine.$where ;
-        $subst = ['login'=>$userLogin] ;
-        $this->sqlExecute($sql,$subst,__METHOD__) ;
+        try {
+            $smt = $pdo->prepare($sql) ;
+            $smt->execute(['login'=>$userLogin]) ;
 
+        }catch (PDOException  $e){
+
+            $this->msg->addMessage('ERROR:'. __METHOD__ .':' . $e->getMessage() ) ;
+            return false ;
+        }
         return true ;
     }
 

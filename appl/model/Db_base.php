@@ -38,6 +38,9 @@ abstract class Db_base {
             case $this->SQL_SELECT :
                 return $this->returnSelect() ;
                 break ;
+            case $this->SQL_SHOW :
+                return $this->returnSelect() ;
+                break ;
             case $this->SQL_INSERT :
                 return $this->returnInsert() ;
                 break ;
@@ -53,7 +56,8 @@ abstract class Db_base {
 
     }
     protected function returnSelect() {
-        return $this->smt ;
+        $rows = $this->smt->fetchAll(PDO::FETCH_ASSOC);
+        return $rows ;
     }
     protected function returnInsert() {
           return  $this->pdo->lastInsertId() ;
@@ -111,4 +115,5 @@ abstract class Db_base {
         }
         return $caption  ;
     }
+
 }

@@ -2,22 +2,17 @@
 /**
  * Created by PhpStorm.
  * User: michael
- * Date: 24.05.15
- * Time: 16:23
+ * Date: 20.06.15
+ * Time: 12:19
  */
 
 class Db_article extends Db_base {
-    public function __construct() {
-        parent::__construct() ;
-    }
 
     /**
      * Выбрать статьи по заданной теме
      * если тема = пусто, то все
      */
     public function getArticlesByTopic($topicid) {
-        $pdo = $this->pdo ;
-        $articles = [];
         $sql = 'SELECT articleid,
                         userid,
                         title,
@@ -32,25 +27,25 @@ class Db_article extends Db_base {
                      WHERE topicid = :topicid )' ;
         }
         $sql .= $where ;
+        $subst = ( !empty($topicid) ) ? ['topicid' => $topicid] :[] ;
 
-        try {
-            $smt = $pdo->prepare($sql);
-            if (false !== $topicid ) {
-                $smt->execute(['topicid' => $topicid ]);
-            }else {
-                $smt->execute([]);
-            }
-        } catch (PDOException  $e) {
-            $this->msg->addMessage('ERROR:'. __METHOD__ .':' . $e->getMessage() ) ;
-            return false;
-        }
-        if ( 0 == $smt->rowCount() ){
+        $rows = $this->sqlExecute($sql,$subst,__METHOD__) ;
+
+        if ( 0 == $this->getRowCount() ){
             return false ;
         }
-        foreach ($smt as $row) {
+        return $this->articlesFromRows($rows) ;
+    }
+
+    /**
+     *
+     */
+    private function articlesFromRows($rows,$withKey=false) {
+        $articles = [] ;
+        foreach ($rows as $row) {
             $articleid = $row['articleid'] ;
             $topics = $this->getArticleTopics($articleid) ;  // рубрики статьи
-            $articles[] = [
+            $article = [
                 'articleid'  => $articleid ,
                 'userid'     => $row['userid'],
                 'title'      => $row['title'] ,
@@ -58,17 +53,18 @@ class Db_article extends Db_base {
                 'file'       => $row['file'] ,
                 'topics'     => $topics             //  список тем здесь не нужен
             ] ;
-
+            if ($withKey) {
+                $articles[$articleid] = $article ;
+            }else {
+                $articles[] = $article ;
+            }
         }
         return $articles ;
     }
-
     /**
      * выбирает атрибуты статей автора
      */
-    function getArticles($author) {
-        $pdo = $this->pdo ;
-        $articles = [];
+    public function getArticles($author) {
         $sql = 'SELECT articleid,
                         userid,
                         title,
@@ -76,7 +72,7 @@ class Db_article extends Db_base {
                         annotation
                         FROM articles ' ;
         $userid = false ;
-        $whereid = '' ;
+        $where = [] ;
         if (!empty($author)) {
             $userid = $this->getUserid($author) ;
             if (!empty($userid)) {
@@ -84,60 +80,40 @@ class Db_article extends Db_base {
             }
         }
         $sql .= $where ;
-
-        try {
-            $smt = $pdo->prepare($sql);
-            if (false !== $userid) {
-                $smt->execute(['userid' => $userid]);
-            }else {
-                $smt->execute([]);
-            }
-        } catch (PDOException  $e) {
-            $this->msg->addMessage('ERROR:'. __METHOD__ .':' . $e->getMessage() ) ;
-            return false;
-        }
-        if ( 0 == $smt->rowCount() ){
+        $subst = (!empty($userid) ) ? ['userid' => $userid] :[] ;
+        if (false === ($rows = $this->sqlExecute($sql,$subst,__METHOD__) ) ) {
             return false ;
         }
-        foreach ($smt as $row) {
-            $articleid = $row['articleid'] ;
-            $topics = $this->getArticleTopics($articleid) ;  // рубрики статьи
-            $articles[$articleid] = [
-                'articleid'  => $articleid ,
-                'userid'     => $row['userid'],
-                'title'      => $row['title'] ,
-                'annotation' => $row['annotation'] ,
-                'file'       => $row['file'] ,
-                'topics'     => $topics
-            ] ;
-
+        if ( 0 == $this->getRowCount() ){
+            return false ;
         }
-        return $articles ;
-
+        $withKey = true ;
+        return $this->articlesFromRows($rows,$withKey) ;
     }
 
     /**
      * Выбрать темы(рубрики) статьи
      */
     private function getArticleTopics($articleid) {
-        $pdo = $this->pdo ;
-        $articleTopics = [];   // [ ['topicid'=>,'topicname'=>],.. ] ]
         $sql = 'SELECT topicarticle.topicid,
                        topics.topicname
                        FROM topicarticle,topics
                        WHERE topicarticle.articleid = :articleid AND
                              topics.topicid = topicarticle.topicid ' ;
-        try {
-            $smt = $pdo->prepare($sql) ;
-            $smt->execute(['articleid' => $articleid]) ;
-        }catch (PDOException  $e){
-            $this->msg->addMessage('ERROR:'. __METHOD__ .':' . $e->getMessage() ) ;
+        $subst = ['articleid' => $articleid] ;
+        if (false === ($rows =  $this->sqlExecute($sql,$subst,__METHOD__)) ) {
             return false ;
         }
-        if ( 0 == $smt->rowCount() ) {
+
+        if ( 0 == $this->getRowCount() ) {
             return false;
         }
-        foreach ($smt as $row) {
+        return $this->topicFromRows($rows) ;
+    }
+
+    private function topicFromRows($rows) {
+        $articleTopics = [] ;
+        foreach ($rows as $row) {
             $tid = $row['topicid'] ;
             $articleTopics[$tid] = [
                 'topicid'   => $tid ,
@@ -147,138 +123,139 @@ class Db_article extends Db_base {
         return $articleTopics ;
     }
 
-
     /**
      * добавить новые темы для статьи
      */
     private function addNewTopics($articleid,$addTopics) {
-        $pdo = $this->pdo ;
         $sql = 'INSERT INTO topicarticle (articleid,topicid) VALUES
                             (:articleid, :topicid)' ;
-        try {
-            $smt = $pdo->prepare($sql) ;
-            foreach ($addTopics as $addT) {
-                $smt->execute([
-                    'articleid' => $articleid ,
-                    'topicid'   => $addT['topicid']
-                ]) ;
-            }
-        }catch (PDOException  $e){
-            $this->msg->addMessage('ERROR:'. __METHOD__ .':' . $e->getMessage() ) ;
-            return false ;
+
+        foreach ($addTopics as $addT) {
+            $subst = [
+                'articleid' => $articleid ,
+                'topicid'   => $addT['topicid']
+            ] ;
+            $smt = $this->sqlExecute($sql,$subst,__METHOD__) ;
         }
+        return true ;
     }
 
     /**
      * убрать несуществующие темы для статьи
      */
     private function delOldTopics($articleid,$delTopics) {
-        $pdo = $this->pdo ;
         $sql = 'DELETE FROM topicarticle
-                       WHERE id = :tid' ;
-        try {
-            $smt = $pdo->prepare($sql) ;
-            foreach ($delTopics as $delT) {
-                $smt->execute([
-                    'id' => $delT['id']]) ;
-            }
-        }catch (PDOException  $e){
-            $this->msg->addMessage('ERROR:'. __METHOD__ .':' . $e->getMessage() ) ;
-            return false ;
-        }
+                       WHERE articleid = :articleid AND
+                             topicid = :topicid' ;
+        foreach ($delTopics as $delT) {
 
+            $subst = [
+                'articleid'=> $articleid,
+                'topicid' => $delT['topicid'] ] ;
+            $this->sqlExecute($sql,$subst,__METHOD__) ;
+        }
+         return true ;
     }
 
     function findArticleFile($fileArticle) {
-        $pdo = $this->pdo ;
         $sql = 'SELECT * FROM articles
                 WHERE file = :fileArticle ' ;
-        try {
-            $smt = $pdo->prepare($sql) ;
-            $smt->execute(['fileArticle' => $fileArticle]) ;
-            $row = $smt->fetch(PDO::FETCH_ASSOC) ;
-        }catch (PDOException  $e){
-            $this->msg->addMessage('ERROR:'. __METHOD__ .':' . $e->getMessage() ) ;
+        $subst = ['fileArticle' => $fileArticle] ;
+        if (false === ($this->sqlExecute($sql,$subst,__METHOD__))) {
             return false ;
         }
-        return ( false === $row) ? false : true ;
+
+        return  ( 0 < $this->getRowCount() )  ;
     }
     /**
      * Помещает в БД списокФайлов-статей и
      * в отдельную таблицу topicarticle и authorarticle
      * @param $author - это login добавляющего статью
+     * @param articles
      */
     function putArticles($author,$articles) {
-        $pdo = $this->pdo ;
         $n = 0 ;
         $userid = $this->getUserid($author) ;
-        $sqlInsert = 'INSERT INTO articles (userid,title  ,annotation  ,file) VALUES
-                                           (:userid,:title ,:annotation ,:file )';
-        $sqlUpdate = 'UPDATE articles
-                        SET title = :title,
-                            annotation = :annotation
-                        WHERE articleid = :articleid ' ;
-        try{
-            $smtInsert = $pdo->prepare($sqlInsert) ;
-            $smtUpdate = $pdo->prepare($sqlUpdate) ;
-            foreach($articles as $article) {
-                $aid = $article['articleid'] ;
-                $uid = $article['userid'] ;
-                $title = $article['title'] ;
-                $annotation = $article['annotation'] ;
-                $file = $article['file'] ;
-                $topics = $article['topics'] ;
-                if (false === $aid) {     // новая запись
-                    if ($this->findArticleFile($file)) {
-                        $this->msg->addMessage(
-                            'INFO:Статья, содержащаяся в файле: ' . $file . ' есть в БД.');
-                        continue;
-                    }
-                    $smtInsert->execute([
-                        'userid' => $userid,
-                        'title' => $title,
-                        'annotation' => $annotation,
-                        'file' => $file]);
-                    $aid = $pdo->lastInsertId();
-                }else {                      // существующая запись
-
-                    $smtUpdate->execute([
-                        'articleid' => $aid,
-                        'title' => $title,
-                        'annotation' => $annotation]);
+        foreach($articles as $article) {
+            $aid = $article['articleid'] ;
+            $uid = $article['userid'] ;
+            $title = $article['title'] ;
+            $annotation = $article['annotation'] ;
+            $file = $article['file'] ;
+            $topics = $article['topics'] ;
+            if (false === $aid) {     // новая запись
+                if ($this->findArticleFile($file)) {
+                    $this->msg->addMessage(
+                        'INFO:Статья, содержащаяся в файле: ' . $file . ' есть в БД.');
+                    continue;
                 }
-
-                    $this->putArticleTopics($aid, $topics);
-                    $this->putAuthorArticle($author, $aid);
-                $n ++ ;
+                $this->articleInsert($userid,$title,$annotation,$file) ;
+            }else {                      // существующая запись
+                $this->articleUpdate($aid,$title,$annotation) ;
             }
-        }catch (PDOException $e){
-            $this->msg->addMessage('ERROR:'. __METHOD__ .':' . $e->getMessage() ) ;
-            return false ;
+
+            $this->putArticleTopics($aid, $topics);
+            $this->putAuthorArticle($author, $aid);
+            $n ++ ;
         }
         return $n ;
     }
-
+    private function articleInsert($userid,$title,$annotation,$file) {
+        $sql = 'INSERT INTO articles (userid,title  ,annotation  ,file) VALUES
+                                           (:userid,:title ,:annotation ,:file )';
+        $subst = [
+            'userid' => $userid,
+            'title' => $title,
+            'annotation' => $annotation,
+            'file' => $file] ;
+        $aid = $this->sqlExecute($sql,$subst,__METHOD__) ;  // добавленный  id
+        return $aid ;
+    }
+    private function articleUpdate($aid,$title,$annotation)
+    {
+        $sql = 'UPDATE articles
+                        SET title = :title,
+                            annotation = :annotation
+                        WHERE articleid = :articleid ';
+        $subst = [
+            'articleid' => $aid,
+            'title' => $title,
+            'annotation' => $annotation];
+        $n = $this->sqlExecute($sql, $subst, __METHOD__);
+        return $n;
+    }
     /**
      * сохранить темы
      */
     private function putArticleTopics($articleid,$articleTopics) {
-        $pdo = $this->pdo ;
-        $addTopics = false ;     // добавить строки
+        $addTopics = false ;
         $delTopics = false ;     // удалить лишние
         $sql = 'SELECT id,topicid,articleid
                       FROM topicarticle
                       WHERE articleid = :articleid ' ;
-        try {
-            $smt = $pdo->prepare($sql) ;
-            $smt->execute(['articleid' => $articleid]) ;
-        }catch (PDOException  $e){
-            $this->msg->addMessage('ERROR:'. __METHOD__ .':' . $e->getMessage() ) ;
-            return false ;
+        $subst = ['articleid' => $articleid] ;
+        $this->sqlExecute($sql,$subst,__METHOD__) ;
+
+        $sep = $this->topicsSeparate($articleTopics) ; // разделить на добавить/убрать
+        $addTopics = $sep[0] ;        // добавить строки
+        $delTopics = $sep[1] ;        // удалить лишние
+        if(is_array($addTopics)) {
+            $this->addNewTopics($articleid,$addTopics);      // добавить недостающие
         }
-        if ( 0 == $smt->rowCount() ) {
-            $addTopics = $articleTopics ;
-            $delTopics = [] ;
+        if(is_array($delTopics)) {
+            $this->delOldTopics($articleid,$delTopics);     // убрать лишние
+        }
+    }
+
+    /**
+     * Разделить список на ДобавитьНовые и УдалитьЛишние
+     */
+    private function topicsSeparate($articleTopics) {
+        $addTopics = [] ;    // новыеСтроки
+        $delTopics = [] ;    // удалитьЛишние
+        $smt = $this->getResult() ;    // результат запроса
+        if ( 0 == $this->getRowCount() ) {
+            $addTopics = $articleTopics ;  // все в добавление
         }else {
             $rowSelect = [] ;
             foreach($smt as $row) {
@@ -294,14 +271,8 @@ class Db_article extends Db_base {
                 }
             }
         }
-        if(is_array($addTopics)) {
-            $this->addNewTopics($articleid,$addTopics);      // добавить недостающие
-        }
-        if(is_array($delTopics)) {
-            $this->delOldTopics($articleid,$delTopics);     // убрать лишние
-        }
+        return [$addTopics,$delTopics] ;
     }
-
 
 
 
@@ -309,50 +280,18 @@ class Db_article extends Db_base {
      * Добавляет связь автор - статья
      */
     private function putAuthorArticle($author, $articleid) {
-        $pdo = $this->pdo ;
-        $authorid = $this->getUserid($author) ;
-        $sql = 'INSERT INTO authorarticle (authorid ,articleid) VALUES
-                                           (:authorid ,:articleid )';
-        $sqlFind = 'SELECT * FROM authorarticle
-                           WHERE authorid = :authorid AND
-                                 articleid = :articleid ' ;
-        try{
-            $smtFind = $pdo->prepare($sqlFind) ;
-            $smtFind->execute([
-                'authorid' => $authorid ,
-                'articleid'=> $articleid ]) ;
-            $row = $smtFind->fetch(PDO::FETCH_ASSOC) ;
-            if (false === $row) {    // нет записи ->  надо добавить
-                $smt = $pdo->prepare($sql) ;
-                $smt->execute([
-                    'authorid' => $authorid ,
-                    'articleid'=> $articleid]) ;
-            }
-        }catch (PDOException $e){
-            $this->msg->addMessage('ERROR:'. __METHOD__ .':' . $e->getMessage() ) ;
-            return false ;
-        }
         return true ;
     }
-
-
-
     /**
      * Удалить из БД списокСтатей
      */
     function delarticles($articles) {
-        $pdo = $this->pdo ;
         $n = 0 ;
         $sql = 'DELETE FROM articles WHERE articleid = :articleid' ;
-        try {
-            $smt = $pdo->prepare($sql);
-            foreach ($articles as $articleid=>$article) {
-                    $smt->execute(['articleid'=> $articleid] ) ;
-                    $n++ ;
-            }
-        }catch (PDOException $e){
-            $this->msg->addMessage('ERROR:'. __METHOD__ .':' . $e->getMessage() ) ;
-            return false ;
+        foreach ($articles as $article) {
+            $subst = ['articleid' => $article['articleid']] ;
+            $this->sqlExecute($sql,$subst,__METHOD__) ;
+            $n++ ;
         }
         return $n ;
     }
@@ -360,27 +299,17 @@ class Db_article extends Db_base {
      * возвращает список тем
      */
     function getTopic() {
-        $pdo = $this->pdo ;
         $topicList = [] ;
         $sql = 'SELECT topicid,
                        topicname
                  FROM topics
                  ORDER BY topicname' ;
-        try{
-            $smt = $pdo->prepare($sql) ;
-            $smt->execute([]) ;
-        }catch (PDOException $e){
-            $this->msg->addMessage('ERROR:'. __METHOD__ .':' . $e->getMessage() ) ;
-            return false ;
-        }
-        foreach ($smt as $row) {
-            $topicId = $row['topicid'] ;
-            $topicList[$topicId] = [
-                'topicid' => $row['topicid'],
-                'topicname' => $row['topicname']
-            ] ;
-        }
-        // добавим пустой элемент
+       if (false === ( $rows = $this->sqlExecute($sql,[],__METHOD__) )) {
+           return false ;
+       }
+
+        $topicList = $this->topicFromRows($rows) ;
+        // добавим пустой элемент ;
         $topicList[0] = [
             'topicid' => false ,
             'topicname' => 'все темы' ] ;
@@ -392,34 +321,28 @@ class Db_article extends Db_base {
      * наличие темы с заданным именем
      */
     function findTopic($topicName){
-        $pdo = $this->pdo ;
         $sql = 'SELECT topicid from topics where topicname = :topicName ' ;
-        try{
-            $smt = $pdo->prepare($sql) ;
-            $smt->execute(['topicName' => $topicName]) ;
-        }catch (PDOException $e){
-            $this->msg->addMessage('ERROR:'.__METHOD__.':' . $e->getMessage() ) ;
+        $subst = ['topicName' => $topicName] ;
+        $rows= $this->sqlExecute($sql,$subst,__METHOD__) ;
+        if (false === $rows){
             return false ;
         }
-        $row = $smt->fetch(PDO::FETCH_ASSOC);
-       return  (false === $row) ? false : $row['topicid']  ;
+        $row = $rows[0] ;
+        return  (empty($row) ) ? false : $row['topicid']  ;
     }
 
     /**
      * опрелить userid по  login
      */
     function getUserid($login) {
-        $pdo = $this->pdo ;
         $sql = 'SELECT * FROM users where login = :login' ;
-        try{
-            $smt = $pdo->prepare($sql) ;
-            $smt->execute(['login'  => $login]) ;
-        }catch (PDOException $e){
-            $this->msg->addMessage('ERROR:'.__METHOD__.':' . $e->getMessage() ) ;
+        $subst = ['login' => $login] ;
+        $rows= $this->sqlExecute($sql,$subst,__METHOD__) ;
+        if (false === $rows){
             return false ;
         }
-        $row = $smt->fetch(PDO::FETCH_ASSOC);
-        return  (false === $row) ? false : $row['userid']  ;
+        $row = $rows[0] ;
+        return  (empty($row) ) ? false : $row['userid']  ;
     }
 
 
@@ -427,20 +350,13 @@ class Db_article extends Db_base {
      * Добавить новую тему
      */
     function putTopic ($topicName) {
-        $pdo = $this->pdo ;
         $topicId = $this->findTopic($topicName) ;
         if (false !== $topicId) {
             return true;
         }
         $sql = 'INSERT INTO topics (topicname) VALUES (:topicName)';
-        try {
-            $smt = $pdo->prepare($sql);
-            $smt->execute(['topicName'=> $topicName]);
-        } catch (PDOException $e) {
-            $this->msg->addMessage('ERROR:'.__METHOD__.':' . $e->getMessage() ) ;
-            return false;
-        }
-        $topicId = $pdo->lastInsertId() ;
+        $subst = ['topicName'=> $topicName] ;
+        $topicId = $this->sqlExecute($sql,$subst,__METHOD__) ;
         return  $topicId ;
     }
 
@@ -448,8 +364,43 @@ class Db_article extends Db_base {
      * удалить тему
      */
     function delTopic ($topicName) {
-        $pdo = $this->pdo ;
         return true ;
+    }
+    public function addComment($commentText,$userLogin,$articleId,$date) {
+        $sql = 'INSERT INTO commentarticle (articleid,authorid,comment,date) VALUES
+                (:articleId , :authorId , :text , :date)' ;
+        $userId = $this->getUserid($userLogin) ;
+        $subst = [
+            'articleId' => $articleId,
+            'authorId'  => $userId,
+            'text'      => $commentText,
+            'date'      => $date   ] ;
+        return $this->sqlExecute($sql,$subst,__METHOD__) ;
+    }
+    public function getComments($articleId) {
+        $sql = 'SELECT users.login,
+                       commentarticle.comment,
+                       commentarticle.date
+                       FROM commentarticle,users
+                       WHERE commentarticle.articleid = :articleId AND
+                       commentarticle.authorid = users.userid
+                       ORDER BY commentarticle.id DESC ' ;
+        $subst = ['articleId' => $articleId] ;
+        if (false === ($rows = $this->sqlExecute($sql,$subst,__METHOD__))) {
+            return false ;
+        }
+        return $this->makeCommentsFromRows($rows) ;
+    }
+    private function makeCommentsFromRows($rows) {
+        $comments= [] ;
+        foreach ($rows as $row) {
+            $comments[] = [
+               'author' => $row['login'],
+                'text'  => $row['comment'],
+                'date' =>  $row['date']
+             ] ;
+        }
+        return $comments ;
     }
     /**
      * преобразует  $_FILES в нормальную форму
@@ -481,4 +432,5 @@ class Db_article extends Db_base {
     public function doubleLoad($dirName,$fName) {     // повторная загрузка
         return (file_exists($dirName.'/'.$fName)) ;
     }
+
 }

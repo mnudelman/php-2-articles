@@ -4,7 +4,8 @@
  * Date: 26.05.15
  */
 ?>
-        <div style="border-bottom: 1px solid;">
+        <?=$partMessage?>                       <!-- Вывод сообщений -->
+        <div id="topArticle" style="border-bottom: 1px solid;">
  <?php
         if (is_array($topics)) {             // перечень тем
             foreach ($topics as $topic) {
@@ -15,10 +16,13 @@
             }
         }
 ?>
+        <a href="#comments___">перейти к комментариям</a>
         </div>
+
         <?=$title;?>                            <!-- заголовок статьи -->
         <?=$partArticleText;?>                  <!-- текст статьи -->
-        <?$errorMessage?>                       <!-- сообщение в случае отсутствия -->
+        <?=$errorMessage?>                       <!-- сообщение в случае отсутствия -->
+        <?=$partComments;?>                       <!-- комментарии к статье-->
 
 
 

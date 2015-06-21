@@ -22,7 +22,7 @@ class Db_example extends Db_base {
                 print_r($row) ;
                 echo TaskStore::LINE_FEED ;
             }
-            echo 'число строк:'.$res->rowcount().TaskStore::LINE_FEED ;
+            echo 'число строк:'.$this->getRowCount().TaskStore::LINE_FEED ;
         }
         $messages = $this->msg->getMessages() ;
         if (is_array($messages)) {
@@ -31,6 +31,38 @@ class Db_example extends Db_base {
             }
         }
     }
+
+    public function select_0_1() {    //  без подстановки
+        echo 'SELECT -  построчно'.TaskStore::LINE_FEED ;
+
+        $sql = 'SELECT * FROM users' ;
+        $subst = [] ;
+        $this->sqlExecute($sql,$subst,'test') ;
+        $rows = $this->getResult() ;
+        var_dump($rows) ;
+            foreach ($rows as $row) {
+                print_r($row) ;
+                echo TaskStore::LINE_FEED ;
+            }
+        echo 'ПОВТОР:'.TaskStore::LINE_FEED ;
+        $rows = $this->getResult() ;
+        var_dump($rows) ;
+        foreach ($rows as $row) {
+            print_r($row) ;
+            echo TaskStore::LINE_FEED ;
+        }
+
+        echo 'число строк:'.$this->getRowCount().TaskStore::LINE_FEED ;
+        $messages = $this->msg->getMessages() ;
+        if (is_array($messages)) {
+            foreach ($messages as $text) {
+                echo $text.TaskStore::LINE_FEED ;
+            }
+        }
+    }
+
+
+
 
     public function select_1() {    // подстановка
         echo 'SELECT с подстановкой'.TaskStore::LINE_FEED ;
@@ -174,4 +206,5 @@ class Db_example extends Db_base {
 
 }
 $dbBase = new Db_example() ;
-$dbBase->delete_0() ;
+$dbBase->select_0_1() ;
+$dbBase->select_0() ;

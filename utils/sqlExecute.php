@@ -59,10 +59,9 @@ class SqlExecute extends Db_base {
                         echo $text . TaskStore::LINE_FEED;
                     }
                 }
-                $this->sqlLines[$key]['result'] = $this->getResult() ;
+                $this->sqlLines[$key]['result'] = $result ;
                 $this->sqlLines[$key]['count'] = $this->getRowCount();
                 $this->sqlLines[$key]['cap']   = $this->getCaption();
-                print_r($this->sqlLines[$key]['cap']) ;
                 echo '<br>' ;
             }
         }

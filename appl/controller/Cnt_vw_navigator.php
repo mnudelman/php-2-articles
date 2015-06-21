@@ -24,7 +24,7 @@ class cnt_vw_navigator extends Cnt_vw_base {
         return [
         'name' => 'partContent' ,
         'parameters' => false ,
-        'components' => ['partMessage','partDataContent'] ,
+        'components' => ['partDataContent'] ,
         'dir' => $this->DIR_VIEW ,
         'file' => 'contentPart'
         ] ;
@@ -46,7 +46,7 @@ class cnt_vw_navigator extends Cnt_vw_base {
             'title'   => $title,           // заголовок
             'errorMessage'  =>$errorMessage,
             'dirImages' => $this->DIR_IMAGE ] ,
-        'components' => ['partArticleText'] ,     // тест статьи
+        'components' => ['partArticleText','partComments','partMessage'] ,     // тест статьи
         'dir' => $this->DIR_VIEW ,
         'file' => 'vw_articleShow'
         ] ;
@@ -60,6 +60,19 @@ class cnt_vw_navigator extends Cnt_vw_base {
         'components' => false ,
         'dir' => $this->DIR_ARTICLE ,
         'file' => $article['file']
+        ] ;
+    }
+    public function partCommentsDef() {
+        return [
+            'name' => 'partComments' ,                           // текст статьи
+            'parameters' => [
+                'comments' => $this->mod->getComments(),
+                'addCommentFlag' => $this->mod->isAddCommentFlag(),
+                'urlNavigator'  => $this->URL_OWN
+            ] ,
+            'components' => false ,
+            'dir' => $this->DIR_VIEW ,
+            'file' => 'vw_comments'
         ] ;
     }
     public function partFooterDef() {

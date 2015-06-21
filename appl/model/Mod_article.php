@@ -95,6 +95,8 @@ class Mod_article extends Mod_base {
 
 
     public function addArticle() {
+        $this->parameters = $this->taskParms->getParameters() ;
+        $this->dirArticle = $this->parameters['dirArticle'] ;
         $owner = $this->userLogin ;
         $addArticles = []; //  -  для загрузки в БД
         $filesNorm = $this->db->filesTransform('articleFile');  // преобразовать в нормальную форму

@@ -63,6 +63,7 @@ class Mod_navigator extends  Mod_base
      * Выполнить работу навигатора
      */
     public function navExecute() {
+        $this->parameters = $this->taskParms->getParameters() ;
         $this->articles = $this->db->getArticlesByTopic($this->currentTopicId); // список статей
         if ($this->newTopicFlag) {
             $this->navClear() ;
@@ -204,6 +205,19 @@ class Mod_navigator extends  Mod_base
         $this->artMax = $this->pagesList[$this->currentPage]['max'];
     }
 
+    /**
+     * Сохранить комментарий
+     */
+    public function commentSave($commentText) {
+         if (!$this->isAddCommentFlag()) {
+             return false ;
+         }
+        $userLogin = TaskStore::getParam('userLogin') ;
+        $currentArticle = $this->getCurrentArticle() ;
+        $articleId = $currentArticle['articleid'] ;
+        $date = date('c') ;
+        $this->db->addComment($commentText,$userLogin,$articleId,$date) ;
+    }
 //////////////////////////////////////////////////////////////////////////////////
     public function getTopicList()
     {
@@ -235,5 +249,15 @@ class Mod_navigator extends  Mod_base
     }
     public function getCurrentArticle() {
         return $this->articles[$this->artMin] ;
+    }
+    public function getComments() {
+        $currentArticle = $this->getCurrentArticle() ;
+        $articleID = $currentArticle['articleid'] ;
+        return $this->db->getComments($articleID) ;
+
+    }
+    public function isAddCommentFlag() {
+        return TaskStore::getParam('userStatus') >=
+        TaskStore::USER_STAT_USER ;
     }
 }
