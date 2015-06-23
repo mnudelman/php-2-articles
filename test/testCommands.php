@@ -12,3 +12,4 @@ include_once $dirService .'/autoload.php' ;
 include_once $dirService .'/TaskStore.php' ;
 include_once $dirService .'/DbConnector.php' ;
 echo date('c') ;
+echo mktime(date('c')) ;

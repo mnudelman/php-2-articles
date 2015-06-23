@@ -29,16 +29,48 @@ class Db_article extends Db_base {
         $sql .= $where ;
         $subst = ( !empty($topicid) ) ? ['topicid' => $topicid] :[] ;
 
-        $rows = $this->sqlExecute($sql,$subst,__METHOD__) ;
+        if (false === ($rows = $this->sqlExecute($sql,$subst,__METHOD__) ) ) {
+            return false ;
+        }
 
         if ( 0 == $this->getRowCount() ){
             return false ;
         }
+        //  список статей с порядковым номером в качестве индекса
         return $this->articlesFromRows($rows) ;
     }
-
     /**
-     *
+     * выбирает атрибуты статей владельца(поместившего статью на сайт)
+     */
+    public function getArticles($owner) {
+        $sql = 'SELECT articleid,
+                        userid,
+                        title,
+                        file,
+                        annotation
+                        FROM articles ' ;
+        $userid = false ;
+        $where = [] ;
+        if (!empty($owner)) {
+            $userid = $this->getUserid($owner) ;
+            if (!empty($userid)) {
+                $where = 'WHERE userid = :userid ';
+            }
+        }
+        $sql .= $where ;
+        $subst = (!empty($userid) ) ? ['userid' => $userid] :[] ;
+        if (false === ($rows = $this->sqlExecute($sql,$subst,__METHOD__) ) ) {
+            return false ;
+        }
+        if ( 0 == $this->getRowCount() ){
+            return false ;
+        }
+        $withKey = true ; // список статей с ключом articleid
+        return $this->articlesFromRows($rows,$withKey) ;
+    }
+    /**
+     * withKey -> массив создается с ключом (articleid) иначе
+     * порядковый номер
      */
     private function articlesFromRows($rows,$withKey=false) {
         $articles = [] ;
@@ -61,35 +93,7 @@ class Db_article extends Db_base {
         }
         return $articles ;
     }
-    /**
-     * выбирает атрибуты статей автора
-     */
-    public function getArticles($author) {
-        $sql = 'SELECT articleid,
-                        userid,
-                        title,
-                        file,
-                        annotation
-                        FROM articles ' ;
-        $userid = false ;
-        $where = [] ;
-        if (!empty($author)) {
-            $userid = $this->getUserid($author) ;
-            if (!empty($userid)) {
-                $where = 'WHERE userid = :userid ';
-            }
-        }
-        $sql .= $where ;
-        $subst = (!empty($userid) ) ? ['userid' => $userid] :[] ;
-        if (false === ($rows = $this->sqlExecute($sql,$subst,__METHOD__) ) ) {
-            return false ;
-        }
-        if ( 0 == $this->getRowCount() ){
-            return false ;
-        }
-        $withKey = true ;
-        return $this->articlesFromRows($rows,$withKey) ;
-    }
+
 
     /**
      * Выбрать темы(рубрики) статьи
@@ -135,7 +139,9 @@ class Db_article extends Db_base {
                 'articleid' => $articleid ,
                 'topicid'   => $addT['topicid']
             ] ;
-            $smt = $this->sqlExecute($sql,$subst,__METHOD__) ;
+            if (false ===($this->sqlExecute($sql,$subst,__METHOD__)) ) {
+                return false ;
+            }
         }
         return true ;
     }
@@ -169,16 +175,12 @@ class Db_article extends Db_base {
     }
     /**
      * Помещает в БД списокФайлов-статей и
-     * в отдельную таблицу topicarticle и authorarticle
-     * @param $author - это login добавляющего статью
-     * @param articles
      */
-    function putArticles($author,$articles) {
+    function putArticles($owner,$articles) {
         $n = 0 ;
-        $userid = $this->getUserid($author) ;
+        $userid = $this->getUserid($owner) ;
         foreach($articles as $article) {
             $aid = $article['articleid'] ;
-            $uid = $article['userid'] ;
             $title = $article['title'] ;
             $annotation = $article['annotation'] ;
             $file = $article['file'] ;
@@ -195,7 +197,6 @@ class Db_article extends Db_base {
             }
 
             $this->putArticleTopics($aid, $topics);
-            $this->putAuthorArticle($author, $aid);
             $n ++ ;
         }
         return $n ;
@@ -273,16 +274,7 @@ class Db_article extends Db_base {
         }
         return [$addTopics,$delTopics] ;
     }
-
-
-
-    /**
-     * Добавляет связь автор - статья
-     */
-    private function putAuthorArticle($author, $articleid) {
-        return true ;
-    }
-    /**
+     /**
      * Удалить из БД списокСтатей
      */
     function delarticles($articles) {
@@ -366,6 +358,7 @@ class Db_article extends Db_base {
     function delTopic ($topicName) {
         return true ;
     }
+
     public function addComment($commentText,$userLogin,$articleId,$date) {
         $sql = 'INSERT INTO commentarticle (articleid,authorid,comment,date) VALUES
                 (:articleId , :authorId , :text , :date)' ;
@@ -377,6 +370,7 @@ class Db_article extends Db_base {
             'date'      => $date   ] ;
         return $this->sqlExecute($sql,$subst,__METHOD__) ;
     }
+
     public function getComments($articleId) {
         $sql = 'SELECT users.login,
                        commentarticle.comment,
@@ -391,6 +385,7 @@ class Db_article extends Db_base {
         }
         return $this->makeCommentsFromRows($rows) ;
     }
+
     private function makeCommentsFromRows($rows) {
         $comments= [] ;
         foreach ($rows as $row) {

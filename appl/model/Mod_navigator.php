@@ -247,15 +247,19 @@ class Mod_navigator extends  Mod_base
     public function getArticles() {
         return $this->articles;
     }
-    public function getCurrentArticle() {
-        return $this->articles[$this->artMin] ;
-    }
     public function getComments() {
         $currentArticle = $this->getCurrentArticle() ;
         $articleID = $currentArticle['articleid'] ;
         return $this->db->getComments($articleID) ;
 
     }
+    public function getCurrentArticle() {
+        return $this->articles[$this->artMin] ;
+    }
+
+    /**
+     * Возможность добавления комментариев
+     */
     public function isAddCommentFlag() {
         return TaskStore::getParam('userStatus') >=
         TaskStore::USER_STAT_USER ;

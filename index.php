@@ -15,7 +15,5 @@ include_once __DIR__ . '/local.php';
 // загружаем параметры---//
 $taskPar = TaskParameters::getInstance() ;
 $taskPar->setParameters($_POST,$_GET) ;
-// Загружаем router
 $router = new Router();
-// запускаем контроллер
 $router->controllerGo() ;

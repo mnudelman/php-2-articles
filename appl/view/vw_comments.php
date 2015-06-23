@@ -27,11 +27,9 @@
         <?php
         $readOnly = ($addCommentFlag) ? '' : 'readonly' ;
         ?>
-        <strong>новый комментарий(только для зарегистрированных)</strong>
+        <strong>новый комментарий(только для зарегистрированных)</strong><br>
         <textarea style="width:400px;height:100px" name="newComment"
                       <?=$readOnly;?>   >
-
-
             </textarea>
         <?php
          if ($addCommentFlag) {
