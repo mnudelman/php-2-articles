@@ -98,6 +98,8 @@ class Mod_profile extends Mod_base {
     private function storeUser() {
         $userStatUser = TaskStore::USER_STAT_USER ;
         $userStatAdmin = TaskStore::USER_STAT_ADMIN ;
+        $userRole = TaskStore::ROLE_USER ;
+        $adminRole = TaskStore::ROLE_ADMIN ;
         $login = $this->login ;
         $password = $this->password ;
         $this->db->putUser($login, md5($password));    // пользователя занести в БД
@@ -106,8 +108,10 @@ class Mod_profile extends Mod_base {
         TaskStore::setParam('userPassword',$password) ;
         TaskStore::setParam('enterSuccessful',true) ;
         TaskStore::setParam('userStatus',$userStatUser) ;
+        TaskStore::setParam('userRole',$userRole) ;
         if ($login == 'admin' ) {
             TaskStore::setParam('userStatus',$userStatAdmin) ;
+            TaskStore::setParam('userRole',$adminRole) ;
         }
     }
     private function profileToDataBase() {

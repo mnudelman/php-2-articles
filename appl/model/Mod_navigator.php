@@ -12,6 +12,7 @@ class Mod_navigator extends  Mod_base
     protected $dbClass = 'Db_article' ;  //  имя класса для работы с БД
     protected $parameters = [];          // параметры, принимаемые от контроллера
     //--------------------------//
+    private $permission ;               // объект класса Permissions
     private $topicList = [];   // список альбомов
     private $articles = [];            // список статей
     private $artPerPage = 1;           // статей на странице
@@ -32,6 +33,7 @@ class Mod_navigator extends  Mod_base
     //-----------------------------------------//
     public function __construct() {
         parent::__construct() ;
+        $this->permission = new Mod_permissions() ;
     }
    /**
      *  определение собственных свойств из параметров
@@ -75,6 +77,7 @@ class Mod_navigator extends  Mod_base
         $this->navInit();
         $this->newPageClc();         // вычислить новую страницу
         $this->navParClc();          // вычислить параметры навигатора
+        $this->commentsUpdateControl() ;
     }
 
     /**
@@ -206,18 +209,50 @@ class Mod_navigator extends  Mod_base
     }
 
     /**
+     *   проверить удаление/изменение комментария
+     */
+    private function commentsUpdateControl() {
+        $comments = $this->getComments() ;
+        foreach ($comments as $comment) {
+            $commentId = $comment['commentId'] ;
+            $editName = 'editComment_'.$commentId ;
+            $delName = 'delComment_'.$commentId ;
+            $textName = 'commentText_'.$commentId ;
+            if (isset($this->parameters[$editName])) {
+                $commentText = $this->parameters[$textName] ;
+                $this->commentUpdate($commentId,$commentText) ;
+                break ;
+            }
+            if (isset($this->parameters[$delName])) {
+                $this->commentDel($commentId) ;
+                break ;
+            }
+        }
+    }
+    /**
      * Сохранить комментарий
      */
     public function commentSave($commentText) {
-         if (!$this->isAddCommentFlag()) {
-             return false ;
-         }
-        $userLogin = TaskStore::getParam('userLogin') ;
+       $userLogin = TaskStore::getParam('userLogin') ;
         $currentArticle = $this->getCurrentArticle() ;
         $articleId = $currentArticle['articleid'] ;
         $date = date('c') ;
         $this->db->addComment($commentText,$userLogin,$articleId,$date) ;
     }
+    /**
+     * изменить комментарий
+     */
+    public function commentUpdate($commentId,$commentText) {
+        $date = date('c') ;
+        $this->db->updateComment($commentId,$commentText,$date) ;
+    }
+    /**
+     * удалить комментарий
+     */
+    public function commentDel($commentId) {
+        $this->db->delComment($commentId) ;
+    }
+
 //////////////////////////////////////////////////////////////////////////////////
     public function getTopicList()
     {
@@ -247,10 +282,26 @@ class Mod_navigator extends  Mod_base
     public function getArticles() {
         return $this->articles;
     }
+
+    /**
+     * в комментарий добавляется атрибут permissions - разрешение на действие
+     */
     public function getComments() {
         $currentArticle = $this->getCurrentArticle() ;
         $articleID = $currentArticle['articleid'] ;
-        return $this->db->getComments($articleID) ;
+        $comments = $this->db->getComments($articleID) ;
+        //permissions
+        $userLogin = TaskStore::getParam('userLogin') ;
+        $objName = TaskStore::OBJ_COMMENT ;
+        TaskStore::setParam('currentObj',$objName) ;
+
+        $orderPerm = $this->permission->getPermissions() ;  // обычные права
+        $ownerPerm = $this->permission->getPermissions(true) ;  //  права владельца
+        foreach ($comments as $key=>$comment) {
+            $author = $comment['author'] ;
+            $comments[$key]['permissions'] = ($author == $userLogin) ? $ownerPerm : $orderPerm ;
+        }
+        return $comments ;
 
     }
     public function getCurrentArticle() {

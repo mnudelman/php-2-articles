@@ -23,6 +23,7 @@ class TaskStore {
     private static $topicId = false ;           // текущая тема
     private static $topicName = false ;
     private static $userRole = false ;
+    private static $addRole = false ;          // дополнительная роль (например, owner
     private static $currentObj = false ;
     //-----память контроллеров ---//
     private static $cnt_userStore = [];
@@ -39,6 +40,7 @@ class TaskStore {
         'topicId',            // id текущей темы
         'topicName',          //  имя темы
         'userRole',         // роль пользователя
+        'addRole',          // дополнительная роль
         'currentObj',       // текущий объект обработки
         'enterSuccessful',    // успешный вход
         'cnt_userStore',      // память контроллера user

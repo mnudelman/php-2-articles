@@ -11,7 +11,7 @@ include_once __DIR__ . '/local.php';
 ///////////////////////////////////////////////////////////////////
 
 
-$modUser = new Mod_user() ;
+$modUser = new Mod_permissions() ;
 //  устанавливаем среду
  TaskStore::setParam('currentObj','article') ;
 TaskStore::setParam('userRole','admin') ;
@@ -19,6 +19,7 @@ $permissions = $modUser->getPermissions() ;
 print_r($permissions) ;
 echo TaskStore::LINE_FEED ;
 TaskStore::setParam('userRole','user') ;
+TaskStore::setParam('addRole','owner') ;
 $permissions = $modUser->getPermissions() ;
 print_r($permissions) ;
 echo TaskStore::LINE_FEED ;
@@ -35,3 +36,9 @@ print_r($permissions) ;
 echo TaskStore::LINE_FEED ;
 echo (false == $permissions ) ;
 echo (empty($permissions)) ;
+
+TaskStore::setParam('currentObj','comment') ;
+TaskStore::setParam('userRole','user') ;
+$permissions = $modUser->getPermissions(true) ;
+print_r($permissions) ;
+echo TaskStore::LINE_FEED ;

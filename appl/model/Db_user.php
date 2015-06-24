@@ -113,29 +113,6 @@ class Db_user extends Db_base {
 
         return true ;
     }
-    public function getTotalRang($objName,$roleName) {
-        $sql = 'SELECT totalrang
-                       FROM permissions
-                       WHERE permissions.objectid IN
-                             (SELECT objectid FROM taskobjects WHERE objectname = :objectName) AND
-                             permissions.roleid IN
-                             (SELECT roleid FROM taskroles WHERE rolename = :roleName) ' ;
-        $subst = [
-            'objectName' => $objName,
-            'roleName'   => $roleName ] ;
-        if (false === ($rows = $this->sqlExecute($sql,$subst,__METHOD__))) {
-            return false ;
-        }
-        $row = $rows[0] ;
-        return $row['totalrang'] ;
-     }
-    public function getDoings() {
-        $sql = 'SELECT doingname,rang FROM taskdoings order by rang' ;
-        if (false === ($rows = $this->sqlExecute($sql,[],__METHOD__))) {
-            return false ;
-        }
-        return $rows ;
-    }
     /**
      * Формирует список полей profile
      * @return array

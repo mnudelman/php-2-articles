@@ -84,51 +84,19 @@ class mod_user extends Mod_base {
      * сохранить авторизацию
      */
     private function storeUser() {
+        $userRole = TaskStore::ROLE_USER ;
+        $adminRole = TaskStore::ROLE_ADMIN ;
         TaskStore::setParam('userLogin', $this->login);
         TaskStore::setParam('userName', $this->login);
         TaskStore::setParam('userPassword', $this->password);
         TaskStore::setParam('enterSuccessful', true);
         TaskStore::setParam('userStatus', TaskStore::USER_STAT_USER);
+        TaskStore::setParam('userRole',$userRole) ;
         if ('admin' == $this->login) {
             TaskStore::setParam('userStatus', TaskStore::USER_STAT_ADMIN);
+            TaskStore::setParam('userRole',$adminRole) ;
         }
     }
 
-    /**
-     *  разрешение на конкретное действие
-     */
-    public function isPermission($doingName) {
-        $permissions = $this->getPermissions() ;
-        return (isset($permissions[$doingName])) ;
-    }
-    /**
-     * все разрешенные действия
-     */
-    public function getPermissions() {
-        $objName = TaskStore::getParam('currentObj') ;
-        $userRole = TaskStore::getParam('userRole') ;
-        $totalRang = $this->db->getTotalRang($objName,$userRole) ;
-        return $this->totalRangParse($totalRang) ;
-
-    }
-
-    /**
-     * разложить  $totalRang по степеням 10
-     */
-    private function totalRangParse($totalRang) {
-        $doings = $this->db->getDoings() ;
-
-        $doingPermissions = [] ;
-        foreach ($doings as $doing) {
-            $name = $doing['doingname'] ;
-            $rang = $doing['rang'] ;
-            if ($totalRang == $rang   ||
-               ($totalRang >= $rang  && $totalRang % ($rang * 10) == $rang) ) {
-                $doingPermissions[] = $name ;
-                $totalRang -= $rang ;
-            }
-        }
-        return $doingPermissions ;
-    }
 
 }

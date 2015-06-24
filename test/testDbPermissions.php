@@ -47,7 +47,7 @@ class Db_permissions extends Db_base {
         $this->sqlExecute($sql,$subst,__METHOD__) ;
 
         $subst = [
-            'doingName' => 'creat' ,
+            'doingName' => 'create' ,
             'rang' => 10 ] ;
         $this->sqlExecute($sql,$subst,__METHOD__) ;
 

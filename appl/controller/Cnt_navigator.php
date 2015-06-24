@@ -51,10 +51,12 @@ class Cnt_navigator extends Cnt_base
         }
 
         $this->mod->navExecute() ;
+
         if (isset($this->parameters['saveComment'])) {    // сохранить комментарий
             $commentText = $this->parameters['newComment'] ;
             $this->mod->commentSave($commentText) ;
         }
+
         parent::prepare();
     }
     /**

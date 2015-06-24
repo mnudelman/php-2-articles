@@ -370,9 +370,24 @@ class Db_article extends Db_base {
             'date'      => $date   ] ;
         return $this->sqlExecute($sql,$subst,__METHOD__) ;
     }
-
+    public function updateComment($commentId,$commentText,$newDate) {
+        $sql = 'UPDATE commentarticle SET comment = :commentText , date = :newDate
+                  WHERE id = :commentId ' ;
+        $subst = [
+            'commentText' => $commentText,
+            'newDate'     => $newDate,
+            'commentId'   => $commentId ] ;
+        return $this->sqlExecute($sql,$subst,__METHOD__) ; ;
+    }
+    public function delComment($commentId) {
+        $sql = 'DELETE FROM commentarticle WHERE id = :commentId ' ;
+        $subst = [
+            'commentId'   => $commentId ] ;
+        return $this->sqlExecute($sql,$subst,__METHOD__) ; ;
+    }
     public function getComments($articleId) {
         $sql = 'SELECT users.login,
+                       commentarticle.id,
                        commentarticle.comment,
                        commentarticle.date
                        FROM commentarticle,users
@@ -390,6 +405,7 @@ class Db_article extends Db_base {
         $comments= [] ;
         foreach ($rows as $row) {
             $comments[] = [
+               'commentId' => $row['id'],
                'author' => $row['login'],
                 'text'  => $row['comment'],
                 'date' =>  $row['date']
@@ -397,6 +413,32 @@ class Db_article extends Db_base {
         }
         return $comments ;
     }
+
+    public function getTotalRang($objName,$roleName) {
+        $sql = 'SELECT totalrang
+                       FROM permissions
+                       WHERE permissions.objectid IN
+                             (SELECT objectid FROM taskobjects WHERE objectname = :objectName) AND
+                             permissions.roleid IN
+                             (SELECT roleid FROM taskroles WHERE rolename = :roleName) ' ;
+        $subst = [
+            'objectName' => $objName,
+            'roleName'   => $roleName ] ;
+        if (false === ($rows = $this->sqlExecute($sql,$subst,__METHOD__))) {
+            return false ;
+        }
+        $row = $rows[0] ;
+        return $row['totalrang'] ;
+    }
+    public function getDoings() {
+        $sql = 'SELECT doingname,rang FROM taskdoings order by rang' ;
+        if (false === ($rows = $this->sqlExecute($sql,[],__METHOD__))) {
+            return false ;
+        }
+        return $rows ;
+    }
+
+
     /**
      * преобразует  $_FILES в нормальную форму
      */

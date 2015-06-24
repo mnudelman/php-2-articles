@@ -1,3 +1,6 @@
+-- UPDATE taskdoings SET doingname = 'create' WHERE doingname = 'creat' ;
+SELECT * FROM commentarticle ;
+
 SELECT * FROM taskobjects ;
 
 SELECT * FROM taskroles ;
