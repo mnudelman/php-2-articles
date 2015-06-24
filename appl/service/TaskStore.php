@@ -15,6 +15,8 @@ class TaskStore {
     //-----------------------------------//
 
     //-- параметры состояния --//
+    private static $sessionId = false;          // ид текущей сессии
+    private static $passwSave = false ;          // сохранение пароля (  cookies )
     private static $userLogin = false ;
     private static $userPassword = false ;
     private static $userName = false ;
@@ -33,6 +35,8 @@ class TaskStore {
     private static $cnt_navigatorStore = [];
     //-------Список сохраняемых параметров-------//
     private static $storedParams = [
+        'sessionId',          // ид текущей сессии
+        'passwSave',          // сохранение пароля (  cookies )
         'userName',           // Имя пользователя
         'userLogin',          // login
         'userPassword',       // пароль
@@ -85,6 +89,9 @@ class TaskStore {
     const OBJ_TOPIC = 'topic' ;
     const OBJ_ARTICLE = 'article' ;
     const OBJ_COMMENT = 'comment' ;
+
+    //-- сессия  ---------
+    const SESSION_TIME = 20*60 ;  // сек
 
     public static function init($dirTop, $htmlDirTop) {
         self::$dirTop = $dirTop;
