@@ -9,7 +9,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 header('Content-type: text/html; charset=utf-8');
 include_once __DIR__ . '/local.php';
 ///////////////////////////////////////////////////////////////////
-class Db_fill extends Db_base {
+class Db_permissions extends Db_base {
     public function fillTaskObjects() {
         $sql = 'INSERT INTO taskobjects (objectname) VALUES (:objectName)' ;
         $this->sqlExecute($sql,['objectName' => 'topic'],__METHOD__) ;
@@ -177,9 +177,10 @@ class Db_fill extends Db_base {
 
 
     }
+
 }
 
-$fill = new Db_fill() ;
+$fill = new Db_permissions() ;
 //$fill->fillTaskObjects() ;
 //$fill->fillTaskRoles() ;
 

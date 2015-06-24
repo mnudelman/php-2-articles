@@ -94,4 +94,41 @@ class mod_user extends Mod_base {
         }
     }
 
+    /**
+     *  разрешение на конкретное действие
+     */
+    public function isPermission($doingName) {
+        $permissions = $this->getPermissions() ;
+        return (isset($permissions[$doingName])) ;
+    }
+    /**
+     * все разрешенные действия
+     */
+    public function getPermissions() {
+        $objName = TaskStore::getParam('currentObj') ;
+        $userRole = TaskStore::getParam('userRole') ;
+        $totalRang = $this->db->getTotalRang($objName,$userRole) ;
+        return $this->totalRangParse($totalRang) ;
+
+    }
+
+    /**
+     * разложить  $totalRang по степеням 10
+     */
+    private function totalRangParse($totalRang) {
+        $doings = $this->db->getDoings() ;
+
+        $doingPermissions = [] ;
+        foreach ($doings as $doing) {
+            $name = $doing['doingname'] ;
+            $rang = $doing['rang'] ;
+            if ($totalRang == $rang   ||
+               ($totalRang >= $rang  && $totalRang % ($rang * 10) == $rang) ) {
+                $doingPermissions[] = $name ;
+                $totalRang -= $rang ;
+            }
+        }
+        return $doingPermissions ;
+    }
+
 }

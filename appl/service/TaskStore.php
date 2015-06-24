@@ -22,6 +22,8 @@ class TaskStore {
     private static $userStatus = false ;        // определяет возможности пользователя
     private static $topicId = false ;           // текущая тема
     private static $topicName = false ;
+    private static $userRole = false ;
+    private static $currentObj = false ;
     //-----память контроллеров ---//
     private static $cnt_userStore = [];
     private static $cnt_profileStore = [];
@@ -36,6 +38,8 @@ class TaskStore {
         'userStatus',         // статус пользователя (определяет доступные операции)
         'topicId',            // id текущей темы
         'topicName',          //  имя темы
+        'userRole',         // роль пользователя
+        'currentObj',       // текущий объект обработки
         'enterSuccessful',    // успешный вход
         'cnt_userStore',      // память контроллера user
         'cnt_profileStore',   // память контроллера profile
@@ -65,8 +69,20 @@ class TaskStore {
 
     const PROFILE_STAT_REGISTRATION = 1 ;    // переход в профиль - первичная регистрация
     const PROFILE_STAT_EDIT = 2 ;            // редактирования существующего профиля
-
-
+    // -- роли  --------------
+    const ROLE_ADMIN = 'admin' ;
+    const ROLE_USER = 'user' ;
+    const ROLE_GUEST = 'guest' ;
+    const ROLE_OWNER = 'owner' ;
+    // -- действия  --------------
+    const DO_READ = 'read' ;
+    const DO_CREATE = 'create' ;
+    const DO_EDIT = 'edit' ;
+    const DO_DEL = 'delete' ;
+    // -- объекты  --------------
+    const OBJ_TOPIC = 'topic' ;
+    const OBJ_ARTICLE = 'article' ;
+    const OBJ_COMMENT = 'comment' ;
 
     public static function init($dirTop, $htmlDirTop) {
         self::$dirTop = $dirTop;
@@ -87,7 +103,8 @@ class TaskStore {
             self::$userLogin = 'guest' ;
             self::$userName = 'Гость' ;
             self::$enterSuccessful = false ;
-            self::$userStatus = USER_STAT_GUEST ;
+            self::$userStatus = self::USER_STAT_GUEST ;
+            self::$userRole = self::ROLE_GUEST ;
         }
     }
 
