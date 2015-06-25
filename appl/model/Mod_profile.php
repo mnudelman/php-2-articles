@@ -113,6 +113,7 @@ class Mod_profile extends Mod_base {
             TaskStore::setParam('userStatus',$userStatAdmin) ;
             TaskStore::setParam('userRole',$adminRole) ;
         }
+        $this->session->newSession() ;
     }
     private function profileToDataBase() {
         $this->profile['firstname'] = $this->parameters['firstname'];

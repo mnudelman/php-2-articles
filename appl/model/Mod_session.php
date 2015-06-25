@@ -16,6 +16,7 @@ class Mod_session {
         if (is_null(self::$instance) ) {
             self::$instance = new self()  ;
         }
+
         return self::$instance ;
     }
 
@@ -23,12 +24,19 @@ class Mod_session {
      * запускается в момент регистрации
      */
     public function newSession() {
-        $begTime = mktime(date('c')) ;
         $userLogin = TaskStore::getParam('userLogin') ;
         $password =  TaskStore::getParam('userPassword') ;
         $passSave =  TaskStore::getParam('passwSave') ;
-        if (false === ($sessionId = addSession($userLogin,$begTime,$passSave) ) ) {
-            // сбросить в гость и сообщение
+        if (! TaskStore::getParam('enterSuccessful') ){
+            $this->msg->addMessage('ERROR: Не выполнен вход на сайт.') ;
+            return false ;
+        }
+
+
+        if (false === ($sessionId = $this->db->addSession($userLogin,$passSave) ) ) {
+            $this->msg->addMessage('ERROR:Ошибка начала сессии.') ;
+            TaskStore::userClear() ;
+            return false ;
         }
 
         TaskStore::setParam('sessionId',$sessionId) ;
@@ -37,6 +45,9 @@ class Mod_session {
         }
     }
     private function  putCookies() {
+        $fingerprint = $this->fingerPrintClc() ;
+        $dTime = TaskStore::COOKIES_TIME ;
+        setcookie('fingerprint',$fingerprint,time() + $dTime) ;
 
     }
 
@@ -44,30 +55,43 @@ class Mod_session {
      * новое время активности
      */
     public function setTime() {
+        if (! TaskStore::getParam('enterSuccessful') ){
+            return false ;
+        }
+
+
+
         $newTime = mktime(date('c')) ;
         $sessionId = TaskStore::getParam('sessionId') ;
         $deltaTime = TaskStore::SESSION_TIME ;
         $passSave =  TaskStore::getParam('passwSave') ;
-        $currentSession  = $this->db->getCurrentSession($sessionId ) ;
-        $currentBegTime = $currentSession['begTime'] ;
+        $currentSession  = $this->db->getSession($sessionId ) ;
+        $currentBegTime = mktime($currentSession['begTime'] ) ;
         if (($newTime - $currentBegTime) <= $deltaTime ) {
+
             $this->db->setNewTime($sessionId,$newTime ) ;
             return true ;
         }
+
         if (($newTime - $currentBegTime) <= 2*$deltaTime && $passSave) {
-            if ($this->isCookiesCorrect() ) {
-                $this->db->setNewTime($sessionId,$newTime ) ;
+            if (( $flag = $this->isCookiesCorrect()) ) {
+                $this->db->setNewTime($sessionId ) ;
                 return true ;
             }
         }
-        $this->sessionClear() ;
+        TaskStore::userClear() ;
         return false ;
 
     }
     private function isCookiesCorrect() {
-        return true ;
+        return ( $_COOKIE["fingerprint"] == $this->fingerPrintClc() ) ;
     }
-    private function sessionClear() {
+
+    private function fingerPrintClc() {
+        $login = TaskStore::getParam('userLogin') ;
+        $password = TaskStore::getParam('userPassword') ;
+        $cookiesWord = TaskStore::COOKIES_WORD ;
+        return md5($cookiesWord.$login.$password) ;
 
     }
 }

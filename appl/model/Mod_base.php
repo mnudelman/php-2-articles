@@ -5,6 +5,7 @@
  */
 
 abstract class Mod_base {
+    protected $session ;                // объект -  текущай сессия
     protected $msg ;                    // объект для вывода сообщений
     protected $db = false ;             // объект класса для связи с БД
     protected $dbClass = false ;        //  имя класса для работы с БД
@@ -13,6 +14,7 @@ abstract class Mod_base {
     //--------------------------//
     public function __construct() {
         $this->msg = Message::getInstace() ;
+        $this->session = Mod_session::getInstace() ;
         if (false !== $this->dbClass) {
             $dbClass = $this->dbClass ;
             $this->db = new $dbClass() ;

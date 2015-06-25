@@ -8,6 +8,7 @@ SELECT * FROM taskroles ;
 SELECT * FROM taskdoings ;
 
 SELECT * FROM permissions ;
+SELECT *FROM sessions ;
 
 SELECT taskobjects.objectname,
        taskroles.rolename,

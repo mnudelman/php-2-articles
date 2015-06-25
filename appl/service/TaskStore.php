@@ -91,8 +91,9 @@ class TaskStore {
     const OBJ_COMMENT = 'comment' ;
 
     //-- сессия  ---------
-    const SESSION_TIME = 20*60 ;  // сек
-
+    const SESSION_TIME = 1200 ;  // сек
+    const COOKIES_TIME = 1728000 ;
+    const COOKIES_WORD = 'обучение в школе php' ;
     public static function init($dirTop, $htmlDirTop) {
         self::$dirTop = $dirTop;
         self::$htmlDirTop = $htmlDirTop;
@@ -109,14 +110,16 @@ class TaskStore {
             self::$$parName = self::restoreParam($parName) ;
         }
         if (empty(self::$userLogin)) {
-            self::$userLogin = 'guest' ;
-            self::$userName = 'Гость' ;
-            self::$enterSuccessful = false ;
-            self::$userStatus = self::USER_STAT_GUEST ;
-            self::$userRole = self::ROLE_GUEST ;
+            self::userClear() ;
         }
     }
-
+    public static function userClear() {
+        self::$userLogin = 'guest' ;
+        self::$userName = 'Гость' ;
+        self::$enterSuccessful = false ;
+        self::$userStatus = self::USER_STAT_GUEST ;
+        self::$userRole = self::ROLE_GUEST ;
+    }
     /**
      * Сохранить параметр
      * @param $paramName

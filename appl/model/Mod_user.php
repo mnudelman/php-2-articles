@@ -96,6 +96,7 @@ class mod_user extends Mod_base {
             TaskStore::setParam('userStatus', TaskStore::USER_STAT_ADMIN);
             TaskStore::setParam('userRole',$adminRole) ;
         }
+        $this->session->newSession() ;    // новая сессия
     }
 
 

@@ -326,7 +326,7 @@ class Db_article extends Db_base {
     /**
      * опрелить userid по  login
      */
-    function getUserid($login) {
+    public function getUserid($login) {
         $sql = 'SELECT * FROM users where login = :login' ;
         $subst = ['login' => $login] ;
         $rows= $this->sqlExecute($sql,$subst,__METHOD__) ;

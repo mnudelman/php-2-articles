@@ -15,5 +15,7 @@ include_once __DIR__ . '/local.php';
 // загружаем параметры---//
 $taskPar = TaskParameters::getInstance() ;
 $taskPar->setParameters($_POST,$_GET) ;
+$session = Mod_session::getInstace() ;
+$session->setTime() ;   // отметка момента входа на странуцу
 $router = new Router();
 $router->controllerGo() ;

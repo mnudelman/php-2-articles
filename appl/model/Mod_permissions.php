@@ -26,7 +26,7 @@ class Mod_permissions extends Mod_base{
         $objName = TaskStore::getParam('currentObj') ;
         $userRole = TaskStore::getParam('userRole') ;
         $totalRang = $this->db->getTotalRang($objName,$userRole) ;
-        // возможна дополнительная роль
+        // возможна дополнительная роль собственника объекта
         if ($ownerFlag) {
             $addRole = TaskStore::ROLE_OWNER ;
             $addTotalRang = $this->db->getTotalRang($objName, $addRole);
