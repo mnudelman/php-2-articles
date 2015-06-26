@@ -37,7 +37,7 @@ class Cnt_navigator extends Cnt_base
         $this->HTML_DIR_TOP = TaskStore::$htmlDirTop ;
         $this->DIR_VIEW = TaskStore::$dirView ;
         $this->DIR_LAYOUT =TaskStore::$dirLayout ;
-        $this->URL_OWN = TaskStore::$htmlDirTop . '/index.php?cnt=Cnt_navigator';
+        $this->URL_OWN = TaskStore::$htmlDirTop . '/Cnt_navigator';
 
 
         if (isset($this->ownStore[$this->currentTopicId])) {

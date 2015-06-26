@@ -11,6 +11,7 @@ class Mod_article extends Mod_base {
     protected $dbClass = 'Db_article' ;        //  имя класса для работы с БД
     protected $parameters = [];                // параметры, принимаемые от контроллера
     //----------------------------//
+    private $permission ;
     private $articleStatEdit;                   // режим (редакт - просмотр)
     private $topicList = [] ;                   // список всех тем
     private $articles = [] ;                    // список  статей
@@ -22,6 +23,8 @@ class Mod_article extends Mod_base {
     //---------------------------------------------------------------//
     public function __construct() {
         parent::__construct() ;
+        $this->permission = new Mod_permissions() ;
+
     }
      protected function init() {
         $this->articleStatEdit = (isset($this->parameters['edit'])) ?
@@ -144,8 +147,40 @@ class Mod_article extends Mod_base {
        return $this->topicList ;
    }
    public function getArticles() {
+       $userLogin = TaskStore::getParam('userLogin') ;
+       $userStatus = TaskStore::getParam('userStatus') ;
+
+       if ($userStatus == TaskStore::USER_STAT_ADMIN ) {
+           $this->articles = $this->db->getArticles() ;  // статьи все
+       }else {
+       $this->articles = $this->db->getArticles($this->userLogin) ;  // статьи, загруженные userLogin
+       }
+
+       $objName = TaskStore::OBJ_ARTICLE ;
+       TaskStore::setParam('currentObj',$objName) ;
+
+       $orderPerm = $this->permission->getPermissions() ;  // обычные права
+       $ownerPerm = $this->permission->getPermissions(true) ;  //  права владельца
+       if (is_array($this->articles)) {
+           foreach ($this->articles as $key => $article) {
+               $owner = $article['owner'];
+               $this->articles[$key]['permissions'] = ($owner == $userLogin) ? $ownerPerm : $orderPerm;
+           }
+       }
        return $this->articles ;
    }
 
-
+    /**
+     * разрешение на команды изменения
+     */
+    public function geCmdPermissions() {
+        $objName = TaskStore::OBJ_ARTICLE ;
+        TaskStore::setParam('currentObj',$objName) ;
+        $ownerPerm = [] ;
+        $orderPerm = $this->permission->getPermissions() ;  // обычные права
+        if (in_array('create',$orderPerm)) {
+            $ownerPerm = $this->permission->getPermissions(true) ;  //  права владельца
+        }
+        return array_merge($orderPerm,$ownerPerm) ;
+    }
 }

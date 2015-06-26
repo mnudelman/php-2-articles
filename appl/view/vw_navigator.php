@@ -7,18 +7,18 @@
 ?>
 <div align="center" class="navigator">
 <form method="POST"  action="<?=$urlNavigator;?>">
-    <a href="<?php echo $urlNavigator.'&page=first' ?>" readonly="readonly">
+    <a href="<?=$urlNavigator.'/page/first' ?>" readonly="readonly">
             <img src="<?=$dirImages;?>/go-first.png"
                      title="первая страница" alt="|<" >
     </a>
-    <a href="<?php echo $urlNavigator.'&page=prev' ?>">
+    <a href="<?=$urlNavigator.'/page/prev' ?>">
         <img src="<?=$dirImages;?>/go-previous.png"
                      title="предыдущая страница" alt="<" >
     </a>
     <?php
 
     for ($i=$navPageMin; $i <= $navPageMax; $i++) {
-        echo '<a href="'.$urlNavigator.'&page='.$i.'">' ;
+        echo '<a href="'.$urlNavigator.'/page/'.$i.'">' ;
         if ($currentPage == $i) {
             echo '<span  class="navPageCurrent">' . $i . '</span></a>' . "\n";
         }else {
@@ -27,11 +27,11 @@
     }
 
     ?>
-    <a href="<?=$urlNavigator.'&page=next';?>">
+    <a href="<?=$urlNavigator.'/page/next';?>">
         <img src="<?=$dirImages;?>/go-next.png"
                      title="следующая страница" alt=">" >
     </a>
-    <a href="<?=$urlNavigator.'&page=last';?>">
+    <a href="<?=$urlNavigator.'/page/last';?>">
         <img src="<?=$dirImages;?>/go-last.png"
                      title="последняя страница" alt=">|" >
     </a>

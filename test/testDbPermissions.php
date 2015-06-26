@@ -40,6 +40,7 @@ class Db_permissions extends Db_base {
 
     }
     public function fillTaskDoing() {
+
         $sql = 'INSERT INTO taskdoings (doingname,rang) VALUES (:doingName , :rang)' ;
         $subst = [
             'doingName' => 'read' ,
@@ -48,17 +49,17 @@ class Db_permissions extends Db_base {
 
         $subst = [
             'doingName' => 'create' ,
-            'rang' => 10 ] ;
+            'rang' => 2 ] ;
         $this->sqlExecute($sql,$subst,__METHOD__) ;
 
         $subst = [
             'doingName' => 'edit' ,
-            'rang' => 100 ] ;
+            'rang' => 4 ] ;
         $this->sqlExecute($sql,$subst,__METHOD__) ;
 
         $subst = [
             'doingName' => 'delete' ,
-            'rang' => 1000 ] ;
+            'rang' => 8 ] ;
         $this->sqlExecute($sql,$subst,__METHOD__) ;
     }
 
@@ -96,7 +97,7 @@ class Db_permissions extends Db_base {
         $subst = [
             'rolename' => 'admin',
             'objectname' => 'article',
-            'totalrang' => 1001 ] ;
+            'totalrang' => 9 ] ;
         $this->sqlExecute($sql, $subst, __METHOD__);
 
         $subst = [
@@ -109,13 +110,13 @@ class Db_permissions extends Db_base {
         $subst = [
             'rolename' => 'owner',
             'objectname' => 'article',
-            'totalrang' => 100 ] ;
+            'totalrang' => 12 ] ;
         $this->sqlExecute($sql, $subst, __METHOD__);
 
         $subst = [
             'rolename' => 'user',
             'objectname' => 'article',
-            'totalrang' => 11 ] ;
+            'totalrang' => 3 ] ;
         $this->sqlExecute($sql, $subst, __METHOD__);
 
 //----------------------------------------------------------------------
@@ -123,7 +124,7 @@ class Db_permissions extends Db_base {
         $subst = [
             'rolename' => 'admin',
             'objectname' => 'comment',
-            'totalrang' => 1001 ] ;
+            'totalrang' => 9 ] ;
         $this->sqlExecute($sql, $subst, __METHOD__);
 
         $subst = [
@@ -136,13 +137,13 @@ class Db_permissions extends Db_base {
         $subst = [
             'rolename' => 'owner',
             'objectname' => 'comment',
-            'totalrang' => 1100 ] ;
+            'totalrang' => 12 ] ;
         $this->sqlExecute($sql, $subst, __METHOD__);
 
         $subst = [
             'rolename' => 'user',
             'objectname' => 'comment',
-            'totalrang' => 11 ] ;
+            'totalrang' => 3 ] ;
         $this->sqlExecute($sql, $subst, __METHOD__);
 
 //----------------------------------------------------------
@@ -151,7 +152,7 @@ class Db_permissions extends Db_base {
         $subst = [
             'rolename' => 'admin',
             'objectname' => 'topic',
-            'totalrang' => 1011 ] ;
+            'totalrang' => 11 ] ;
         $this->sqlExecute($sql, $subst, __METHOD__);
 
         $subst = [
@@ -181,11 +182,11 @@ class Db_permissions extends Db_base {
 }
 
 $fill = new Db_permissions() ;
-$fill->fillTaskObjects() ;
-$fill->fillTaskRoles() ;
+//$fill->fillTaskObjects() ;
+//$fill->fillTaskRoles() ;
 
-$fill->fillTaskDoing() ;
-$fill->fillPermissions() ;
+//$fill->fillTaskDoing() ;
+//$fill->fillPermissions() ;
 $fill->updatePermissions() ;
 $msg = Message::getInstace() ;
 $messages = $msg->getMessages() ;

@@ -11,6 +11,7 @@ class Mod_topic extends Mod_base {
     protected $dbClass = 'Db_article' ; //  имя класса для работы с БД
     protected $parameters = [];         // параметры, принимаемые от контроллера
     //------------------------------//
+    private $permission ;              // класс Mod_permissions - разрешение на действие
     private $topicList ;               // список доступных альбомов
     private $currentTopicId ;          // Id текущей галереи
     private $topicEditStat ;           // редактирование/просмотр
@@ -18,6 +19,7 @@ class Mod_topic extends Mod_base {
     //----------------------------------------//
    public function __construct() {
        parent::__construct() ;
+       $this->permission = new Mod_permissions() ;
    }
     /**
      *  определение собственных свойств из параметров
@@ -70,8 +72,19 @@ class Mod_topic extends Mod_base {
            TaskStore::STAT_SHOW_NAME : TaskStore::STAT_EDIT_NAME ;
        return $statName ;
    }
+
+    /**
+     * возможность редактировать статьи
+     */
    public function getEditFlag() {
-       return  ($this->topicEditStat == TaskStore::TOPIC_STAT_EDIT) ;
+       if ($this->topicEditStat == TaskStore::TOPIC_STAT_SHOW) {
+           return false ;
+       }
+       $objName = TaskStore::OBJ_ARTICLE;
+       TaskStore::setParam('currentObj',$objName) ;
+       $owner= true ;
+       $orderPerm = $this->permission->getPermissions($owner) ;  // обычные права
+       return  (in_array('edit', $orderPerm));
    }
 
     /**
@@ -79,7 +92,10 @@ class Mod_topic extends Mod_base {
      * @return bool
      */
    public function getAddTopicFlag() {
-       return (TaskStore::getParam('userStatus') >= TaskStore::USER_STAT_ADMIN );
+       $objName = TaskStore::OBJ_TOPIC ;
+       TaskStore::setParam('currentObj',$objName) ;
+       $orderPerm = $this->permission->getPermissions() ;  // обычные права
+       return  (in_array('create', $orderPerm));
    }
    public function getTopicList() {
        return $this->topicList ;

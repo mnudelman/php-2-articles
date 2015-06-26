@@ -6,7 +6,7 @@
  */
 ?>
 
-<form action="<?php echo $urlToUser ?>" method="post">
+<form action="<?=$urlToUser ?>" method="post">
     <div>
         ВХОД. Войдите под своим login,password или
         <button name="registration">пройдите регистрацию</button>

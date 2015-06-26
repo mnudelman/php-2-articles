@@ -26,8 +26,8 @@ class Cnt_profile extends Cnt_base {
      parent::__construct() ;
     }
     protected function prepare() {
-        $this->URL_OWN = TaskStore::$htmlDirTop.'/index.php?cnt=Cnt_profile' ;
-        $this->URL_DEFAULT = TaskStore::$htmlDirTop.'/index.php?cnt=Cnt_default' ;
+        $this->URL_OWN = TaskStore::$htmlDirTop.'/Cnt_profile' ;
+        $this->URL_DEFAULT = TaskStore::$htmlDirTop.'/Cnt_default' ;
 
         $this->mod->setUrlDefault($this->URL_DEFAULT) ;
 

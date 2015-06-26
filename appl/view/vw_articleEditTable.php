@@ -24,6 +24,11 @@
         $articleTopics = $article['topics'];
         $fText = $dirArticle . '/' . $file;
         $fhandle = fopen($fText, 'r');
+        $permissions = $article['permissions'] ;
+        $addFlag = (in_array('create',$permissions)) ;
+        $editFlag = (in_array('edit',$permissions)) ;
+        $delFag = (in_array('delete',$permissions)) ;
+        $checkFlag = ($addFlag || $editFlag || $delFag) ;
         ?>
         <tr>
             <td>
@@ -32,7 +37,7 @@
         if (false === $fhandle) {
             echo 'ERROR:файл:' . $fText . '  недоступен!';
         } else {
-            $maxLength = 1000;
+            $maxLength = 2000;
             $len = 0;
             while (false !== ($line = fgets($fhandle, 200) ) ) {
                 echo $line;
@@ -43,7 +48,10 @@
         fclose($fhandle);
         echo '</td>';
         echo '<td>';
-        echo '<textarea name="title#' . $artId .
+
+
+        $readOnly = (!$editFlag) ? 'readonly' : '' ;
+        echo '<textarea name="title#' . $artId .'" '.$readOnly.' '.
             '" style="width:200px;height:100px;">';
         echo $title;
         echo '</textarea>';
@@ -54,8 +62,11 @@
             $checked = (isset($articleTopics[$tid])) ? 'checked' : '';
             $tName = $topic['topicname'];
             echo '<label>';
-            $inp = '<input type="checkbox"  name="topic#%d#%d" %s >' ;
-            echo sprintf($inp,$tid,$artId,$checked) ;
+
+            $readOnly = (!$editFlag) ? 'readonly' : '' ;
+
+            $inp = '<input type="checkbox"  name="topic#%d#%d" %s  %s>' ;
+            echo sprintf($inp,$tid,$artId,$checked,$readOnly) ;
             echo $tName;
             echo '</label><br>';
         }
@@ -64,9 +75,13 @@
         echo $file;         // файл статьи
         echo '</td>';
         echo '<td>';
-        $inp = '<input type="checkbox"  name="check#%d">';
-        echo sprintf($inp,$artId) ;
-        echo '</td>' ."\n" ;
+        if ($checkFlag) {
+            $inp = '<input type="checkbox"  name="check#%d">';
+            echo sprintf($inp, $artId);
+        }else {
+            echo '&nbsp' ;
+        }
+            echo '</td>' ."\n" ;
         echo '</tr>';
         }
         }

@@ -8,7 +8,7 @@
 
 if ($successfulSave && !$profileEditFlag) {
     ?>
-    <a href="<?php echo $urlToDefault ; ?>"><strong>Регистрация завершена успешно</strong></a>
+    <a href="<?= $urlToDefault;?>"><strong>Регистрация завершена успешно</strong></a>
 <?php
 } else {   // выводить форму
     ?>

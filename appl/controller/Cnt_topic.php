@@ -29,7 +29,7 @@ class Cnt_topic extends Cnt_base {
     }
     protected function prepare() {
 
-        $this->URL_OWN = TaskStore::$htmlDirTop.'/index.php?cnt=Cnt_topic' ;
+        $this->URL_OWN = TaskStore::$htmlDirTop.'/Cnt_topic' ;
 
         if (isset($this->parameters['exit'])) {      // выход (в "главный" index )
             $this->forwardCntName = $this->CNT_HOME ;

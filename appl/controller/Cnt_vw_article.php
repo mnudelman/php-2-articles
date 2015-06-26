@@ -59,6 +59,11 @@ class Cnt_vw_article extends Cnt_vw_base {
      * команды формы редактирования
      */
     public function partArticleEditCommandsDef() {
+        $permissions = $this->mod->geCmdPermissions() ;
+        $addFlag = (in_array('create',$permissions)) ;
+        $editFlag = (in_array('edit',$permissions)) ;
+        $delFag = (in_array('delete',$permissions)) ;
+
         return [
         'name' => 'partArticleEditCommands' ,
         'parameters' => [
@@ -66,7 +71,10 @@ class Cnt_vw_article extends Cnt_vw_base {
             'articles'       => $this->mod->getArticles(),
             'urlArticleEdit' => $this->URL_OWN ,
             'dirArticle' => $this->dirArticle ,
-            'htmlDirTop' => $this->htmlDirTop ] ,
+            'htmlDirTop' => $this->htmlDirTop,
+            'addFlag' => $addFlag,
+            'editFlag' => $editFlag,
+            'delFlag'  => $delFag ] ,
         'components' => false,
         'dir' => $this->DIR_VIEW,
         'file' => 'vw_articleEditCommands'

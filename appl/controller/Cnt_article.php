@@ -33,7 +33,7 @@ class Cnt_article extends Cnt_base {
     }
     protected function prepare() {
         //------- работа   ------------//
-        $this->URL_OWN = TaskStore::$htmlDirTop.'/index.php?cnt=Cnt_article' ;
+        $this->URL_OWN = TaskStore::$htmlDirTop.'/Cnt_article' ;
         $this->htmlDirTop = TaskStore::$htmlDirTop ;
         $this->dirArticle = TaskStore::$dirArticleHeap ;
         // добавляем параметр

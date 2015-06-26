@@ -11,11 +11,14 @@ class Router {
     private $msg ;          // объект-сообщение
     private $taskParms ;    // объект класса TaskParameters - параметры задачи
     //-----------------------------------//
-    public function __construct() {
+    public function __construct($defautOnly = false) {
         $this->taskParms = TaskParameters::getInstance();
         $this->msg = Message::getInstace();
-        $cntN = $this->taskParms->getParameter('cnt');
-        $this->controllerName = (false === $cntN) ? $this->DEFAULT_NAME : $cntN;
+  //      $cntN = $this->taskParms->getParameter('cnt');
+  //     $this->controllerName = (false === $cntN) ? $this->DEFAULT_NAME : $cntN;
+
+        $this->controllerName = ($defautOnly) ? $this->DEFAULT_NAME :
+                                         $this->taskParms->getParameter('controller') ;
     }
 
     public function controllerGo() {

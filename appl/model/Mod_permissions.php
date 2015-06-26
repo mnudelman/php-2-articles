@@ -37,27 +37,21 @@ class Mod_permissions extends Mod_base{
         $permiss = $this->totalRangParse($totalRang) ;
 
         return array_merge($permiss,$addPermiss) ;
-
-    }
-
+   }
     /**
      * разложить  $totalRang по степеням 10
      */
     private function totalRangParse($totalRang) {
         $doings = $this->db->getDoings() ;
-
+        $totalRang = (int) $totalRang ;
         $doingPermissions = [] ;
         foreach ($doings as $doing) {
             $name = $doing['doingname'] ;
-            $rang = $doing['rang'] ;
-            if ($totalRang == $rang   ||
-                ($totalRang >= $rang  && $totalRang % ($rang * 10) == $rang) ) {
-                $doingPermissions[] = $name ;
-                $totalRang -= $rang ;
+            $rang = (int) $doing['rang'] ;
+            if ( $rang == ($totalRang & $rang  )  ) {
+                $doingPermissions[] = $name;
             }
         }
         return $doingPermissions ;
     }
-
-
 }

@@ -14,15 +14,17 @@ class Db_article extends Db_base {
      */
     public function getArticlesByTopic($topicid) {
         $sql = 'SELECT articleid,
-                        userid,
+                        articles.userid,
+                        users.login,
                         title,
                         file,
                         annotation
-                        FROM articles  ' ;
+                        FROM articles,users
+                       WHERE articles.userid = users.userid ' ;
 
         $where = '' ;
         if (!empty($topicid)) {
-            $where = 'WHERE articleid IN (
+            $where = 'AND articleid IN (
               SELECT articleid FROM topicarticle
                      WHERE topicid = :topicid )' ;
         }
@@ -42,19 +44,22 @@ class Db_article extends Db_base {
     /**
      * выбирает атрибуты статей владельца(поместившего статью на сайт)
      */
-    public function getArticles($owner) {
+    public function getArticles($owner=false) {
         $sql = 'SELECT articleid,
-                        userid,
+                        articles.userid,
+                        users.login,
                         title,
                         file,
                         annotation
-                        FROM articles ' ;
+                        FROM articles,users
+                         WHERE
+                              articles.userid = users.userid ' ;
         $userid = false ;
-        $where = [] ;
+        $where = '' ;
         if (!empty($owner)) {
             $userid = $this->getUserid($owner) ;
             if (!empty($userid)) {
-                $where = 'WHERE userid = :userid ';
+                $where = ' AND  articles.userid = :userid ';
             }
         }
         $sql .= $where ;
@@ -80,6 +85,7 @@ class Db_article extends Db_base {
             $article = [
                 'articleid'  => $articleid ,
                 'userid'     => $row['userid'],
+                'owner'      => $row['login'],
                 'title'      => $row['title'] ,
                 'annotation' => $row['annotation'] ,
                 'file'       => $row['file'] ,

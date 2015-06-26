@@ -1,12 +1,14 @@
 -- UPDATE taskdoings SET doingname = 'create' WHERE doingname = 'creat' ;
-SELECT * FROM commentarticle ;
+-- DELETE FROM taskdoings ;
 
-SELECT * FROM taskobjects ;
-
-SELECT * FROM taskroles ;
-
-SELECT * FROM taskdoings ;
-
+-- SELECT * FROM commentarticle ;
+--
+-- SELECT * FROM taskobjects ;
+--
+-- SELECT * FROM taskroles ;
+--
+-- SELECT * FROM taskdoings ;
+--
 SELECT * FROM permissions ;
 SELECT *FROM sessions ;
 
