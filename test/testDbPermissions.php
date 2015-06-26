@@ -181,12 +181,11 @@ class Db_permissions extends Db_base {
 }
 
 $fill = new Db_permissions() ;
-//$fill->fillTaskObjects() ;
-//$fill->fillTaskRoles() ;
+$fill->fillTaskObjects() ;
+$fill->fillTaskRoles() ;
 
-//$fill->fillTaskDoing() ;
-//$fill->fillPermissions() ;
-//$fill->selectPermissions() ;
+$fill->fillTaskDoing() ;
+$fill->fillPermissions() ;
 $fill->updatePermissions() ;
 $msg = Message::getInstace() ;
 $messages = $msg->getMessages() ;
